@@ -156,19 +156,17 @@ const Landing = () => {
         <div
           style={{
             position: 'absolute',
-            right: '-100px',
-            top: '50px',
+            right: '10px',
+            top: '-0px',
             zIndex: 1,
           }}
         >
           <img 
             style={{
-              width: '1737', 
-              height: '1296', 
-              transform: 'rotate(9deg)', 
-              // transformOrigin: 'top left', 
-              // boxShadow: '2px 2px 2px', 
-              filter: 'blur(1px)'
+              width: '1300px', 
+              height: '750px',
+              transform: 'rotate(-2deg)', 
+              transformOrigin: 'top left', 
             }} 
             src="/src/assets/flag.png" 
             alt="Racing flag"
