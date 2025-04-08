@@ -101,11 +101,12 @@ const Landing = () => {
               fontWeight: '300'
             }}
           >
-            Welcome to <br />turbotrack
+            Welcome to <br />
+            <span style={{ display: 'flex', flexDirection: 'column', color: '#D8D8D8', fontSize: 73, fontFamily: 'Zilla Slab Highlight', fontWeight: '700', letterSpacing: 10.95, wordWrap: 'break-word'}}>turbotrack</span>
           </h1>
           <p
             style={{
-              fontSize: '32',
+              fontSize: 32,
               color: '#EDEDED',
               marginBottom: '2rem',
               fontFamily: 'Readex Pro',
