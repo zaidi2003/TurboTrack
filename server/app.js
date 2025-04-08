@@ -1,6 +1,6 @@
 require("dotenv").config();
 require('express-async-errors');
-
+//establishes connection
 const connectDB = require("./db/connect");
 const express = require("express");
 const cors = require('cors')
