@@ -1,41 +1,33 @@
-import React, { useEffect, useState } from "react";
-import Image from "../assets/image.png";
-import Logo from "../assets/logo.png";
-import GoogleSvg from "../assets/icons8-google.svg";
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa6";
-import "../styles/Login.css";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [ token, setToken ] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  // State to store the auth token, form data, etc.
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const navigate = useNavigate();
 
+  // Update formData when input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-
+  // Handle form submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    let email = e.target.email.value;
-    let password = e.target.password.value;
-
-    if (email.length > 0 && password.length > 0) {
-      const formData = {
-        email,
-        password,
-      };
+    const { email, password } = formData;
+    if (email && password) {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/v1/login",
-          formData
-        );
-        localStorage.setItem('auth', JSON.stringify(response.data.token));
-        toast.success("Login successfull");
+        const response = await axios.post("http://localhost:3000/api/v1/login", { email, password });
+        localStorage.setItem("auth", JSON.stringify(response.data.token));
+        toast.success("Login successful");
         navigate("/dashboard");
       } catch (err) {
-        console.log(err);
         toast.error(err.message);
       }
     } else {
@@ -43,75 +35,310 @@ const Login = () => {
     }
   };
 
+  // Redirect if already logged in
   useEffect(() => {
-    if(token !== ""){
+    if (token !== "") {
       toast.success("You already logged in");
       navigate("/dashboard");
     }
-  }, []);
+  }, [token, navigate]);
 
   return (
-    <div className="login-main">
-      <div className="login-left">
-        <img src={Image} alt="" />
-      </div>
-      <div className="login-right">
-        <div className="login-right-container">
-          <div className="login-logo">
-            <img src={Logo} alt="" />
-          </div>
-          <div className="login-center">
-            <h2>Welcome back to TurboTrack!</h2>
-            <p>Please enter your details</p>
-            <form onSubmit={handleLoginSubmit}>
-              <input type="email" placeholder="Email" name="email" />
-              <div className="pass-input-div">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  name="password"
-                />
-                {showPassword ? (
-                  <FaEyeSlash
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                  />
-                ) : (
-                  <FaEye
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                  />
-                )}
-              </div>
-
-              <div className="login-center-options">
-                <div className="remember-div">
-                  <input type="checkbox" id="remember-checkbox" />
-                  <label htmlFor="remember-checkbox">
-                    Remember for 30 days
-                  </label>
-                </div>
-                <a href="#" className="forgot-pass-link">
-                  Forgot password?
-                </a>
-              </div>
-              <div className="login-center-buttons">
-                <button type="submit">Log In</button>
-                <button type="submit">
-                  <img src={GoogleSvg} alt="" />
-                  Log In with Google
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <p className="login-bottom-p">
-            Don't have an account? <Link to="/register">Sign Up</Link>
-          </p>
+    <div
+      style={{
+        width: 1512,
+        height: 982,
+        position: 'relative',
+        backgroundImage: 'url("/bg-wp.png")', // Now the file is in public folder
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#F7F4F1',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Top Navigation Bar */}
+      <div
+        style={{
+          width: 1512,
+          height: 120,
+          left: 0,
+          top: 0,
+          position: 'absolute',
+          background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+          border: '1px solid black'
+        }}
+      />
+      <div
+        style={{
+          width: 1512,
+          height: 65,
+          left: 0,
+          top: 120,
+          position: 'absolute',
+          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+          border: '1px solid black'
+        }}
+      />
+      <div
+        style={{
+          width: 1512,
+          height: 10,
+          left: -1,
+          top: 115,
+          position: 'absolute',
+          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+          border: '1px solid black'
+        }}
+      />
+      
+      {/* Added Link to the main landing page */}
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <div
+          style={{
+            width: 300,
+            left: 82,
+            top: 41,
+            position: 'absolute',
+            color: '#D5D4D4',
+            fontSize: 30,
+            fontFamily: 'Zen Dots',
+            fontWeight: '400',
+            letterSpacing: 3,
+            wordWrap: 'break-word',
+            cursor: 'pointer'
+          }}
+        >
+          turbotrack
         </div>
+      </Link>
+      <div
+        style={{
+          left: 658,
+          top: 149,
+          position: 'absolute',
+          color: '#C9C0C0',
+          fontSize: 20,
+          fontFamily: 'Readex Pro',
+          fontWeight: '700',
+          wordWrap: 'break-word'
+        }}
+      >
+        Sign in
       </div>
+      <div
+        style={{
+          width: 111,
+          height: 6,
+          left: 638,
+          top: 179,
+          position: 'absolute',
+          background: '#B81515'
+        }}
+      />
+      <Link
+        to="/register"
+        style={{
+          left: 792,
+          top: 149,
+          position: 'absolute',
+          color: '#D5D4D4',
+          fontSize: 20,
+          fontFamily: 'Readex Pro',
+          fontWeight: '400',
+          wordWrap: 'break-word',
+          textDecoration: 'none'
+        }}
+      >
+        Register
+      </Link>
+
+      {/* Main Heading */}
+      <div
+        style={{
+          left: 538,
+          top: 293,
+          position: 'absolute',
+          textAlign: 'center',
+          color: '#D5D4D4',
+          fontSize: 55,
+          fontFamily: 'Readex Pro',
+          fontWeight: '700',
+          letterSpacing: 2.75,
+          wordWrap: 'break-word'
+        }}
+      >
+        Welcome Back
+      </div>
+      {/* Underline Element */}
+      <div
+        style={{
+          width: 737,
+          height: 0,
+          left: 388,
+          top: 370,
+          position: 'absolute',
+          outline: '1px var(--cream, #F7F4F1) solid',
+          outlineOffset: '-0.50px'
+        }}
+      ></div>
+      {/* Form and Labels */}
+      <form onSubmit={handleLoginSubmit}>
+        {/* Email Label */}
+        <div
+          style={{
+            left: 400,
+            top: 460,
+            position: 'absolute',
+            color: '#D5D4D4',
+            fontSize: 23,
+            fontFamily: 'Readex Pro',
+            fontWeight: '300',
+            wordWrap: 'break-word'
+          }}
+        >
+          Email address
+        </div>
+        {/* Email Input Box */}
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          style={{
+            width: 730,
+            height: 65,
+            left: 391,
+            top: 491,
+            position: 'absolute',
+            background: 'rgba(244,248,250,0.8)',
+            borderRadius: 15,
+            border: '1px solid black',
+            paddingLeft: 10,
+            fontSize: 20,
+            fontFamily: 'Readex Pro'
+          }}
+        />
+        {/* Password Label */}
+        <div
+          style={{
+            width: 106.72,
+            height: 23.12,
+            left: 400,
+            top: 610,
+            position: 'absolute',
+            color: '#D5D4D4',
+            fontSize: 23,
+            fontFamily: 'Readex Pro',
+            fontWeight: '300',
+            wordWrap: 'break-word'
+          }}
+        >
+          Password
+        </div>
+        {/* Password Input Box */}
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          style={{
+            width: 730,
+            height: 65,
+            left: 391,
+            top: 645,
+            position: 'absolute',
+            background: 'rgba(244,248,250,0.8)',
+            borderRadius: 15,
+            border: '1px solid black',
+            paddingLeft: 10,
+            fontSize: 20,
+            fontFamily: 'Readex Pro'
+          }}
+        />
+
+        {/* Sign In Button */}
+        <div
+          data-property-1="Default"
+          style={{
+            width: 184,
+            height: 62,
+            left: 391,
+            top: 750,
+            position: 'relative',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            overflow: 'hidden',
+            borderRadius: 15,
+            outline: '1px #120000 solid',
+            outlineOffset: '-1px',
+            cursor: 'pointer'
+          }}
+          onClick={handleLoginSubmit}
+        >
+          <div
+            style={{
+              left: 57,
+              top: 18,
+              position: 'absolute',
+              color: '#EAD8D8',
+              fontSize: 21,
+              fontFamily: 'Inter',
+              fontWeight: '700',
+              wordWrap: 'break-word'
+            }}
+          >
+            Sign in
+          </div>
+        </div>
+
+        {/* Bottom Links */}
+        <div
+          style={{
+            left: 579,
+            top: 899,
+            position: 'absolute',
+            color: '#D5D4D4',
+            fontSize: 20.06,
+            fontFamily: 'Readex Pro',
+            fontWeight: '400',
+            wordWrap: 'break-word'
+          }}
+        >
+          Don’t have an account?
+        </div>
+        <Link
+          to="/register"
+          style={{
+            left: 805.78,
+            top: 899.87,
+            position: 'absolute',
+            color: '#C8C0C0',
+            fontSize: 19.63,
+            fontFamily: 'Readex Pro',
+            fontWeight: '600',
+            textDecoration: 'underline',
+            wordWrap: 'break-word'
+          }}
+        >
+          Register now
+        </Link>
+        <Link
+          to="/forgot-password"
+          style={{
+            left: 946,
+            top: 758,
+            position: 'absolute',
+            color: '#D5D4D4',
+            fontSize: 20.05,
+            fontFamily: 'Readex Pro',
+            fontWeight: '500',
+            textDecoration: 'underline',
+            wordWrap: 'break-word'
+          }}
+        >
+          Forgot Password?
+        </Link>
+      </form>
     </div>
   );
 };
