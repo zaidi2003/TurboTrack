@@ -48,8 +48,8 @@ const Register = () => {
   return (
     <div
       style={{
-        width: 1512,
-        height: 982,
+        width: '100%',
+        height: '100vh',
         position: 'relative',
         backgroundImage: 'url("/bg-wp.png")', // Now the file is in public folder
         backgroundSize: 'cover',
@@ -62,8 +62,8 @@ const Register = () => {
       {/* Top Navigation Bar */}
       <div
         style={{
-          width: 1512,
-          height: 120,
+          width: '100%',
+          height: '12%',
           left: 0,
           top: 0,
           position: 'absolute',
@@ -73,10 +73,10 @@ const Register = () => {
       />
       <div
         style={{
-          width: 1512,
-          height: 65,
+          width: '100%',
+          height: '6.5%',
           left: 0,
-          top: 120,
+          top: '12%',
           position: 'absolute',
           background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
           border: '1px solid black'
@@ -84,10 +84,10 @@ const Register = () => {
       />
       <div
         style={{
-          width: 1512,
+          width: '100%',
           height: 10,
           left: -1,
-          top: 115,
+          top: '11.5%',
           position: 'absolute',
           background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
           border: '1px solid black'
@@ -96,9 +96,9 @@ const Register = () => {
       <Link to="/" style={{ textDecoration: 'none' }}>
         <div
           style={{
-            width: 300,
-            left: 82,
-            top: 41,
+            width: '20%',
+            left: '5%',
+            top: '4%',
             position: 'absolute',
             color: '#D5D4D4',
             fontSize: 30,
@@ -114,8 +114,8 @@ const Register = () => {
       <Link
         to="/login"
         style={{
-          left: 640,
-          top: 149,
+          left: '42%',
+          top: '15%',
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
@@ -130,16 +130,16 @@ const Register = () => {
         style={{
           width: 111,
           height: 6,
-          left: 760,
-          top: 179,
+          left: '50%',
+          top: '18%',
           position: 'absolute',
           background: '#B81515'
         }}
       />
       <div
         style={{
-          left: 774,
-          top: 149,
+          left: '51%',
+          top: '15%',
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
@@ -154,12 +154,14 @@ const Register = () => {
       {/* Heading */}
       <div
         style={{
-          left: 527,
-          top: 277,
+          left: '50%',
+          top: '28%',
           position: 'absolute',
           textAlign: 'center',
+          transform: 'translateX(-50%)',
+          textAlign: 'center',
           color: '#D5D4D4',
-          fontSize: 55,
+          fontSize: 'clamp(35px, 4vw, 55px)',
           fontFamily: 'Readex Pro',
           fontWeight: '700',
           letterSpacing: 2.75,
@@ -172,8 +174,8 @@ const Register = () => {
       {/* Labels */}
       <div
         style={{
-          left: 400,
-          top: 436,
+          left: '25.5%',
+          top: '44%',
           position: 'absolute',
           color: '#D5D4D4',
           fontSize: 21,
@@ -186,8 +188,8 @@ const Register = () => {
       </div>
       <div
         style={{
-          left: 400,
-          top: 560,
+          left: '25.5%',
+          top: '59%',
           position: 'absolute',
           color: '#D5D4D4',
           fontSize: 21,
@@ -202,8 +204,8 @@ const Register = () => {
         style={{
           width: 106.72,
           height: 23.12,
-          left: 398,
-          top: 683,
+          left: '25.5%',
+          top: '74%',
           position: 'absolute',
           color: '#D5D4D4',
           fontSize: 21,
@@ -218,10 +220,10 @@ const Register = () => {
       {/* Underline Element from Figma */}
       <div
         style={{
-          width: 737,
+          width: '50%',
           height: 0,
-          left: 388,
-          top: 370,
+          left: '25%',
+          top: '38%',
           position: 'absolute',
           outline: '1px #D5D4D4 solid',
           outlineOffset: '-0.50px'
@@ -240,8 +242,8 @@ const Register = () => {
           style={{
             width: 730,
             height: 65,
-            left: 391,
-            top: 473,
+            left: '25%',
+            top: '48%',
             position: 'absolute',
             background: 'rgba(244,248,250,0.8)',
             borderRadius: 15,
@@ -261,8 +263,8 @@ const Register = () => {
           style={{
             width: 730,
             height: 65,
-            left: 391,
-            top: 596,
+            left: '25%',
+            top: '63%',
             position: 'absolute',
             background: 'rgba(244,248,250,0.8)',
             borderRadius: 15,
@@ -282,8 +284,8 @@ const Register = () => {
           style={{
             width: 730,
             height: 65,
-            left: 391,
-            top: 728,
+            left: '25%',
+            top: '78%',
             position: 'absolute',
             background: 'rgba(244,248,250,0.8)',
             borderRadius: 15,
@@ -298,8 +300,8 @@ const Register = () => {
           style={{
             width: 184,
             height: 62,
-            left: 937,
-            top: 851,
+            left: '63%',
+            top: '89%',
             position: 'absolute',
             background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
             overflow: 'hidden',
@@ -325,6 +327,41 @@ const Register = () => {
             Register
           </div>
         </div>
+      {/* Add "Need a business account?" link */}
+      <div
+          style={{
+            left: '43%',
+            top: '97%',
+            position: 'absolute',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            color: '#D5D4D4',
+            fontSize: 'clamp(14px, 1.3vw, 18px)',
+            fontFamily: 'Readex Pro',
+            fontWeight: '400',
+            wordWrap: 'break-word'
+          }}
+        >
+          Need a business account?
+        </div>
+        <Link
+          to="/become-a-partner"
+          style={{
+            left: '57%',
+            top: '97%',
+            position: 'absolute',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            color: '#C8C0C0',
+            fontSize: 'clamp(14px, 1.3vw, 18px)',
+            fontFamily: 'Readex Pro',
+            fontWeight: '600',
+            textDecoration: 'underline',
+            wordWrap: 'break-word'
+          }}
+        >
+          Become a Partner
+        </Link>
       </form>
     </div>
   );

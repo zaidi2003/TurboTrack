@@ -46,8 +46,8 @@ const Login = () => {
   return (
     <div
       style={{
-        width: 1512,
-        height: 982,
+        width: '100%',
+        height: '100vh',
         position: 'relative',
         backgroundImage: 'url("/bg-wp.png")', // Now the file is in public folder
         backgroundSize: 'cover',
@@ -60,8 +60,8 @@ const Login = () => {
       {/* Top Navigation Bar */}
       <div
         style={{
-          width: 1512,
-          height: 120,
+          width: '100%',
+          height: '12%',
           left: 0,
           top: 0,
           position: 'absolute',
@@ -71,10 +71,10 @@ const Login = () => {
       />
       <div
         style={{
-          width: 1512,
-          height: 65,
+          width: '100%',
+          height: '6.5%',
           left: 0,
-          top: 120,
+          top: '12%',
           position: 'absolute',
           background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
           border: '1px solid black'
@@ -82,10 +82,10 @@ const Login = () => {
       />
       <div
         style={{
-          width: 1512,
+          width: "100%",
           height: 10,
           left: -1,
-          top: 115,
+          top: '11.5%',
           position: 'absolute',
           background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
           border: '1px solid black'
@@ -96,9 +96,9 @@ const Login = () => {
       <Link to="/" style={{ textDecoration: 'none' }}>
         <div
           style={{
-            width: 300,
-            left: 82,
-            top: 41,
+            width: '20%',
+            left: '5%',
+            top: '4%',
             position: 'absolute',
             color: '#D5D4D4',
             fontSize: 30,
@@ -114,11 +114,11 @@ const Login = () => {
       </Link>
       <div
         style={{
-          left: 658,
-          top: 149,
+          left: '43%',
+          top: '15%',
           position: 'absolute',
           color: '#C9C0C0',
-          fontSize: 20,
+          fontSize: 'clamp(16px, 1.5vw, 20px)',
           fontFamily: 'Readex Pro',
           fontWeight: '700',
           wordWrap: 'break-word'
@@ -128,10 +128,10 @@ const Login = () => {
       </div>
       <div
         style={{
-          width: 111,
+          width: '7%',
           height: 6,
-          left: 638,
-          top: 179,
+          left: '42%',
+          top: '18%',
           position: 'absolute',
           background: '#B81515'
         }}
@@ -139,8 +139,8 @@ const Login = () => {
       <Link
         to="/register"
         style={{
-          left: 792,
-          top: 149,
+          left: '52%',
+          top: '15%',
           position: 'absolute',
           color: '#D5D4D4',
           fontSize: 20,
@@ -156,12 +156,13 @@ const Login = () => {
       {/* Main Heading */}
       <div
         style={{
-          left: 538,
-          top: 293,
+          left: '50%',
+          top: '30%',
           position: 'absolute',
+          transform: 'translateX(-50%)',
           textAlign: 'center',
           color: '#D5D4D4',
-          fontSize: 55,
+          fontSize: 'clamp(35px, 4vw, 55px)',
           fontFamily: 'Readex Pro',
           fontWeight: '700',
           letterSpacing: 2.75,
@@ -173,10 +174,10 @@ const Login = () => {
       {/* Underline Element */}
       <div
         style={{
-          width: 737,
+          width: '50%',
           height: 0,
-          left: 388,
-          top: 370,
+          left: '25%',
+          top: '41%',
           position: 'absolute',
           outline: '1px var(--cream, #F7F4F1) solid',
           outlineOffset: '-0.50px'
@@ -187,8 +188,8 @@ const Login = () => {
         {/* Email Label */}
         <div
           style={{
-            left: 400,
-            top: 460,
+            left: '25.5%',
+            top: '47%',
             position: 'absolute',
             color: '#D5D4D4',
             fontSize: 23,
@@ -208,8 +209,8 @@ const Login = () => {
           style={{
             width: 730,
             height: 65,
-            left: 391,
-            top: 491,
+            left: '25%',
+            top: '52%',
             position: 'absolute',
             background: 'rgba(244,248,250,0.8)',
             borderRadius: 15,
@@ -222,10 +223,8 @@ const Login = () => {
         {/* Password Label */}
         <div
           style={{
-            width: 106.72,
-            height: 23.12,
-            left: 400,
-            top: 610,
+            left: '25.5%',
+            top: '64%',
             position: 'absolute',
             color: '#D5D4D4',
             fontSize: 23,
@@ -245,8 +244,8 @@ const Login = () => {
           style={{
             width: 730,
             height: 65,
-            left: 391,
-            top: 645,
+            left: '25%',
+            top: '69%',
             position: 'absolute',
             background: 'rgba(244,248,250,0.8)',
             borderRadius: 15,
@@ -263,22 +262,24 @@ const Login = () => {
           style={{
             width: 184,
             height: 62,
-            left: 391,
-            top: 750,
-            position: 'relative',
+            left: '25%',
+            top: '82%',
+            position: 'absolute',
             background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
             overflow: 'hidden',
             borderRadius: 15,
             outline: '1px #120000 solid',
             outlineOffset: '-1px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
           onClick={handleLoginSubmit}
         >
           <div
             style={{
-              left: 57,
-              top: 18,
+              
               position: 'absolute',
               color: '#EAD8D8',
               fontSize: 21,
@@ -294,8 +295,8 @@ const Login = () => {
         {/* Bottom Links */}
         <div
           style={{
-            left: 579,
-            top: 899,
+            left: '38%',
+            top: '93%',
             position: 'absolute',
             color: '#D5D4D4',
             fontSize: 20.06,
@@ -309,8 +310,8 @@ const Login = () => {
         <Link
           to="/register"
           style={{
-            left: 805.78,
-            top: 899.87,
+            left: '54%',
+            top: '93%',
             position: 'absolute',
             color: '#C8C0C0',
             fontSize: 19.63,
@@ -325,8 +326,8 @@ const Login = () => {
         <Link
           to="/forgot-password"
           style={{
-            left: 946,
-            top: 758,
+            left: '62%',
+            top: '84%',
             position: 'absolute',
             color: '#D5D4D4',
             fontSize: 20.05,

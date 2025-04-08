@@ -14,7 +14,6 @@ const Landing = () => {
         width: '100%',
         minHeight: '100vh',
         position: 'relative',
-        // backgroundImage: 'url("/flag.png")',
         background: 'linear-gradient(99deg, #1A1919 16%, #0D0D0D 100%)', overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
