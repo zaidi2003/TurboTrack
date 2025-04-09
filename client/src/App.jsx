@@ -1,7 +1,7 @@
-
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner } from "./pages";
 import { ToastContainer, toast } from 'react-toastify';
+import DashboardRoutes from "./routes/dashboardRoutes";
 
 const router = createBrowserRouter([
   {
@@ -21,31 +21,28 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
         path: "logout",
         element: <Logout />,
       },
-
-      { 
-        path: "become-a-partner", 
-        element: <BecomeAPartner /> 
-      }
+      {
+        path: "become-a-partner",
+        element: <BecomeAPartner />,
+      },
+      {
+        path: "dashboard/*", 
+        element: <DashboardRoutes />, 
+      },
     ],
   },
 ]);
 
 function App() {
-
-
   return (
     <>
-        <RouterProvider router={router} />
-        <ToastContainer position='top-center' />
+      <RouterProvider router={router} />
+      <ToastContainer position='top-center' />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

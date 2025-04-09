@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "../styles/Dashboard.css";
+
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -40,6 +41,7 @@ const Dashboard = () => {
       <h1>TurboTrack Dashboard</h1>
       <p>Hi { data.msg }! { data.luckyNumber }</p>
       <Link to="/logout" className="logout-button">Logout</Link>
+      <Link to="/dashboard/locked" className="logout-button">Locked</Link>
     </div>
   )
 }

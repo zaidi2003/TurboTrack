@@ -1,60 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
-  // State to store the auth token, form data, etc.
-  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const navigate = useNavigate();
-
-  // Update formData when input changes
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Handle form submission
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    const { email, password } = formData;
-    if (email && password) {
-      try {
-        const response = await axios.post("http://localhost:3000/api/v1/login", { email, password });
-        localStorage.setItem("auth", JSON.stringify(response.data.token));
-        toast.success("Login successful");
-        navigate("/dashboard");
-      } catch (err) {
-        toast.error(err.message);
-      }
-    } else {
-      toast.error("Please fill all inputs");
-    }
-  };
-
-  // Redirect if already logged in
-  useEffect(() => {
-    if (token !== "") {
-      toast.success("You already logged in");
-      navigate("/dashboard");
-    }
-  }, [token, navigate]);
-
+const Locked = () => {
   return (
     <div
       style={{
         width: 1512,
         height: 982,
         position: 'relative',
-        backgroundImage: 'url("/bg-wp.png")', // Now the file is in public folder
+        backgroundImage: 'url("/bg-wp.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundColor: '#F7F4F1',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
       {/* Top Navigation Bar */}
@@ -65,8 +24,9 @@ const Login = () => {
           left: 0,
           top: 0,
           position: 'absolute',
-          background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
-          border: '1px solid black'
+          background:
+            'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+          border: '1px solid black',
         }}
       />
       <div
@@ -76,8 +36,9 @@ const Login = () => {
           left: 0,
           top: 120,
           position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
+          background:
+            'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+          border: '1px solid black',
         }}
       />
       <div
@@ -87,11 +48,12 @@ const Login = () => {
           left: -1,
           top: 115,
           position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
+          background:
+            'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+          border: '1px solid black',
         }}
       />
-      
+
       {/* Added Link to the main landing page */}
       <Link to="/" style={{ textDecoration: 'none' }}>
         <div
@@ -106,7 +68,7 @@ const Login = () => {
             fontWeight: '400',
             letterSpacing: 3,
             wordWrap: 'break-word',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           turbotrack
@@ -121,7 +83,7 @@ const Login = () => {
           fontSize: 20,
           fontFamily: 'Readex Pro',
           fontWeight: '700',
-          wordWrap: 'break-word'
+          wordWrap: 'break-word',
         }}
       >
         Sign in
@@ -133,7 +95,7 @@ const Login = () => {
           left: 638,
           top: 179,
           position: 'absolute',
-          background: '#B81515'
+          background: '#B81515',
         }}
       />
       <Link
@@ -147,7 +109,7 @@ const Login = () => {
           fontFamily: 'Readex Pro',
           fontWeight: '400',
           wordWrap: 'break-word',
-          textDecoration: 'none'
+          textDecoration: 'none',
         }}
       >
         Register
@@ -161,11 +123,11 @@ const Login = () => {
           position: 'absolute',
           textAlign: 'center',
           color: '#D5D4D4',
-          fontSize: 55,
+          fontSize: 35,
           fontFamily: 'Readex Pro',
           fontWeight: '700',
           letterSpacing: 2.75,
-          wordWrap: 'break-word'
+          wordWrap: 'break-word',
         }}
       >
         Welcome Back
@@ -179,11 +141,12 @@ const Login = () => {
           top: 370,
           position: 'absolute',
           outline: '1px var(--cream, #F7F4F1) solid',
-          outlineOffset: '-0.50px'
+          outlineOffset: '-0.50px',
         }}
       ></div>
+
       {/* Form and Labels */}
-      <form onSubmit={handleLoginSubmit}>
+      <form>
         {/* Email Label */}
         <div
           style={{
@@ -191,10 +154,10 @@ const Login = () => {
             top: 460,
             position: 'absolute',
             color: '#D5D4D4',
-            fontSize: 23,
+            fontSize: 18,
             fontFamily: 'Readex Pro',
             fontWeight: '300',
-            wordWrap: 'break-word'
+            wordWrap: 'break-word',
           }}
         >
           Email address
@@ -203,8 +166,6 @@ const Login = () => {
         <input
           type="email"
           name="email"
-          value={formData.email}
-          onChange={handleChange}
           style={{
             width: 730,
             height: 65,
@@ -216,7 +177,7 @@ const Login = () => {
             border: '1px solid black',
             paddingLeft: 10,
             fontSize: 20,
-            fontFamily: 'Readex Pro'
+            fontFamily: 'Readex Pro',
           }}
         />
         {/* Password Label */}
@@ -228,10 +189,10 @@ const Login = () => {
             top: 610,
             position: 'absolute',
             color: '#D5D4D4',
-            fontSize: 23,
+            fontSize: 18,
             fontFamily: 'Readex Pro',
             fontWeight: '300',
-            wordWrap: 'break-word'
+            wordWrap: 'break-word',
           }}
         >
           Password
@@ -240,8 +201,6 @@ const Login = () => {
         <input
           type="password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
           style={{
             width: 730,
             height: 65,
@@ -253,27 +212,26 @@ const Login = () => {
             border: '1px solid black',
             paddingLeft: 10,
             fontSize: 20,
-            fontFamily: 'Readex Pro'
+            fontFamily: 'Readex Pro',
           }}
         />
 
         {/* Sign In Button */}
         <div
-          data-property-1="Default"
           style={{
             width: 184,
             height: 62,
             left: 391,
             top: 750,
             position: 'relative',
-            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            background:
+              'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
             overflow: 'hidden',
             borderRadius: 15,
             outline: '1px #120000 solid',
             outlineOffset: '-1px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
-          onClick={handleLoginSubmit}
         >
           <div
             style={{
@@ -284,7 +242,7 @@ const Login = () => {
               fontSize: 21,
               fontFamily: 'Inter',
               fontWeight: '700',
-              wordWrap: 'break-word'
+              wordWrap: 'break-word',
             }}
           >
             Sign in
@@ -301,7 +259,7 @@ const Login = () => {
             fontSize: 20.06,
             fontFamily: 'Readex Pro',
             fontWeight: '400',
-            wordWrap: 'break-word'
+            wordWrap: 'break-word',
           }}
         >
           Don’t have an account?
@@ -317,7 +275,7 @@ const Login = () => {
             fontFamily: 'Readex Pro',
             fontWeight: '600',
             textDecoration: 'underline',
-            wordWrap: 'break-word'
+            wordWrap: 'break-word',
           }}
         >
           Register now
@@ -333,7 +291,7 @@ const Login = () => {
             fontFamily: 'Readex Pro',
             fontWeight: '500',
             textDecoration: 'underline',
-            wordWrap: 'break-word'
+            wordWrap: 'break-word',
           }}
         >
           Forgot Password?
@@ -343,4 +301,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Locked;
