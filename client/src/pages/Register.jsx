@@ -121,7 +121,6 @@ const Register = () => {
           fontSize: 20,
           fontFamily: 'Readex Pro',
           fontWeight: '400',
-          textDecoration: 'none',
           wordWrap: 'break-word'
         }}
       >
@@ -287,26 +286,6 @@ const Register = () => {
             height: 65,
             left: '25%',
             top: '78%',
-            position: 'absolute',
-            background: 'rgba(244,248,250,0.8)',
-            borderRadius: 15,
-            border: '1px solid black',
-            paddingLeft: 10,
-            fontSize: 20,
-            fontFamily: 'Readex Pro'
-          }}
-        />
-         <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder=""
-          style={{
-            width: 730,
-            height: 65,
-            left: '25%',
-            top: '88%',
             position: 'absolute',
             background: 'rgba(244,248,250,0.8)',
             borderRadius: 15,
