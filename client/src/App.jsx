@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner } from "./pages";
+import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, CustDash } from "./pages";
 import { ToastContainer, toast } from 'react-toastify';
 import DashboardRoutes from "./routes/dashboardRoutes";
 
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "dashboard/*", 
         element: <DashboardRoutes />, 
+      },
+      {
+        path: "cust-dash/*", 
+        element: <CustDash />, 
       },
     ],
   },

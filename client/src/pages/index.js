@@ -7,4 +7,4 @@ export { default as Logout } from "./Logout";
 export { default as BecomeAPartner } from "./BecomeAPartner";
 export { default as LockedPage } from "./LockedPage";
 export { default as Dashboard } from "./Dashboard";
-
+export { default as CustDash } from "./CustDash";

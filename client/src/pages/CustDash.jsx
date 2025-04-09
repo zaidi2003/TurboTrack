@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 
-const LockedPage = () => {
+const CustDash = () => {
   // Local state for time filter
   const [timeFilter, setTimeFilter] = useState("month")
 
@@ -849,4 +849,4 @@ const LockedPage = () => {
   )
 }
 
-export default LockedPage
+export default CustDash
