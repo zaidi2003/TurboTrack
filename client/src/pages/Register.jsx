@@ -65,7 +65,7 @@ const Register = () => {
         <div
           style={{
             width: '100%',
-            height: 120,
+            height: 90,
             left: 0,
             top: 0,
             position: 'absolute',
@@ -79,30 +79,19 @@ const Register = () => {
             width: '100%',
             height: 65,
             left: 0,
-            top: 120,
+            top: 90,
             position: 'absolute',
             background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
             border: '1px black solid'
           }}
         />
-        {/* Small Red Gradient Line */}
-        <div
-          style={{
-            width: '100%',
-            height: 10,
-            left: 0,
-            top: 115,
-            position: 'absolute',
-            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-            border: '1px black solid'
-          }}
-        />
+        
         {/* Logo */}
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div
             style={{
               left: 88,
-              top: 42,
+              top: 30,
               position: 'absolute',
               opacity: 0.80,
               color: '#D5D4D4',
@@ -124,7 +113,7 @@ const Register = () => {
         to="/login"
         style={{
           left: '42%',
-          top: 149,
+          top: 120,
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
@@ -141,7 +130,7 @@ const Register = () => {
           width: 111,
           height: 6,
           left: '50%',
-          top: 179,
+          top: 145,
           position: 'absolute',
           background: '#B81515'
         }}
@@ -149,7 +138,7 @@ const Register = () => {
       <div
         style={{
           left: '51%',
-          top: 149,
+          top: 120,
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
@@ -167,7 +156,7 @@ const Register = () => {
           width: 488,
           height: 466,
           left: '50%',
-          top: 285,
+          top: 235,
           position: 'absolute',
           transform: 'translateX(-50%)',
           overflow: 'hidden'
@@ -360,7 +349,7 @@ const Register = () => {
                 fontWeight: '700'
               }}
             >
-              register
+              Register
             </div>
           </button>
 

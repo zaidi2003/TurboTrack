@@ -63,7 +63,7 @@ const Login = () => {
         <div
           style={{
             width: '100%',
-            height: 120,
+            height: 90,
             left: 0,
             top: 0,
             position: 'absolute',
@@ -77,30 +77,19 @@ const Login = () => {
             width: '100%',
             height: 65,
             left: 0,
-            top: 120,
+            top: 90,
             position: 'absolute',
             background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
             border: '1px black solid'
           }}
         />
-        {/* Small Red Gradient Line */}
-        <div
-          style={{
-            width: '100%',
-            height: 10,
-            left: 0,
-            top: 115,
-            position: 'absolute',
-            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-            border: '1px black solid'
-          }}
-        />
+        
         {/* Logo */}
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div
             style={{
               left: 88,
-              top: 42,
+              top: 30,
               position: 'absolute',
               opacity: 0.80,
               color: '#D5D4D4',
@@ -121,7 +110,7 @@ const Login = () => {
       <div
         style={{
           left: 658,
-          top: 149,
+          top: 120,
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
@@ -137,7 +126,7 @@ const Login = () => {
           width: 111,
           height: 6,
           left: 638,
-          top: 179,
+          top: 145,
           position: 'absolute',
           background: '#B81515'
         }}
@@ -146,7 +135,7 @@ const Login = () => {
         to="/register"
         style={{
           left: 792,
-          top: 149,
+          top: 120,
           position: 'absolute',
           opacity: 0.80,
           color: '#C9C0C0',
@@ -166,7 +155,7 @@ const Login = () => {
           width: 488,
           height: 466,
           left: 512,
-          top: 285,
+          top: 235,
           position: 'absolute',
           overflow: 'hidden'
         }}
