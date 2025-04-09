@@ -49,76 +49,82 @@ const Login = () => {
         width: '100%',
         height: '100vh',
         position: 'relative',
-        backgroundImage: 'url("/bg-wp.png")', // Now the file is in public folder
+        backgroundImage: 'url("/bg-wp.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: '#F7F4F1',
+        backgroundColor: '#C4C4C4',
         overflow: 'hidden'
       }}
     >
-      {/* Top Navigation Bar */}
-      <div
-        style={{
-          width: '100%',
-          height: '12%',
-          left: 0,
-          top: 0,
-          position: 'absolute',
-          background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
-          border: '1px solid black'
-        }}
-      />
-      <div
-        style={{
-          width: '100%',
-          height: '6.5%',
-          left: 0,
-          top: '12%',
-          position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
-        }}
-      />
-      <div
-        style={{
-          width: "100%",
-          height: 10,
-          left: -1,
-          top: '11.5%',
-          position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
-        }}
-      />
-      
-      {/* Added Link to the main landing page */}
-      <Link to="/" style={{ textDecoration: 'none' }}>
+      {/* Header Structure */}
+      <div style={{ width: '100%', height: 185, left: 0, top: 0, position: 'absolute' }}>
+        {/* Top Black Gradient Bar */}
         <div
           style={{
-            width: '20%',
-            left: '5%',
-            top: '4%',
+            width: '100%',
+            height: 120,
+            left: 0,
+            top: 0,
             position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 30,
-            fontFamily: 'Zen Dots',
-            fontWeight: '400',
-            letterSpacing: 3,
-            wordWrap: 'break-word',
-            cursor: 'pointer'
+            background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+            border: '1px black solid'
           }}
-        >
-          turbotrack
-        </div>
-      </Link>
+        />
+        {/* Red Gradient Bar */}
+        <div
+          style={{
+            width: '100%',
+            height: 65,
+            left: 0,
+            top: 120,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Small Red Gradient Line */}
+        <div
+          style={{
+            width: '100%',
+            height: 10,
+            left: 0,
+            top: 115,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Logo */}
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <div
+            style={{
+              left: 88,
+              top: 42,
+              position: 'absolute',
+              opacity: 0.80,
+              color: '#D5D4D4',
+              fontSize: 30,
+              fontFamily: 'Zen Dots',
+              fontWeight: '400',
+              letterSpacing: 3,
+              wordWrap: 'break-word',
+              cursor: 'pointer'
+            }}
+          >
+            turbotrack
+          </div>
+        </Link>
+      </div>
+
+      {/* Navigation Tabs */}
       <div
         style={{
-          left: '43%',
-          top: '15%',
+          left: 658,
+          top: 149,
           position: 'absolute',
           color: '#C9C0C0',
-          fontSize: 'clamp(16px, 1.5vw, 20px)',
+          fontSize: 20,
           fontFamily: 'Readex Pro',
           fontWeight: '700',
           wordWrap: 'break-word'
@@ -128,10 +134,10 @@ const Login = () => {
       </div>
       <div
         style={{
-          width: '7%',
+          width: 111,
           height: 6,
-          left: '42%',
-          top: '18%',
+          left: 638,
+          top: 179,
           position: 'absolute',
           background: '#B81515'
         }}
@@ -139,10 +145,11 @@ const Login = () => {
       <Link
         to="/register"
         style={{
-          left: '52%',
-          top: '15%',
+          left: 792,
+          top: 149,
           position: 'absolute',
-          color: '#D5D4D4',
+          opacity: 0.80,
+          color: '#C9C0C0',
           fontSize: 20,
           fontFamily: 'Readex Pro',
           fontWeight: '400',
@@ -153,193 +160,222 @@ const Login = () => {
         Register
       </Link>
 
-      {/* Main Heading */}
+      {/* Form Container */}
       <div
         style={{
-          left: '50%',
-          top: '30%',
+          width: 488,
+          height: 466,
+          left: 512,
+          top: 285,
           position: 'absolute',
-          transform: 'translateX(-50%)',
-          textAlign: 'center',
-          color: '#D5D4D4',
-          fontSize: 'clamp(35px, 4vw, 55px)',
-          fontFamily: 'Readex Pro',
-          fontWeight: '700',
-          letterSpacing: 2.75,
-          wordWrap: 'break-word'
+          overflow: 'hidden'
         }}
       >
-        Welcome Back
-      </div>
-      {/* Underline Element */}
-      <div
-        style={{
-          width: '50%',
-          height: 0,
-          left: '25%',
-          top: '41%',
-          position: 'absolute',
-          outline: '1px var(--cream, #F7F4F1) solid',
-          outlineOffset: '-0.50px'
-        }}
-      ></div>
-      {/* Form and Labels */}
-      <form onSubmit={handleLoginSubmit}>
-        {/* Email Label */}
+        {/* Form Background */}
         <div
           style={{
-            left: '25.5%',
-            top: '47%',
+            width: 488,
+            height: 466,
+            left: 0,
+            top: 0,
             position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 23,
-            fontFamily: 'Readex Pro',
-            fontWeight: '300',
-            wordWrap: 'break-word'
-          }}
-        >
-          Email address
-        </div>
-        {/* Email Input Box */}
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          style={{
-            width: 730,
-            height: 65,
-            left: '25%',
-            top: '52%',
-            position: 'absolute',
-            background: 'rgba(244,248,250,0.8)',
-            borderRadius: 15,
-            border: '1px solid black',
-            paddingLeft: 10,
-            fontSize: 20,
-            fontFamily: 'Readex Pro'
-          }}
-        />
-        {/* Password Label */}
-        <div
-          style={{
-            left: '25.5%',
-            top: '64%',
-            position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 23,
-            fontFamily: 'Readex Pro',
-            fontWeight: '300',
-            wordWrap: 'break-word'
-          }}
-        >
-          Password
-        </div>
-        {/* Password Input Box */}
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          style={{
-            width: 730,
-            height: 65,
-            left: '25%',
-            top: '69%',
-            position: 'absolute',
-            background: 'rgba(244,248,250,0.8)',
-            borderRadius: 15,
-            border: '1px solid black',
-            paddingLeft: 10,
-            fontSize: 20,
-            fontFamily: 'Readex Pro'
+            opacity: 0.20,
+            background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+            borderRadius: 24.36
           }}
         />
 
-        {/* Sign In Button */}
+        {/* Welcome Back Heading */}
         <div
-          data-property-1="Default"
           style={{
-            width: 184,
-            height: 62,
-            left: '25%',
-            top: '82%',
+            left: 97.22,
+            top: 39.46,
             position: 'absolute',
-            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-            overflow: 'hidden',
-            borderRadius: 15,
-            outline: '1px #120000 solid',
-            outlineOffset: '-1px',
-            cursor: 'pointer',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
+            textAlign: 'center',
+            color: '#C9C0C0',
+            fontSize: 36.53,
+            fontFamily: 'Readex Pro',
+            fontWeight: '700',
+            letterSpacing: 1.83,
+            wordWrap: 'break-word'
           }}
-          onClick={handleLoginSubmit}
         >
+          Welcome Back
+        </div>
+
+        {/* Underline */}
+        <div
+          style={{
+            width: 381.57,
+            height: 0,
+            left: 50.95,
+            top: 99.54,
+            position: 'absolute',
+            opacity: 0.50,
+            outline: '0.81px #F7F4F1 solid',
+            outlineOffset: '-0.41px'
+          }}
+        ></div>
+
+        {/* Form */}
+        <form onSubmit={handleLoginSubmit}>
+          {/* Email Field */}
           <div
             style={{
-              
+              width: 373.45,
+              height: 52.77,
+              left: 55.82,
+              top: 122.14,
               position: 'absolute',
-              color: '#EAD8D8',
-              fontSize: 21,
-              fontFamily: 'Inter',
-              fontWeight: '700',
+              background: '#C8DCE4',
+              borderRadius: 12.18,
+              border: '0.81px black solid'
+            }}
+          >
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email address"
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                paddingLeft: 16,
+                color: '#737373',
+                fontSize: 18,
+                fontFamily: 'Readex Pro',
+                fontWeight: '200',
+                letterSpacing: 0.90
+              }}
+            />
+          </div>
+
+          {/* Password Field */}
+          <div
+            style={{
+              width: 373.45,
+              height: 52.77,
+              left: 55.82,
+              top: 205.76,
+              position: 'absolute',
+              background: '#C8DCE4',
+              borderRadius: 12.18,
+              border: '0.81px black solid'
+            }}
+          >
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                paddingLeft: 16,
+                color: '#737373',
+                fontSize: 18,
+                fontFamily: 'Readex Pro',
+                fontWeight: '200',
+                letterSpacing: 0.90
+              }}
+            />
+          </div>
+
+          {/* Forgot Password Link */}
+          <Link
+            to="/forgot-password"
+            style={{
+              left: 280.70,
+              top: 277.21,
+              position: 'absolute',
+              opacity: 0.80,
+              color: '#C9C0C0',
+              fontSize: 16.28,
+              fontFamily: 'Readex Pro',
+              fontWeight: '500',
+              textDecoration: 'underline',
               wordWrap: 'break-word'
             }}
           >
-            Sign in
-          </div>
-        </div>
+            Forgot Password?
+          </Link>
 
-        {/* Bottom Links */}
-        <div
-          style={{
-            left: '38%',
-            top: '93%',
-            position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 20.06,
-            fontFamily: 'Readex Pro',
-            fontWeight: '400',
-            wordWrap: 'break-word'
-          }}
-        >
-          Don’t have an account?
-        </div>
-        <Link
-          to="/register"
-          style={{
-            left: '54%',
-            top: '93%',
-            position: 'absolute',
-            color: '#C8C0C0',
-            fontSize: 19.63,
-            fontFamily: 'Readex Pro',
-            fontWeight: '600',
-            textDecoration: 'underline',
-            wordWrap: 'break-word'
-          }}
-        >
-          Register now
-        </Link>
-        <Link
-          to="/forgot-password"
-          style={{
-            left: '62%',
-            top: '84%',
-            position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 20.05,
-            fontFamily: 'Readex Pro',
-            fontWeight: '500',
-            textDecoration: 'underline',
-            wordWrap: 'break-word'
-          }}
-        >
-          Forgot Password?
-        </Link>
-      </form>
+          {/* Sign In Button */}
+          <button
+            type="submit"
+            style={{
+              width: 373,
+              height: 51,
+              left: 56,
+              top: 328,
+              position: 'absolute',
+              background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+              overflow: 'hidden',
+              borderRadius: 12.18,
+              outline: '0.81px #120000 solid',
+              outlineOffset: '-0.81px',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#EAD8D8',
+                fontSize: 17.05,
+                fontFamily: 'Inter',
+                fontWeight: '700'
+              }}
+            >
+              sign in
+            </div>
+          </button>
+
+          {/* Register Link */}
+          <div
+            style={{
+              left: 115,
+              top: 414,
+              position: 'absolute',
+              color: '#C9C0C0',
+              fontSize: 16.54,
+              fontFamily: 'Readex Pro',
+              fontWeight: '400',
+              wordWrap: 'break-word'
+            }}
+          >
+            Don't have an account?
+          </div>
+          <Link
+            to="/register"
+            style={{
+              left: 305.46,
+              top: 414,
+              position: 'absolute',
+              color: '#C9C0C0',
+              fontSize: 16.18,
+              fontFamily: 'Readex Pro',
+              fontWeight: '600',
+              textDecoration: 'underline',
+              wordWrap: 'break-word'
+            }}
+          >
+            Register now
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };

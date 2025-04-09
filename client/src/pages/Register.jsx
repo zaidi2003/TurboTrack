@@ -51,87 +51,97 @@ const Register = () => {
         width: '100%',
         height: '100vh',
         position: 'relative',
-        backgroundImage: 'url("/bg-wp.png")', // Now the file is in public folder
+        backgroundImage: 'url("/bg-wp.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundColor: '#F7F4F1',
+        backgroundColor: '#C4C4C4',
         overflow: 'hidden'
       }}
     >
-      {/* Top Navigation Bar */}
-      <div
-        style={{
-          width: '100%',
-          height: '12%',
-          left: 0,
-          top: 0,
-          position: 'absolute',
-          background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
-          border: '1px solid black'
-        }}
-      />
-      <div
-        style={{
-          width: '100%',
-          height: '6.5%',
-          left: 0,
-          top: '12%',
-          position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
-        }}
-      />
-      <div
-        style={{
-          width: '100%',
-          height: 10,
-          left: -1,
-          top: '11.5%',
-          position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
-        }}
-      />
-      <Link to="/" style={{ textDecoration: 'none' }}>
+      {/* Header Structure */}
+      <div style={{ width: '100%', height: 185, position: 'relative', borderRadius: 15 }}>
+        {/* Top Black Gradient Bar */}
         <div
           style={{
-            width: '20%',
-            left: '5%',
-            top: '4%',
+            width: '100%',
+            height: 120,
+            left: 0,
+            top: 0,
             position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 30,
-            fontFamily: 'Zen Dots',
-            fontWeight: '400',
-            letterSpacing: 3,
-            wordWrap: 'break-word'
+            background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+            border: '1px black solid'
           }}
-        >
-          turbotrack
-        </div>
-      </Link>
+        />
+        {/* Red Gradient Bar */}
+        <div
+          style={{
+            width: '100%',
+            height: 65,
+            left: 0,
+            top: 120,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Small Red Gradient Line */}
+        <div
+          style={{
+            width: '100%',
+            height: 10,
+            left: 0,
+            top: 115,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Logo */}
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <div
+            style={{
+              left: 88,
+              top: 42,
+              position: 'absolute',
+              opacity: 0.80,
+              color: '#D5D4D4',
+              fontSize: 30,
+              fontFamily: 'Zen Dots',
+              fontWeight: '400',
+              letterSpacing: 3,
+              wordWrap: 'break-word',
+              cursor: 'pointer'
+            }}
+          >
+            turbotrack
+          </div>
+        </Link>
+      </div>
+
+      {/* Navigation Tabs */}
       <Link
         to="/login"
         style={{
           left: '42%',
-          top: '15%',
+          top: 149,
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
           fontFamily: 'Readex Pro',
           fontWeight: '400',
-          wordWrap: 'break-word'
+          wordWrap: 'break-word',
+          textDecoration: 'none'
         }}
       >
         Sign in
-        </Link>
+      </Link>
       <div
         style={{
           width: 111,
           height: 6,
           left: '50%',
-          top: '18%',
+          top: 179,
           position: 'absolute',
           background: '#B81515'
         }}
@@ -139,7 +149,7 @@ const Register = () => {
       <div
         style={{
           left: '51%',
-          top: '15%',
+          top: 149,
           position: 'absolute',
           color: '#C9C0C0',
           fontSize: 20,
@@ -151,218 +161,242 @@ const Register = () => {
         Register
       </div>
 
-      {/* Heading */}
+      {/* Form Container */}
       <div
         style={{
+          width: 488,
+          height: 466,
           left: '50%',
-          top: '28%',
+          top: 285,
           position: 'absolute',
-          textAlign: 'center',
           transform: 'translateX(-50%)',
-          textAlign: 'center',
-          color: '#D5D4D4',
-          fontSize: 'clamp(35px, 4vw, 55px)',
-          fontFamily: 'Readex Pro',
-          fontWeight: '700',
-          letterSpacing: 2.75,
-          wordWrap: 'break-word'
+          overflow: 'hidden'
         }}
       >
-        Create Account
-      </div>
-
-      {/* Labels */}
-      <div
-        style={{
-          left: '25.5%',
-          top: '44%',
-          position: 'absolute',
-          color: '#D5D4D4',
-          fontSize: 21,
-          fontFamily: 'Readex Pro',
-          fontWeight: '300',
-          wordWrap: 'break-word'
-        }}
-      >
-        Email address
-      </div>
-      <div
-        style={{
-          left: '25.5%',
-          top: '59%',
-          position: 'absolute',
-          color: '#D5D4D4',
-          fontSize: 21,
-          fontFamily: 'Readex Pro',
-          fontWeight: '300',
-          wordWrap: 'break-word'
-        }}
-      >
-        Username
-      </div>
-      <div
-        style={{
-          width: 106.72,
-          height: 23.12,
-          left: '25.5%',
-          top: '74%',
-          position: 'absolute',
-          color: '#D5D4D4',
-          fontSize: 21,
-          fontFamily: 'Readex Pro',
-          fontWeight: '300',
-          wordWrap: 'break-word'
-        }}
-      >
-        Password
-      </div>
-
-      {/* Underline Element from Figma */}
-      <div
-        style={{
-          width: '50%',
-          height: 0,
-          left: '25%',
-          top: '38%',
-          position: 'absolute',
-          outline: '1px #D5D4D4 solid',
-          outlineOffset: '-0.50px'
-        }}
-      ></div>
-
-      {/* Form with Input Boxes */}
-      <form onSubmit={handleRegisterSubmit}>
-        {/* Email Input Box */}
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder=""
-          style={{
-            width: 730,
-            height: 65,
-            left: '25%',
-            top: '48%',
-            position: 'absolute',
-            background: 'rgba(244,248,250,0.8)',
-            borderRadius: 15,
-            border: '1px solid black',
-            paddingLeft: 10,
-            fontSize: 20,
-            fontFamily: 'Readex Pro'
-          }}
-        />
-        {/* Username Input Box */}
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          placeholder=""
-          style={{
-            width: 730,
-            height: 65,
-            left: '25%',
-            top: '63%',
-            position: 'absolute',
-            background: 'rgba(244,248,250,0.8)',
-            borderRadius: 15,
-            border: '1px solid black',
-            paddingLeft: 10,
-            fontSize: 20,
-            fontFamily: 'Readex Pro'
-          }}
-        />
-        {/* Password Input Box */}
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder=""
-          style={{
-            width: 730,
-            height: 65,
-            left: '25%',
-            top: '78%',
-            position: 'absolute',
-            background: 'rgba(244,248,250,0.8)',
-            borderRadius: 15,
-            border: '1px solid black',
-            paddingLeft: 10,
-            fontSize: 20,
-            fontFamily: 'Readex Pro'
-          }}
-        />
-        {/* Register Button */}
+        {/* Form Background */}
         <div
           style={{
-            width: 184,
-            height: 62,
-            left: '63%',
-            top: '89%',
+            width: 488,
+            height: 466,
+            left: 0,
+            top: 0,
             position: 'absolute',
-            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-            overflow: 'hidden',
-            borderRadius: 15,
-            outline: '1px #120000 solid',
-            outlineOffset: '-1px',
-            cursor: 'pointer'
+            opacity: 0.20,
+            background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+            borderRadius: 24.36
           }}
-          onClick={handleRegisterSubmit}
+        />
+
+        {/* Create Account Heading */}
+        <div
+          style={{
+            left: 92.05,
+            top: 15,
+            position: 'absolute',
+            textAlign: 'center',
+            color: '#C9C0C0',
+            fontSize: 36.53,
+            fontFamily: 'Readex Pro',
+            fontWeight: '700',
+            letterSpacing: 1.83,
+            wordWrap: 'break-word'
+          }}
         >
+          Create Account
+        </div>
+
+        {/* Underline */}
+        <div
+          style={{
+            width: 381.57,
+            height: 0,
+            left: 53,
+            top: 75.08,
+            position: 'absolute',
+            opacity: 0.50,
+            outline: '0.81px #F7F4F1 solid',
+            outlineOffset: '-0.41px'
+          }}
+        ></div>
+
+        {/* Form */}
+        <form onSubmit={handleRegisterSubmit}>
+          {/* Email Field */}
           <div
             style={{
-              left: 50,
-              top: 18,
+              width: 373.45,
+              height: 52.77,
+              left: 57.82,
+              top: 100,
               position: 'absolute',
-              color: '#EAD8D8',
-              fontSize: 21,
-              fontFamily: 'Inter',
-              fontWeight: '800',
+              background: '#C8DCE4',
+              borderRadius: 12.18,
+              border: '0.81px black solid'
+            }}
+          >
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email address"
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                paddingLeft: 16,
+                color: '#737373',
+                fontSize: 18,
+                fontFamily: 'Readex Pro',
+                fontWeight: '200',
+                letterSpacing: 0.90,
+                opacity: 0.5
+              }}
+            />
+          </div>
+
+          {/* Username Field */}
+          <div
+            style={{
+              width: 373.45,
+              height: 52.77,
+              left: 57,
+              top: 183.86,
+              position: 'absolute',
+              background: '#C8DCE4',
+              borderRadius: 12.18,
+              border: '0.81px black solid'
+            }}
+          >
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Username"
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                paddingLeft: 16,
+                color: '#737373',
+                fontSize: 18,
+                fontFamily: 'Readex Pro',
+                fontWeight: '200',
+                letterSpacing: 0.90,
+                opacity: 0.6
+              }}
+            />
+          </div>
+
+          {/* Password Field */}
+          <div
+            style={{
+              width: 373.45,
+              height: 52.77,
+              left: 58,
+              top: 263.86,
+              position: 'absolute',
+              background: '#C8DCE4',
+              borderRadius: 12.18,
+              border: '0.81px black solid'
+            }}
+          >
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                paddingLeft: 16,
+                color: '#737373',
+                fontSize: 18,
+                fontFamily: 'Readex Pro',
+                fontWeight: '200',
+                letterSpacing: 0.90,
+                opacity: 0.6
+              }}
+            />
+          </div>
+
+          {/* Register Button */}
+          <button
+            type="submit"
+            style={{
+              width: 373,
+              height: 51,
+              left: 58,
+              top: 349,
+              position: 'absolute',
+              background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+              overflow: 'hidden',
+              borderRadius: 12.18,
+              outline: '0.81px #120000 solid',
+              outlineOffset: '-0.81px',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#EAD8D8',
+                fontSize: 17.05,
+                fontFamily: 'Inter',
+                fontWeight: '700'
+              }}
+            >
+              register
+            </div>
+          </button>
+
+          {/* Business Account Link */}
+          <div
+            style={{
+              left: 67,
+              top: 423,
+              position: 'absolute',
+              color: '#C9C0C0',
+              fontSize: 16.54,
+              fontFamily: 'Readex Pro',
+              fontWeight: '400',
               wordWrap: 'break-word'
             }}
           >
-            Register
+            Need a business account?
           </div>
-        </div>
-      {/* Add "Need a business account?" link */}
-      <div
-          style={{
-            left: '43%',
-            top: '97%',
-            position: 'absolute',
-            transform: 'translateX(-50%)',
-            textAlign: 'center',
-            color: '#D5D4D4',
-            fontSize: 'clamp(14px, 1.3vw, 18px)',
-            fontFamily: 'Readex Pro',
-            fontWeight: '400',
-            wordWrap: 'break-word'
-          }}
-        >
-          Need a business account?
-        </div>
-        <Link
-          to="/become-a-partner"
-          style={{
-            left: '57%',
-            top: '97%',
-            position: 'absolute',
-            transform: 'translateX(-50%)',
-            textAlign: 'center',
-            color: '#C8C0C0',
-            fontSize: 'clamp(14px, 1.3vw, 18px)',
-            fontFamily: 'Readex Pro',
-            fontWeight: '600',
-            textDecoration: 'underline',
-            wordWrap: 'break-word'
-          }}
-        >
-          Become a Partner
-        </Link>
-      </form>
+          <Link
+            to="/become-a-partner"
+            style={{
+              left: 278,
+              top: 424,
+              position: 'absolute',
+              color: '#C9C0C0',
+              fontSize: 16.18,
+              fontFamily: 'Readex Pro',
+              fontWeight: '600',
+              textDecoration: 'underline',
+              wordWrap: 'break-word'
+            }}
+          >
+            Become a Partner
+          </Link>
+        </form>
+      </div>
     </div>
   );
 };
