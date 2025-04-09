@@ -47,8 +47,8 @@ const Landing = () => {
             alignItems: 'center',
           }}
         >
-          <Link to="/about-us" style={{ color: '#ffffff', fontFamily: 'Readex Pro', fontWeight: '200' }}>About Us</Link>
-          <Link to="/services" style={{ color: '#ffffff', fontFamily: 'Readex Pro', fontWeight: '200' }}>Services</Link>
+          <Link to="/about-us" style={{ color: '#ffffff', fontFamily: 'Readex Pro', fontWeight: '200', textDecoration: 'none' }}>About Us</Link>
+          <Link to="/services" style={{ color: '#ffffff', fontFamily: 'Readex Pro', fontWeight: '200', textDecoration: 'none' }}>Services</Link>
           <Link 
             to="/login" 
             style={{ 
