@@ -168,7 +168,8 @@ const Landing = () => {
               transform: 'rotate(-2deg)', 
               transformOrigin: 'top left', 
             }} 
-            src="/src/assets/flag.png" 
+            src='/flag.png'
+
             alt="Racing flag"
           />
         </div>
