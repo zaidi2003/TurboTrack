@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Partner = require("../models/Partner"); 
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -67,9 +68,66 @@ const register = async (req, res) => {
   }
 };
 
+// backend for becomeAPartner
+const becomeAPartner = async (req, res) => 
+{
+  try 
+  {
+    const {fullName, businessName, email, phone, businessAddress, bankName, accountOwner, iban} = req.body;
+
+    if (!fullName || !businessName || !email || !phone || !businessAddress || !bankName || !accountOwner || !iban)
+    {
+      return res.status(400).json({
+        msg: "Bad request. Please fill in all the fields",
+      });
+    }
+
+    const partner = await Partner.create({
+      fullName, 
+      businessName,
+      email,
+      phone,
+      businessAddress,
+      bankName,
+      accountOwner,
+      iban
+    });
+
+    res.status(200).json({
+      msg: "Partner application submitted successfully"
+    });
+  }
+
+  catch (error) 
+  {
+    console.error(error);
+    
+    // if email already exists...
+    if (error.code === 11000) 
+    {
+      return res.status(400).json({
+        msg: "Email already exists",
+      });
+    }
+
+    // if number entered < minimum length
+    if (error.errors.phone) 
+    {
+      return res.status(400).json({
+        msg: "Phone number must be 11 digits",
+      });
+    }
+    
+    // return res.status(500).json({
+    //   msg: "Internal server error",
+    // });
+  }
+};
+
 module.exports = {
   login,
   register,
   dashboard,
   getAllUsers,
+  becomeAPartner
 };
