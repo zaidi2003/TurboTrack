@@ -7,8 +7,23 @@ const Dashboard = () => {
   // Local state for time filter
   const [timeFilter, setTimeFilter] = useState("month")
 
+  const leaderboardData = [
+    { id: 1, name: "Raahima Usman", points: 36, isYou: false },
+    { id: 2, name: "Ameenah Humayun", points: 36, isYou: false },
+    { id: 3, name: "Pistole Khan", points: 36, isYou: false },
+    { id: 4, name: "Yusuf Khan", points: 36, isYou: false },
+    { id: 5, name: "Mushtaq Ahmed", points: 35, isYou: false },
+    { id: 6, name: "You", points: 34, isYou: true },
+    { id: 7, name: "Musa Shehzad", points: 33, isYou: false },
+    { id: 8, name: "Maira Kamal", points: 32, isYou: false },
+    { id: 9, name: "Muhammad Mustafa", points: 31, isYou: false },
+    { id: 10, name: "Shirin Rehman", points: 30, isYou: false },
+  ];
+  
+
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [data, setData] = useState({});
+  const [LeaderboardData, setLeaderboardData] = useState([]); // Store array of user stats
   const fetchUserInfo = async () => {
     const axiosConfig = {
       headers: {
@@ -18,12 +33,31 @@ const Dashboard = () => {
 
     try {
       const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
-      const { msg, secret, email, username, wins, podiums, sessions } = response.data;
-      setData({ msg, secret, email, username, wins, podiums, sessions });
+      const { msg, secret, email, username, wins, podiums, sessions, role } = response.data;
+      console.log(response)
+      setData({ msg, secret, email, username, wins, podiums, sessions, role });
     } catch (error) {
       toast.error(error.response?.data?.msg || error.message);
     }
   };
+
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/v1/getAllUserStats", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setLeaderboardData(response.data.users || []); // Make sure the backend sends { users: [...] }
+    } catch (error) {
+      toast.error("Failed to fetch leaderboard");
+      console.error(error);
+    }
+  };
+
+  
+
   // Dummy user data
   console.log(typeof data.wins); // Will print the type of 'wins'
   console.log(data)
@@ -34,7 +68,7 @@ const Dashboard = () => {
       wins: data.wins || 0,
       podiums: data.podiums || 0,
 
-      other: data.sessions - data.wins - data.podiums,//parsedSessions - parsedWins - parsedPodiums,
+      other: data.sessions - data.podiums -data.wins || 0,//parsedSessions - parsedWins - parsedPodiums,
     },
   }
 
@@ -43,6 +77,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchUserInfo();
+    //fetchLeaderboard();
   }, []); // run only once
   // Draw the pie chart
   useEffect(() => {
@@ -59,9 +94,9 @@ const Dashboard = () => {
 
       // Data for the pie chart
       const data = [
-        { value: userData.stats.wins, color: "#787878" }, // Dark gray (41%)
-        { value: userData.stats.podiums, color: "#ADADAD" }, // Light gray (31%)
-        { value: userData.stats.other, color: "#7B0303" }, // Red (28%)
+        { value: userData.stats.wins, color: "#7B0303" }, 
+        { value: userData.stats.podiums, color: "#ADADAD" },
+        { value: userData.stats.other, color: "#787878" }, 
       ]
 
       // Calculate total
@@ -504,115 +539,85 @@ const Dashboard = () => {
           />
 
           {/* Stats Boxes */}
-          <div
-            style={{
-              position: "absolute",
-              left: "15%",
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: 80,
-              height: 50,
-              background: "#D9D9D9",
-              opacity: 0.4,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            <div style={{ color: "white", fontSize: 24, fontFamily: "Montserrat", fontWeight: "700" }}>
-              {userData.stats.wins}%
-            </div>
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              right: "15%",
-              top: "30%",
-              width: 80,
-              height: 50,
-              background: "#D9D9D9",
-              opacity: 0.4,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            <div style={{ color: "white", fontSize: 24, fontFamily: "Montserrat", fontWeight: "700" }}>
-              {userData.stats.podiums}%
-            </div>
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              right: "30%",
-              bottom: "10%",
-              width: 80,
-              height: 50,
-              background: "#D9D9D9",
-              opacity: 0.4,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            <div style={{ color: "white", fontSize: 24, fontFamily: "Montserrat", fontWeight: "700" }}>
-              {userData.stats.other}%
-            </div>
-          </div>
+          
         </div>
 
-        {/* Legend */}
+
         <div style={{ display: "flex", marginTop: "20px", marginLeft: "50px" }}>
-          <div style={{ display: "flex", alignItems: "center", marginRight: "30px" }}>
-            <div
-              style={{
-                width: 13,
-                height: 13,
-                background: "#7B0303",
-                marginRight: 10,
-              }}
-            />
-            <div
-              style={{
-                color: "white",
-                fontSize: 14,
-                fontFamily: "Montserrat",
-                fontWeight: "700",
-              }}
-            >
-              Wins
-            </div>
-          </div>
+  {/* Wins Legend */}
+  <div style={{ display: "flex", alignItems: "center", marginRight: "30px" }}>
+    <div
+      style={{
+        width: 13,
+        height: 13,
+        background: "#7B0303",
+        marginRight: 10,
+      }}
+    />
+    <div
+      style={{
+        color: "white",
+        fontSize: 14,
+        fontFamily: "Montserrat",
+        fontWeight: "700",
+      }}
+    >
+      Wins
+    </div>
+  </div>
 
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div
-              style={{
-                width: 13,
-                height: 13,
-                background: "#ADADAD",
-                marginRight: 10,
-              }}
-            />
-            <div
-              style={{
-                color: "white",
-                fontSize: 14,
-                fontFamily: "Montserrat",
-                fontWeight: "700",
-              }}
-            >
-              Podiums
-            </div>
-          </div>
-        </div>
+  {/* Podiums Legend */}
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      marginRight: "30px", // <-- add margin here
+    }}
+  >
+    <div
+      style={{
+        width: 13,
+        height: 13,
+        background: "#ADADAD",
+        marginRight: 10,
+      }}
+    />
+    <div
+      style={{
+        color: "white",
+        fontSize: 14,
+        fontFamily: "Montserrat",
+        fontWeight: "700",
+      }}
+    >
+      Podiums
+    </div>
+  </div>
+  
+  {/* Non-Podiums Legend */}
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <div
+      style={{
+        width: 13,
+        height: 13,
+        background: "#ADADAD",
+        marginRight: 11,
+      }}
+    />
+    <div
+      style={{
+        color: "white",
+        fontSize: 14,
+        fontFamily: "Montserrat",
+        fontWeight: "700",
+      }}
+    >
+      Non-Podiums
+    </div>
+  </div>
+</div>
+
+        
 
         {/* Bottom Stats */}
         <div
@@ -854,22 +859,101 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Graph Placeholder */}
+      
+      
+      {/* Leaderboard */}
       <div
         style={{
           position: "absolute",
-          left: 1106,
-          top: 486,
-          textAlign: "center",
-          color: "white",
-          fontSize: 50,
-          fontFamily: "Lexend",
-          fontWeight: "700",
-          lineHeight: 50,
+          left: 1057,
+          top: 250,
+          width: 343,
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
         }}
       >
-        ADD GRAPH
+        {/* Leaderboard entries */}
+
+        
+        {leaderboardData.map((user) => (
+          <div key={user.id} style={{ display: "flex", alignItems: "center", position: "relative" }}>
+            {/* Rank number */}
+            <div
+              style={{
+                width: 20,
+                textAlign: "center",
+                color: "white",
+                fontSize: 14.4,
+                fontFamily: "Plus Jakarta Sans",
+                fontWeight: "700",
+                marginRight: 12,
+              }}
+            >
+              {user.id}
+            </div>
+
+            {/* User row with background */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                height: 48,
+                background: user.isYou
+                  ? "linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)"
+                  : "#252728",
+                borderRadius: 12,
+                padding: "0 12px",
+              }}
+            >
+              {/* Avatar placeholder */}
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  background: "#C9C0C0",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: 12,
+                }}
+              >
+                <span style={{ color: "#333", fontSize: 14 }}>👤</span>
+              </div>
+
+              {/* User name */}
+              <div
+                style={{
+                  color: "white",
+                  fontSize: 14.4,
+                  fontFamily: "Readex Pro",
+                  fontWeight: "700",
+                  flexGrow: 1,
+                }}
+              >
+                {user.name}
+              </div>
+
+              {/* Points */}
+              <div
+                style={{
+                  color: "white",
+                  fontSize: 14.4,
+                  fontFamily: "Readex Pro",
+                  fontWeight: user.isYou ? "700" : "400",
+                }}
+              >
+                {user.points} pts
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
+
+  
     </div>
   )
 }

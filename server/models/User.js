@@ -37,7 +37,13 @@ const UserSchema = new mongoose.Schema({
     sessions: {
         type: Number,
         default: 0
-    }
+    },
+    role: {
+        type: String,
+        required: [true, "Please provide the track"],
+        enum: ["Employee", "Customer","SuperUser"],
+        default: "Employee"
+    },
 });
 
 UserSchema.pre("save", async function(){

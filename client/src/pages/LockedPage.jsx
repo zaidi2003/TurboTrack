@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import axios from "axios"
-import "../styles/Employee.css";
+// import "../styles/Employee.css";
 
 const Employee = () => {
   // Local state for time filter

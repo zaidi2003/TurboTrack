@@ -37,12 +37,34 @@ const login = async (req, res) => {
 const dashboard = async (req, res) => {
   try {
     const luckyNumber = Math.floor(Math.random() * 100);
-    const user = await User.findById(req.user.id).select("name email wins podiums sessions");
-
+    const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
+    
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
+    if(user.role == "Employee"){
+      const users = await User.find({})
+      .select("name wins podiums sessions")  // Select only the fields you need
+      .sort({ wins: -1 }); 
+
+
+      const bookings = await Booking.find({ email: user.email });
+      const trackCounts = bookings.reduce((trackSum, booking) => {
+        for (const [track, count] of Object.entries(booking.track)) {
+          trackSum[track] = (trackSum[track] || 0) + count;
+        }
+        return trackSum;
+      }, {});
+
+      res.status(200).json({
+        email: user.email,
+        username: user.name,
+        trackCounts,
+        leaderboard: users,
+      });
+    }
+    else{
     res.status(200).json({
       msg: `Hello, ${user.name}`,
       email: user.email,
@@ -52,6 +74,7 @@ const dashboard = async (req, res) => {
       sessions: user.sessions,
       secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
     });
+  }
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }
@@ -143,60 +166,67 @@ const makeBooking = async (req, res) => {
 };
 
 // backend for becomeAPartner
-const becomeAPartner = async (req, res) => 
-{
-  try 
-  {
-    const {fullName, businessName, email, phone, businessAddress, bankName, accountOwner, iban} = req.body;
+const becomeAPartner = async (req, res) => {
+  try {
+    const { fullName, businessName, email, phone, businessAddress, bankName, accountOwner, iban } = req.body;
 
-    if (!fullName || !businessName || !email || !phone || !businessAddress || !bankName || !accountOwner || !iban)
-    {
+    if (!fullName || !businessName || !email || !phone || !businessAddress || !bankName || !accountOwner || !iban) {
       return res.status(400).json({
         msg: "Bad request. Please fill in all the fields",
       });
     }
 
     const partner = await Partner.create({
-      fullName, 
+      fullName,
       businessName,
       email,
       phone,
       businessAddress,
       bankName,
       accountOwner,
-      iban
+      iban,
     });
+
+    // Create a user profile with the same email, full name, and default password
+    const defaultPassword = "admin";
+    const user = new User({
+      name: fullName,
+      email: email,
+      password: defaultPassword,
+      wins: 0,
+      podiums: 0,
+      sessions: 0,
+      role: "Employee", 
+    });
+
+    await user.save();
 
     res.status(200).json({
-      msg: "Partner application submitted successfully"
+      msg: "Partner application submitted successfully and user profile created",
     });
-  }
-
-  catch (error) 
-  {
+  } catch (error) {
     console.error(error);
-    
+
     // if email already exists...
-    if (error.code === 11000) 
-    {
+    if (error.code === 11000) {
       return res.status(400).json({
         msg: "Email already exists",
       });
     }
 
     // if number entered < minimum length
-    if (error.errors.phone) 
-    {
+    if (error.errors && error.errors.phone) {
       return res.status(400).json({
         msg: "Phone number must be 11 digits",
       });
     }
-    
-    // return res.status(500).json({
-    //   msg: "Internal server error",
-    // });
+
+    return res.status(500).json({
+      msg: "Internal server error",
+    });
   }
 };
+
 
 
 
