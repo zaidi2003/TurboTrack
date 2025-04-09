@@ -1,18 +1,37 @@
 import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const CustDash = () => {
   // Local state for time filter
   const [timeFilter, setTimeFilter] = useState("month")
 
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  const [data, setData] = useState({});
+  const fetchUserInfo = async () => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
+      const { msg, secret, email } = response.data;
+      setData({ msg, secret, email });
+    } catch (error) {
+      toast.error(error.response?.data?.msg || error.message);
+    }
+  };
   // Dummy user data
   const userData = {
     username: "username",
     stats: {
-      sessions: 34,
-      wins: 41,
-      podiums: 31,
-      other: 28,
+      sessions: 100,
+      wins: 80,
+      podiums: 19,
+      other: 1,
     },
   }
 
@@ -78,6 +97,8 @@ const CustDash = () => {
       ctx.font = "bold 18px Montserrat"
       ctx.fillText("Sessions", centerX, centerY + 15)
     }
+
+    fetchUserInfo();
   }, [userData.stats])
 
   return (

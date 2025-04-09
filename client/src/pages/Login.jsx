@@ -26,7 +26,7 @@ const Login = () => {
         const response = await axios.post("http://localhost:3000/api/v1/login", { email, password });
         localStorage.setItem("auth", JSON.stringify(response.data.token));
         toast.success("Login successful");
-        navigate("/cust-dash");
+        navigate("/dashboard");
       } catch (err) {
         toast.error(err.message);
       }

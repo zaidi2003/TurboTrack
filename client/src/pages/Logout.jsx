@@ -10,13 +10,12 @@ const Logout = () => {
         localStorage.removeItem("auth");
         setTimeout(() => {
             navigate("/");
-        }, 3000);
+        }, 10);
     }, []);
 
   return (
     <div className='logout-main'>
     <h1>Logout Successful!</h1>
-    <p>You will be redirected to the TurboTrack landing page in 3 seconds...</p>
   </div>
   )
 }

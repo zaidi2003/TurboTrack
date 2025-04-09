@@ -34,12 +34,26 @@ const login = async (req, res) => {
 };
 
 const dashboard = async (req, res) => {
-  const luckyNumber = Math.floor(Math.random() * 100);
+  try {
+    const luckyNumber = Math.floor(Math.random() * 100);
+    const user = await User.findById(req.user.id).select("name email wins podiums sessions");
 
-  res.status(200).json({
-    msg: `Hello, ${req.user.name}`,
-    secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
-  });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.status(200).json({
+      msg: `Hello, ${user.name}`,
+      email: user.email,
+      username : user.name,
+      wins: user.wins,
+      podiums: user.podiums,
+      sessions: user.sessions,
+      secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
+    });
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
 };
 
 const getAllUsers = async (req, res) => {
@@ -57,6 +71,9 @@ const register = async (req, res) => {
         name: username,
         email: email,
         password: password,
+        wins: 0,
+        podiums: 0,
+        sessions: 0,
       });
       await person.save();
       return res.status(201).json({ person });
