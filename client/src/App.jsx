@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, CustDash } from "./pages";
+import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, CustDash, NotFound } from "./pages";
 import { ToastContainer, toast } from 'react-toastify';
 import DashboardRoutes from "./routes/dashboardRoutes";
 import Booking from "./pages/Booking";
@@ -40,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "booking/*", 
         element: <Booking/>, 
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },
