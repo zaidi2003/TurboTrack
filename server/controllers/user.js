@@ -56,6 +56,26 @@ const dashboard = async (req, res) => {
   }
 };
 
+// api function to only get all users stats
+const getAllUsersStats = async (req, res) => {
+  try {
+    const users = await User.find({})
+      .select("name wins podiums sessions")  // Select only the fields you need
+      .sort({ wins: -1 }); 
+
+    if (users.length === 0) {
+      return res.status(404).json({ msg: "No users found" });
+    }
+
+    return res.status(200).json({ users });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+
+
 const getAllUsers = async (req, res) => {
   let users = await User.find({});
 
@@ -145,6 +165,7 @@ module.exports = {
   login,
   register,
   dashboard,
+  getAllUsersStats,
   getAllUsers,
-  becomeAPartner
+  becomeAPartner,
 };
