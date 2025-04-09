@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Partner = require("../models/Partner"); 
+const Booking = require("../models/Booking");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -105,6 +106,42 @@ const register = async (req, res) => {
   }
 };
 
+
+const makeBooking = async (req, res) => {
+  try {
+    const { track, timeSlot, date, email } = req.body;
+
+    // Check if the email exists in the User model
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        message: "User with this email does not exist",
+      });
+    }
+
+    // Create a new booking document
+    const newBooking = new Booking({
+      track,
+      timeSlot,
+      date,
+      email,
+    });
+
+    // Save to DB
+    const savedBooking = await newBooking.save();
+
+    res.status(201).json({
+      message: "Booking created successfully!",
+      booking: savedBooking,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Error creating booking",
+      error: error.message,
+    });
+  }
+};
+
 // backend for becomeAPartner
 const becomeAPartner = async (req, res) => 
 {
@@ -161,6 +198,8 @@ const becomeAPartner = async (req, res) =>
   }
 };
 
+
+
 module.exports = {
   login,
   register,
@@ -168,4 +207,5 @@ module.exports = {
   getAllUsersStats,
   getAllUsers,
   becomeAPartner,
+  makeBooking,
 };
