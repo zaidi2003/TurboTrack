@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/Booking.css";
 
 
-const LockedPage = () => {
+const Booking = () => {
   // Local state for active tab
   const [activeTab, setActiveTab] = useState("discover")
 
@@ -137,4 +137,4 @@ const LockedPage = () => {
   )
 }
 
-export default LockedPage
+export default Booking

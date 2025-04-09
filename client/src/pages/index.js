@@ -8,3 +8,4 @@ export { default as BecomeAPartner } from "./BecomeAPartner";
 export { default as LockedPage } from "./LockedPage";
 export { default as Dashboard } from "./Dashboard";
 export { default as CustDash } from "./CustDash";
+export { default as Booking } from "./Booking";

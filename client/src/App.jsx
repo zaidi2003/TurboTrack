@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, CustDash } from "./pages";
 import { ToastContainer, toast } from 'react-toastify';
 import DashboardRoutes from "./routes/dashboardRoutes";
+import Booking from "./pages/Booking";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "cust-dash/*", 
         element: <CustDash />, 
+      },
+      {
+        path: "booking/*", 
+        element: <Booking/>, 
       },
     ],
   },

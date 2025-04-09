@@ -1,0 +1,340 @@
+/* Main layout */
+.container {
+  width: 100%;
+  height: 120vh;
+  position: relative;
+  opacity: 0.9;
+  background: linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1f1f 74%, #242424 83%, #272727 93%);
+  overflow: hidden;
+  display: flex;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 285px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.6;
+  background: linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1f1f 74%, #242424 83%, #272727 93%);
+  border: 2px rgba(242, 242, 242, 0.2) solid;
+  z-index: 10;
+}
+
+.logo {
+  position: absolute;
+  left: 45px;
+  top: 43px;
+  opacity: 0.8;
+  color: #d5d4d4;
+  font-size: 25px;
+  font-family: "Zen Dots", sans-serif;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  cursor: pointer;
+}
+
+.divider {
+  position: absolute;
+  left: 0;
+  top: 105px;
+  width: 285px;
+  height: 0;
+  opacity: 0.3;
+  outline: 0.81px #f7f4f1 solid;
+  outline-offset: -0.41px;
+}
+
+.section-title {
+  opacity: 0.8;
+  color: #c9c0c0;
+  font-size: 12px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 700;
+}
+
+.main-section {
+  position: absolute;
+  left: 45px;
+  top: 156px;
+}
+
+.racing-section {
+  position: absolute;
+  left: 45px;
+  top: 416px;
+}
+
+.settings-section {
+  position: absolute;
+  left: 45px;
+  top: 676px;
+}
+
+.nav-item {
+  opacity: 0.8;
+  color: #f7f4f1;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-item-dashboard {
+  position: absolute;
+  left: 63px;
+  top: 195px;
+}
+
+.nav-item-bookings {
+  position: absolute;
+  left: 63px;
+  top: 263px;
+}
+
+.nav-item-payments {
+  position: absolute;
+  left: 63px;
+  top: 319px;
+}
+
+.nav-item-analytics {
+  position: absolute;
+  left: 63px;
+  top: 467px;
+}
+
+.nav-item-current-session {
+  position: absolute;
+  left: 63px;
+  top: 523px;
+}
+
+.nav-item-achievements {
+  position: absolute;
+  left: 63px;
+  top: 579px;
+}
+
+.nav-item-account {
+  position: absolute;
+  left: 63px;
+  top: 727px;
+}
+
+.nav-item-help {
+  position: absolute;
+  left: 63px;
+  top: 783px;
+}
+
+.nav-item-logout {
+  position: absolute;
+  left: 63px;
+  top: 839px;
+  color: var(--cream, #f7f4f1);
+  word-wrap: break-word;
+}
+
+.active-nav-container {
+  position: absolute;
+  left: 22px;
+  top: 245px;
+  width: 241px;
+  height: 44px;
+}
+
+.active-nav-item {
+  position: absolute;
+  left: 41px;
+  top: 12px;
+  opacity: 0.8;
+  color: #a81129;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.active-nav-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 241px;
+  height: 44px;
+  border-radius: 10px;
+  border: 2px #300101 solid;
+}
+
+/* Search bar */
+.search-bar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 52px;
+  width: 656px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 5;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f7f4f1;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* User profile */
+.user-profile {
+  position: absolute;
+  right: 60px;
+  top: 40px;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
+
+.user-avatar {
+  width: 45.62px;
+  height: 42px;
+  border-radius: 50%;
+  background: #c9c0c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.username {
+  color: #f7f4f1;
+  font-size: 14.4px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  position: absolute;
+  left: 363px;
+  top: 150px;
+  width: 60%;
+  z-index: 5;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 40px;
+}
+
+.tab {
+  margin-right: 250px;
+  font-size: 28px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.tab:last-child {
+  margin-right: 0;
+  
+}
+
+.tab-inactive {
+  color: #787878;
+}
+
+.tab-active {
+  
+  color: #f7f4f1;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 10;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #a81129;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.filter {
+  color: #c9c0c0;
+  width: 102px;
+  height: 20px;
+  font-size: 14px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 700;
+  border-bottom: 2px solid #787878;
+  padding-bottom: 5px;
+}
+
+.track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.track-item {
+  background: rgba(60, 60, 60, 0.5);
+  border-radius: 12px;
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.track-name {
+  color: #f7f4f1;
+  font-size: 22px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.book-button {
+  background: linear-gradient(
+    90deg,
+    #300101 6%,
+    #3a0202 20%,
+    #410202 27%,
+    #480202 35%,
+    #510202 48%,
+    #690303 62%,
+    #740303 73%,
+    #7b0303 84%,
+    #960404 95%
+  );
+  border: none;
+  border-radius: 20px;
+  padding: 10px 30px;
+  color: #f7f4f1;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -211,7 +211,7 @@ const CustDash = () => {
         </div>
 
         {/* Additional Sidebar Links */}
-        <Link to="/bookings" style={{ textDecoration: "none" }}>
+        <Link to="/booking" style={{ textDecoration: "none" }}>
           <div
             style={{
               position: "absolute",
