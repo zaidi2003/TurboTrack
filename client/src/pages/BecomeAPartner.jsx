@@ -37,25 +37,58 @@ const BecomeAPartner = () => {
         overflow: 'hidden'
       }}
     >
-      {/* Header with Logo */}
-      <div
-        style={{
-          width: '100%',
-          height: 100,
-          padding: '20px 40px',
-          background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
-          display: 'flex',
-          alignItems: 'center'
-        }}
-      >
+    {/* Header Structure */}
+    <div style={{ width: '100%', height: 185, left: 0, top: 0, position: 'relative' }}>
+            {/* Top Black Gradient Bar */}
+        <div
+          style={{
+            width: '100%',
+            height: 120,
+            left: 0,
+            top: 0,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Red Gradient Bar */}
+        <div
+          style={{
+            width: '100%',
+            height: 65,
+            left: 0,
+            top: 120,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Small Red Gradient Line */}
+        <div
+          style={{
+            width: '100%',
+            height: 10,
+            left: 0,
+            top: 115,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Logo */}
         <Link to="/" style={{ textDecoration: 'none' }}>
           <div
             style={{
+              left: 88,
+              top: 42,
+              position: 'absolute',
+              opacity: 0.80,
               color: '#D5D4D4',
               fontSize: 30,
-              fontFamily: 'Zen Dots, cursive',
+              fontFamily: 'Zen Dots',
               fontWeight: '400',
               letterSpacing: 3,
+              wordWrap: 'break-word',
               cursor: 'pointer'
             }}
           >
@@ -64,23 +97,35 @@ const BecomeAPartner = () => {
         </Link>
       </div>
 
-      {/* Red Bar with "Become a Partner" */}
+      {/* Become a Partner Text in Red Bar */}
       <div
         style={{
-          width: '100%',
-          height: 50,
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: '#ffffff',
+          position: 'absolute',
+          top: 149,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: '#C9C0C0',
           fontSize: 20,
-          fontFamily: 'Readex Pro, sans-serif',
-          fontWeight: '600'
+          fontFamily: 'Readex Pro',
+          fontWeight: '700',
+          wordWrap: 'break-word'
         }}
       >
         Become a Partner
       </div>
+      
+      {/* Red Underline */}
+      <div
+        style={{
+          width: 190,
+          height: 6,
+          position: 'absolute',
+          top: 179,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#B81515'
+        }}
+      />
 
       {/* Form Container */}
       <div
