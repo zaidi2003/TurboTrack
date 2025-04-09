@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { login, register, dashboard, getAllUsers, becomeAPartner, getAllUsersStats, makeBooking, changePassword} = require("../controllers/user");
+const { login, register, dashboard, getAllUsers, becomeAPartner, getAllUsersStats, makeBooking, changePassword, makePayment} = require("../controllers/user");
 const authMiddleware = require('../middleware/auth')
 
 router.route("/login").post(login);
@@ -12,5 +12,6 @@ router.route("/users/stats").get(getAllUsersStats);
 router.route("/become-a-partner", becomeAPartner).post(becomeAPartner);
 router.route("/change-password").post(authMiddleware, changePassword);
 router.route('/make-booking',makeBooking).post(makeBooking);
+router.route('/make-payment').post(makePayment);
 
 module.exports = router;

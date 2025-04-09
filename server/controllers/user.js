@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Partner = require("../models/Partner"); 
 const Booking = require("../models/booking");
+const axios = require("axios");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -101,8 +102,6 @@ const getAllUsersStats = async (req, res) => {
   }
 };
 
-
-
 const getAllUsers = async (req, res) => {
   let users = await User.find({});
 
@@ -131,7 +130,6 @@ const register = async (req, res) => {
     return res.status(400).json({ msg: "Email already in use" });
   }
 };
-
 
 const makeBooking = async (req, res) => {
   try {
@@ -296,6 +294,40 @@ const changePassword = async (req, res) =>
   }
 }
 
+const makePayment = async (req, res) => {
+  const { transactionId, amount, userId, cardNumber } = req.body;
+
+  if (!transactionId || !amount || !userId || !cardNumber) 
+  {
+    return res.status(400).json({
+      msg: "Bad request. Please provide transactionId, amount, and userId!",
+    });
+  }
+
+  try {
+    // sending req to payment server
+    const response = await axios.post("http://localhost:8000/api/v1/payment/authenticate", {
+      transactionId,
+      amount,
+      userId,
+      cardNumber,
+    });
+
+    return res.status(200).json({
+      msg: "Payment processed successfully",
+      paymentResponse: response.data,
+    });
+  } 
+  
+  catch (error) 
+  {
+    return res.status(400).json({
+      msg: "Payment processing failed",
+      error: error.response ? error.response.data : error.message,
+    });
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -305,4 +337,5 @@ module.exports = {
   getAllUsers,
   becomeAPartner,
   makeBooking,
+  makePayment,
 };
