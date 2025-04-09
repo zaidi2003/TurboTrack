@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Partner = require("../models/Partner"); 
-const Booking = require("../models/Booking");
+const Booking = require("../models/booking");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -24,6 +25,8 @@ const login = async (req, res) => {
           expiresIn: "30d",
         }
       );
+
+      console.log("JWT_SECRET during signing", token); 
 
       return res.status(200).json({ msg: "user logged in", token });
     } else {
@@ -227,12 +230,76 @@ const becomeAPartner = async (req, res) => {
   }
 };
 
+// change password
+const changePassword = async (req, res) => 
+{
+  try 
+  {
+    const {currPassword, newPassword} = req.body;
+
+    if (!currPassword || !newPassword)
+    {
+      return res.status(400).json({
+        msg: "Please fill in all the fields!",
+      });
+    }
+
+    else if (newPassword === currPassword)
+    {
+      return res.status(400).json({
+        msg: "New password cannot be the same as the old password",
+      })
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user)
+    {
+      return res.status(404).json({
+        msg: "User not found",
+      })
+    }
+
+    const passMatch = await bcrypt.compare(currPassword, user.password);
+
+    if (!passMatch)
+    {
+      return res.status(400).json({
+        msg: "Current password is incorrect",
+      })
+    }
+
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // user.password = hashedPassword
+    user.password = newPassword;
+    await user.save();
+
+    console.log("Pasword set to: ", user.password);
+    // console.log("Hashed password set to: ", hashedPassword);
 
 
+    res.status(200).json({
+      msg: "Password updated successfully!"
+    });
+  }
+
+  catch (error)
+  {
+    console.error(error);
+
+    res.status(500).json(
+    {
+      msg: "ERROR",
+    });
+  }
+}
 
 module.exports = {
   login,
   register,
+  changePassword,
   dashboard,
   getAllUsersStats,
   getAllUsers,
