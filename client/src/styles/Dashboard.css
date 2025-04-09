@@ -1,41 +1,482 @@
-.dashboard-main{
-    font-size: 30px;
-    height: 100vh;
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* Main layout */
+.container {
+  width: 100%;
+  height: 13vh;
+  position: relative;
+  opacity: 0.9;
+  background: linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1f1f 74%, #242424 83%, #272727 93%);
+  overflow: hidden;
+  display: flex;
 }
 
-.dashboard-main p{
+/* Sidebar styles */
+.sidebar {
+  width: 285px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.6;
+  background: linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1f1f 74%, #242424 83%, #272727 93%);
+  border: 2px rgba(242, 242, 242, 0.2) solid;
+  z-index: 10;
+}
+
+.logo {
+  position: absolute;
+  left: 45px;
+  top: 43px;
+  opacity: 0.8;
+  color: #d5d4d4;
+  font-size: 25px;
+  font-family: "Zen Dots", sans-serif;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  cursor: pointer;
+}
+
+.divider {
+  position: absolute;
+  left: 0;
+  top: 105px;
+  width: 285px;
+  height: 0;
+  opacity: 0.3;
+  outline: 0.81px #f7f4f1 solid;
+  outline-offset: -0.41px;
+}
+
+.section-title {
+  opacity: 0.8;
+  color: #c9c0c0;
+  font-size: 12px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 700;
+}
+
+.main-section {
+  position: absolute;
+  left: 45px;
+  top: 156px;
+}
+
+.racing-section {
+  position: absolute;
+  left: 45px;
+  top: 416px;
+}
+
+.settings-section {
+  position: absolute;
+  left: 45px;
+  top: 676px;
+}
+
+.nav-item {
+  opacity: 0.8;
+  color: #f7f4f1;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-item-bookings {
+  position: absolute;
+  left: 63px;
+  top: 263px;
+}
+
+.nav-item-payments {
+  position: absolute;
+  left: 63px;
+  top: 319px;
+}
+
+.nav-item-analytics {
+  position: absolute;
+  left: 63px;
+  top: 467px;
+}
+
+.nav-item-current-session {
+  position: absolute;
+  left: 63px;
+  top: 523px;
+}
+
+.nav-item-achievements {
+  position: absolute;
+  left: 63px;
+  top: 579px;
+}
+
+.nav-item-account {
+  position: absolute;
+  left: 63px;
+  top: 727px;
+}
+
+.nav-item-help {
+  position: absolute;
+  left: 63px;
+  top: 783px;
+}
+
+.nav-item-logout {
+  position: absolute;
+  left: 63px;
+  top: 839px;
+  color: var(--cream, #f7f4f1);
+  word-wrap: break-word;
+}
+
+.active-nav-container {
+  position: absolute;
+  left: 22px;
+  top: 195px;
+  width: 241px;
+  height: 44px;
+}
+
+.active-nav-item {
+  position: absolute;
+  left: 41px;
+  top: 12px;
+  opacity: 0.8;
+  color: #a81129;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.active-nav-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 241px;
+  height: 44px;
+  border-radius: 10px;
+  border: 2px #300101 solid;
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1b1f 74%, #242424 83%, #272727 93%);
+  border-radius: 15px;
+  padding: 30px;
+}
+
+.welcome-card {
+  position: absolute;
+  left: 363px;
+  top: 30px;
+  width: 581px;
+  height: 180px;
+  border: 0.73px rgba(115, 115, 115, 0.5) solid;
+}
+
+.welcome-title {
+  position: relative;
+  color: #c2a1a1;
+  font-size: 28px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.welcome-text {
+  position: relative;
+  opacity: 0.8;
+  color: #f7f4f1;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.journey-card {
+  position: absolute;
+  left: 363px;
+  top: 268px;
+  width: 581px;
+  height: 700px;
+  border: 0.5px rgba(115, 115, 115, 0.5) solid;
+}
+
+.journey-title {
+  color: #c9c0c0;
+  font-size: 26px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  margin-bottom: 40px;
+}
+
+/* Chart */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stat-box {
+  position: absolute;
+  width: 80px;
+  height: 50px;
+  background: #d9d9d9;
+  opacity: 0.4;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.stat-box-left {
+  left: 15%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.stat-box-right {
+  right: 15%;
+  top: 30%;
+}
+
+.stat-box-bottom {
+  right: 30%;
+  bottom: 10%;
+}
+
+.stat-value {
+  color: white;
+  font-size: 24px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  margin-top: 20px;
+  margin-left: 50px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+}
+
+.legend-item:last-child {
+  margin-right: 0;
+}
+
+.legend-color {
+  width: 13px;
+  height: 13px;
+  margin-right: 10px;
+}
+
+.legend-color-red {
+  background: #7b0303;
+}
+
+.legend-color-gray {
+  background: #adadad;
+}
+
+.legend-label {
+  color: white;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.chevron {
+  font-size: 24px;
+  margin-right: 15px;
+  color: white;
+}
+
+.stat-text {
+  color: white;
   font-size: 20px;
-  padding: 0 20px
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
 }
 
-.logout-button{
-    background: black;
-    color: white;
-    border: 3px solid black;
-    transition: background 1s linear 0ms;
-    transition: color 500ms linear 0ms;
+/* User Profile */
+.user-profile {
+  position: absolute;
+  right: 60px;
+  top: 40px;
+  display: flex;
+  align-items: center;
+  z-index: 5;
+}
 
-    width: 500px;
-    padding: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    border-radius: 30px;
-    font-weight: 600;
-    margin-top: 10px;
+.user-avatar {
+  width: 45.62px;
+  height: 42px;
+  border-radius: 50%;
+  background: #c9c0c0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
 
-    font-size: 20px;
-    text-align: center;
-    text-decoration: none;
-  }
+.username {
+  color: #f7f4f1;
+  font-size: 14.4px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
 
-  
-  .logout-button:hover{
-    color: #333;
-    background-color: white;
-  }
+/* Community Leaderboard */
+.community-title {
+  position: absolute;
+  left: 1057px;
+  top: 133px;
+  color: #c9c0c0;
+  font-size: 30px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.time-filters {
+  position: absolute;
+  left: 1057px;
+  top: 198px;
+  display: flex;
+  gap: 40px;
+}
+
+.time-filter {
+  color: #c9c0c0;
+  font-size: 12px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.time-filter-active {
+  background: #414141;
+  border-radius: 4px;
+}
+
+/* Leaderboard */
+.leaderboard {
+  position: absolute;
+  left: 1057px;
+  top: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 343px;
+}
+
+.leaderboard-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.leaderboard-bar {
+  width: 343px;
+  height: 48px;
+  background: #252728;
+  border-radius: 12px;
+}
+
+.leaderboard-bar-you {
+  background: linear-gradient(
+    90deg,
+    #300101 6%,
+    #3a0202 20%,
+    #410202 27%,
+    #480202 35%,
+    #510202 48%,
+    #690303 62%,
+    #740303 73%,
+    #7b0303 84%,
+    #960404 95%
+  );
+}
+
+.leaderboard-points {
+  text-align: right;
+  color: white;
+  font-size: 14.4px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 400;
+  line-height: 21.6px;
+  word-wrap: break-word;
+  align-self: flex-end;
+}
+
+.leaderboard-spacer {
+  width: 14px;
+  height: 22px;
+}
+
+.leaderboard-rank {
+  text-align: center;
+  color: white;
+  font-size: 14.4px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  line-height: 21.6px;
+  word-wrap: break-word;
+  text-shadow: 0px 0px 13px rgba(0, 0, 0, 0.25);
+}
+
+.leaderboard-user {
+  width: 165px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.leaderboard-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+}
+
+.leaderboard-name {
+  color: white;
+  font-size: 14.4px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 700;
+  line-height: 21.6px;
+  word-wrap: break-word;
+}

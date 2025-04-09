@@ -126,6 +126,7 @@ const CustDash = () => {
         }}
       >
         {/* Logo */}
+        <Link to="/" style={{ textDecoration: 'none' }}>
         <div
           style={{
             position: "absolute",
@@ -140,9 +141,11 @@ const CustDash = () => {
             cursor: "pointer",
           }}
         >
-          turbotrack
+            turbotrack
         </div>
-
+        </Link>
+          
+          
         {/* Divider */}
         <div
           style={{

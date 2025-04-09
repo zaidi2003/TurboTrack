@@ -24,7 +24,9 @@ const Booking = () => {
       {/* Left Sidebar */}
       <div className="sidebar">
         {/* Logo */}
-        <div className="logo">turbotrack</div>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+        <div className="logo">turbotrack</div> 
+        </Link>
 
         {/* Divider */}
         <div className="divider" />
@@ -33,7 +35,7 @@ const Booking = () => {
         <div className="section-title main-section">MAIN</div>
 
         {/* Dashboard */}
-        <Link to="/cust-dash" style={{ textDecoration: "none" }}>
+        <Link to="/dashboard" style={{ textDecoration: "none" }}>
           <div className="nav-item nav-item-dashboard">Dashboard</div>
         </Link>
 
