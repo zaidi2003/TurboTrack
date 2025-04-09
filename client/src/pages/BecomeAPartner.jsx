@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const BecomeAPartner = () => {
   const [formData, setFormData] = useState({
@@ -14,28 +12,15 @@ const BecomeAPartner = () => {
     accountOwner: '',
     iban: ''
   });
-  const navigate = useNavigate();
 
-  // Updates formData for each input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handles form submission and API call
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    
-    // Example API call: adjust the endpoint according to your backend
-    try {
-      const response = await axios.post("http://localhost:3000/api/v1/become-a-partner", formData);
-      toast.success("Application submitted successfully!");
-      // Optionally clear the form or redirect:
-      // setFormData({ fullName: '', businessName: '', email: '', phone: '', businessAddress: '', bankName: '', accountOwner: '', iban: '' });
-      // navigate("/dashboard");
-    } catch (err) {
-      toast.error(err.response?.data?.msg || err.message);
-    }
+    // Add API call here to submit the form data
   };
 
   return (
@@ -52,83 +37,102 @@ const BecomeAPartner = () => {
         overflow: 'hidden'
       }}
     >
-      {/* Top Navigation Bar */}
-      <div
-        style={{
-          width: '100%',
-          height: '12%',
-          left: 0,
-          top: 0,
-          position: 'absolute',
-          background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
-          border: '1px solid black'
-        }}
-      />
-      <div
-        style={{
-          width: '100%',
-          height: '6.5%',
-          left: 0,
-          top: '12%',
-          position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
-        }}
-      />
-      <div
-        style={{
-          width: '100%',
-          height: 10,
-          left: -1,
-          top: '11.5%',
-          position: 'absolute',
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          border: '1px solid black'
-        }}
-      />
-      <Link to="/" style={{ textDecoration: 'none' }}>
+    {/* Header Structure */}
+    <div style={{ width: '100%', height: 185, left: 0, top: 0, position: 'relative' }}>
+            {/* Top Black Gradient Bar */}
         <div
           style={{
-            width: '20%',
-            left: '5%',
-            top: '4%',
+            width: '100%',
+            height: 120,
+            left: 0,
+            top: 0,
             position: 'absolute',
-            color: '#D5D4D4',
-            fontSize: 30,
-            fontFamily: 'Zen Dots',
-            fontWeight: '400',
-            letterSpacing: 3,
-            wordWrap: 'break-word'
+            background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+            border: '1px black solid'
           }}
-        >
-          turbotrack
-        </div>
-      </Link>
+        />
+        {/* Red Gradient Bar */}
+        <div
+          style={{
+            width: '100%',
+            height: 65,
+            left: 0,
+            top: 120,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Small Red Gradient Line */}
+        <div
+          style={{
+            width: '100%',
+            height: 10,
+            left: 0,
+            top: 115,
+            position: 'absolute',
+            background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
+            border: '1px black solid'
+          }}
+        />
+        {/* Logo */}
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <div
+            style={{
+              left: 88,
+              top: 42,
+              position: 'absolute',
+              opacity: 0.80,
+              color: '#D5D4D4',
+              fontSize: 30,
+              fontFamily: 'Zen Dots',
+              fontWeight: '400',
+              letterSpacing: 3,
+              wordWrap: 'break-word',
+              cursor: 'pointer'
+            }}
+          >
+            turbotrack
+          </div>
+        </Link>
+      </div>
 
-      {/* Red Bar with "Become a Partner" */}
+      {/* Become a Partner Text in Red Bar */}
       <div
         style={{
-          width: '100%',
-          height: 50,
-          background: 'linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          color: '#ffffff',
+          position: 'absolute',
+          top: 149,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: '#C9C0C0',
           fontSize: 20,
-          fontFamily: 'Readex Pro, sans-serif',
-          fontWeight: '600'
+          fontFamily: 'Readex Pro',
+          fontWeight: '700',
+          wordWrap: 'break-word'
         }}
       >
         Become a Partner
       </div>
+      
+      {/* Red Underline */}
+      <div
+        style={{
+          width: 190,
+          height: 6,
+          position: 'absolute',
+          top: 179,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: '#B81515'
+        }}
+      />
 
       {/* Form Container */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
-          padding: '120px 20px',
+          padding: '40px 20px',
           flexWrap: 'wrap',
           gap: '20px'
         }}
@@ -148,7 +152,7 @@ const BecomeAPartner = () => {
                 flex: '1 1 45%',
                 minWidth: '300px',
                 padding: '20px',
-                // background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+                background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
                 opacity: 0.8,
                 borderRadius: 34.13
               }}
@@ -156,9 +160,7 @@ const BecomeAPartner = () => {
               <div
                 style={{
                   textAlign: 'center',
-                  color: '#D5D4D4',
-                //   left: '50%',
-                //   top: '28%',
+                  color: '#C9C0C0',
                   fontSize: 36.53,
                   fontFamily: 'Readex Pro, sans-serif',
                   fontWeight: '700',
@@ -191,7 +193,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -212,7 +214,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -233,7 +235,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -254,7 +256,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -272,7 +274,7 @@ const BecomeAPartner = () => {
                 flex: '1 1 45%',
                 minWidth: '300px',
                 padding: '20px',
-                // background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
+                background: 'linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%)',
                 opacity: 0.8,
                 borderRadius: 34.13
               }}
@@ -280,7 +282,7 @@ const BecomeAPartner = () => {
               <div
                 style={{
                   textAlign: 'center',
-                  color: '#D5D4D4',
+                  color: '#C9C0C0',
                   fontSize: 36.53,
                   fontFamily: 'Readex Pro, sans-serif',
                   fontWeight: '700',
@@ -313,7 +315,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -334,7 +336,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -355,7 +357,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
@@ -376,7 +378,7 @@ const BecomeAPartner = () => {
                     height: 65,
                     padding: '0 20px',
                     opacity: 0.6,
-                    background: '#D5D4D4',
+                    background: '#C8DCE4',
                     borderRadius: 15,
                     border: '1px solid black',
                     fontSize: 18,
