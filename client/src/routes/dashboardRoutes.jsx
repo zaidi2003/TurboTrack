@@ -6,7 +6,7 @@ import { Dashboard, LockedPage } from '../pages';
 const DashboardRoutes = () => (
   <Routes>
     <Route path="/" element={<Dashboard />} /> {/* Default route for dashboard */}
-    <Route path="locked" element={<LockedPage />} />
+    <Route path="employee" element={<LockedPage />} />
   </Routes>
 );
 

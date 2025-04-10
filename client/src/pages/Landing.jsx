@@ -8,6 +8,7 @@ const Landing = () => {
     setShowModal(true);
   };
 
+console.log('Environment Variable:', import.meta.env.VITE_API_URL);
   return (
     <div
       style={{

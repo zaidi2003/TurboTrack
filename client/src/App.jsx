@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, CustDash, NotFound } from "./pages";
+import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, CustDash, NotFound, ChangePassword, Account } from "./pages";
 import { ToastContainer, toast } from 'react-toastify';
 import DashboardRoutes from "./routes/dashboardRoutes";
 import Booking from "./pages/Booking";
@@ -12,6 +12,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
+      },
+      {
+        path : "change-password",
+        element : <ChangePassword />,
+      },
+      {
+        path : "account",
+        element : <Account />,
       },
       {
         path: "login",
@@ -38,13 +46,14 @@ const router = createBrowserRouter([
         element: <CustDash />, 
       },
       {
-        path: "booking/*", 
+        path: "bookings/*", 
         element: <Booking/>, 
       },
       {
         path: "*",
         element: <NotFound />,
       },
+      
     ],
   },
 ]);

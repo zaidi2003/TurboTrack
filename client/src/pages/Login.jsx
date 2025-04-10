@@ -23,7 +23,7 @@ const Login = () => {
     const { email, password } = formData;
     if (email && password) {
       try {
-        const response = await axios.post("http://localhost:3000/api/v1/login", { email, password });
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/login`, { email, password });
         localStorage.setItem("auth", JSON.stringify(response.data.token));
         toast.success("Login successful");
         navigate("/dashboard");

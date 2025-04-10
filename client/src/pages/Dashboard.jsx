@@ -1,29 +1,18 @@
 import { useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Dashboard = () => {
   // Local state for time filter
   const [timeFilter, setTimeFilter] = useState("month")
-
-  const leaderboardData = [
-    { id: 1, name: "Raahima Usman", points: 36, isYou: false },
-    { id: 2, name: "Ameenah Humayun", points: 36, isYou: false },
-    { id: 3, name: "Pistole Khan", points: 36, isYou: false },
-    { id: 4, name: "Yusuf Khan", points: 36, isYou: false },
-    { id: 5, name: "Mushtaq Ahmed", points: 35, isYou: false },
-    { id: 6, name: "You", points: 34, isYou: true },
-    { id: 7, name: "Musa Shehzad", points: 33, isYou: false },
-    { id: 8, name: "Maira Kamal", points: 32, isYou: false },
-    { id: 9, name: "Muhammad Mustafa", points: 31, isYou: false },
-    { id: 10, name: "Shirin Rehman", points: 30, isYou: false },
-  ];
+  const navigate=  useNavigate()
+  
   
 
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [data, setData] = useState({});
-  const [LeaderboardData, setLeaderboardData] = useState([]); // Store array of user stats
+  const [LeaderboardData, setLeaderboardData] = useState([]); 
   const fetchUserInfo = async () => {
     const axiosConfig = {
       headers: {
@@ -32,9 +21,12 @@ const Dashboard = () => {
     };
 
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig);
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/dashboard`, axiosConfig);
       const { msg, secret, email, username, wins, podiums, sessions, role } = response.data;
-      console.log(response)
+      if (role == "Employee" ){
+        navigate("/dashboard/employee")
+      }
+      console.log(response.data);
       setData({ msg, secret, email, username, wins, podiums, sessions, role });
     } catch (error) {
       toast.error(error.response?.data?.msg || error.message);
@@ -43,24 +35,15 @@ const Dashboard = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/getAllUserStats", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setLeaderboardData(response.data.users || []); // Make sure the backend sends { users: [...] }
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/leaderboard`);
+      
+      setLeaderboardData(response.data.users || []);
     } catch (error) {
       toast.error("Failed to fetch leaderboard");
       console.error(error);
     }
   };
 
-  
-
-  // Dummy user data
-  console.log(typeof data.wins); // Will print the type of 'wins'
-  console.log(data)
   const userData = {
     username: "username",
     stats: {
@@ -68,7 +51,7 @@ const Dashboard = () => {
       wins: data.wins || 0,
       podiums: data.podiums || 0,
 
-      other: data.sessions - data.podiums -data.wins || 0,//parsedSessions - parsedWins - parsedPodiums,
+      other: data.sessions - data.podiums -data.wins || 0,
     },
   }
 
@@ -77,7 +60,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchUserInfo();
-    //fetchLeaderboard();
+    fetchLeaderboard();
   }, []); // run only once
   // Draw the pie chart
   useEffect(() => {
@@ -268,7 +251,7 @@ const Dashboard = () => {
           </div>
         </Link>
 
-        <Link to="/payments" style={{ textDecoration: "none" }}>
+        <Link to="/change-password" style={{ textDecoration: "none" }}>
           <div
             style={{
               position: "absolute",
@@ -282,7 +265,7 @@ const Dashboard = () => {
               cursor: "pointer",
             }}
           >
-            Payments
+            Change Password
           </div>
         </Link>
 
@@ -463,7 +446,7 @@ const Dashboard = () => {
             fontWeight: "600",
           }}
         >
-          some yapping etcetcetc
+          Your racing stats, wins, and rankings — all in one place. Track your progress, chase the podium, and stay ahead of the pack.
         </div>
       </div>
 
@@ -798,66 +781,9 @@ const Dashboard = () => {
         Community Statistics
       </div>
 
-      {/* Time Filters */}
-      <div style={{ position: "absolute", left: 1100, top: 198, display: "flex", gap: 20 }}>
-        <div
-          onClick={() => setTimeFilter("today")}
-          style={{
-            opacity: timeFilter === "today" ? 1 : 0.8,
-            color: "#C9C0C0",
-            fontSize: 12,
-            fontFamily: "Readex Pro",
-            fontWeight: "700",
-            cursor: "pointer",
-          }}
-        >
-          TODAY
-        </div>
-        <div
-          onClick={() => setTimeFilter("week")}
-          style={{
-            opacity: timeFilter === "week" ? 1 : 0.8,
-            color: "#C9C0C0",
-            fontSize: 12,
-            fontFamily: "Readex Pro",
-            fontWeight: "700",
-            cursor: "pointer",
-          }}
-        >
-          WEEK
-        </div>
-        <div
-          onClick={() => setTimeFilter("month")}
-          style={{
-            // width: 75,
-            // height: 25,
-            background: timeFilter === "month" ? "#414141" : "transparent",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "#C9C0C0",
-            fontSize: 12,
-            fontFamily: "Readex Pro",
-            fontWeight: "700",
-            cursor: "pointer",
-          }}
-        >
-          MONTH
-        </div>
-        <div
-          onClick={() => setTimeFilter("year")}
-          style={{
-            opacity: timeFilter === "year" ? 1 : 0.8,
-            color: "#C9C0C0",
-            fontSize: 12,
-            fontFamily: "Readex Pro",
-            fontWeight: "700",
-            cursor: "pointer",
-          }}
-        >
-          YEAR
-        </div>
-      </div>
+
+      
+  
 
       
       
@@ -866,7 +792,7 @@ const Dashboard = () => {
         style={{
           position: "absolute",
           left: 1057,
-          top: 250,
+          top: 200,
           width: 343,
           display: "flex",
           flexDirection: "column",
@@ -876,7 +802,7 @@ const Dashboard = () => {
         {/* Leaderboard entries */}
 
         
-        {leaderboardData.map((user) => (
+        {LeaderboardData.map((user) => (
           <div key={user.id} style={{ display: "flex", alignItems: "center", position: "relative" }}>
             {/* Rank number */}
             <div
@@ -900,7 +826,7 @@ const Dashboard = () => {
                 alignItems: "center",
                 width: "100%",
                 height: 48,
-                background: user.isYou
+                background: user.email === data.email
                   ? "linear-gradient(90deg, #300101 6%, #3A0202 20%, #410202 27%, #480202 35%, #510202 48%, #690303 62%, #740303 73%, #7B0303 84%, #960404 95%)"
                   : "#252728",
                 borderRadius: 12,
@@ -945,7 +871,7 @@ const Dashboard = () => {
                   fontWeight: user.isYou ? "700" : "400",
                 }}
               >
-                {user.points} pts
+                {user.wins} pts
               </div>
             </div>
           </div>

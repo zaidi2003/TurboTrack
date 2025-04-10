@@ -24,7 +24,7 @@ const Register = () => {
     const { username, email, password } = formData;
     if (username && email && password) {
       try {
-        const response = await axios.post("http://localhost:3000/api/v1/register", {
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/register`, {
           username, email, password
         });
         toast.success("Registration successful");

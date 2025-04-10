@@ -27,7 +27,7 @@ const login = async (req, res) => {
         }
       );
 
-      console.log("JWT_SECRET during signing", token); 
+      //console.log("JWT_SECRET during signing", token); 
 
       return res.status(200).json({ msg: "user logged in", token });
     } else {
@@ -47,28 +47,7 @@ const dashboard = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    if(user.role == "Employee"){
-      const users = await User.find({})
-      .select("name wins podiums sessions")  // Select only the fields you need
-      .sort({ wins: -1 }); 
-
-
-      const bookings = await Booking.find({ email: user.email });
-      const trackCounts = bookings.reduce((trackSum, booking) => {
-        for (const [track, count] of Object.entries(booking.track)) {
-          trackSum[track] = (trackSum[track] || 0) + count;
-        }
-        return trackSum;
-      }, {});
-
-      res.status(200).json({
-        email: user.email,
-        username: user.name,
-        trackCounts,
-        leaderboard: users,
-      });
-    }
-    else{
+    
     res.status(200).json({
       msg: `Hello, ${user.name}`,
       email: user.email,
@@ -76,13 +55,44 @@ const dashboard = async (req, res) => {
       wins: user.wins,
       podiums: user.podiums,
       sessions: user.sessions,
+      role: user.role,
       secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
     });
-  }
   } catch (err) {
     res.status(500).json({ msg: "Server error" });
   }
 };
+
+const employeeDashboard = async (req, res) => {
+  try {
+    const luckyNumber = Math.floor(Math.random() * 100);
+    const user = await User.findById(req.user.id).select("name email role");
+
+    // Fetch all bookings
+    const bookings = await Booking.find({});
+
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ msg: "No bookings found" });
+    }
+
+    // Count bookings per track
+    const trackCounts = bookings.reduce((acc, booking) => {
+      acc[booking.track] = (acc[booking.track] || 0) + 1;
+      return acc;
+    }, {});
+
+    res.status(200).json({
+      msg: `Hello, Employee!`,
+      secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
+      trackSummary: trackCounts,
+      user: user,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
 
 // api function to only get all users stats
 const getAllUsersStats = async (req, res) => {
@@ -90,6 +100,25 @@ const getAllUsersStats = async (req, res) => {
     const users = await User.find({})
       .select("name wins podiums sessions")  // Select only the fields you need
       .sort({ wins: -1 }); 
+
+    if (users.length === 0) {
+      return res.status(404).json({ msg: "No users found" });
+    }
+
+    return res.status(200).json({ users });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+// api function to only get all users stats
+const getLeaderboard = async (req, res) => {
+  try {
+    const users = await User.find({})
+      .select("email name wins")  // Select only the fields you need
+      .sort({ wins: -1 })  // Sort by wins in descending order
+      .limit(10);  // Limit to top 10 users
 
     if (users.length === 0) {
       return res.status(404).json({ msg: "No users found" });
@@ -274,7 +303,7 @@ const changePassword = async (req, res) =>
     user.password = newPassword;
     await user.save();
 
-    console.log("Pasword set to: ", user.password);
+    //console.log("Pasword set to: ", user.password);
     // console.log("Hashed password set to: ", hashedPassword);
 
 
@@ -338,4 +367,6 @@ module.exports = {
   becomeAPartner,
   makeBooking,
   makePayment,
+  getLeaderboard,
+  employeeDashboard,
 };

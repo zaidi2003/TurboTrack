@@ -1,110 +1,126 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import axios from "axios"
 // import "../styles/Employee.css";
 
 const Employee = () => {
   // Local state for time filter
+  const navigate = useNavigate()
   const [timeFilter, setTimeFilter] = useState("month")
 
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "")
-  const [data, setData] = useState({})
-
+ 
+  const [data, setData] = useState({
+    msg: "",
+    secret: "",
+    trackSummary: {},
+  });
+  
   const fetchUserInfo = async () => {
     const axiosConfig = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
-
+    };
+  
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/dashboard", axiosConfig)
-      const { msg, secret, email } = response.data
-      setData({ msg, secret, email })
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/employee-dashboard`, axiosConfig);
+      
+      const { msg, secret, trackSummary,user } = response.data;
+      if(user.role !== "Employee") {
+        toast.error("You are not authorized to view this page");
+        navigate("/");
+        return;
+      }
+      // Set the updated state
+      setData({ msg, secret, trackSummary, user });
+  
+      console.log("Employee dashboard data:", response.data);
     } catch (error) {
-      toast.error(error.response?.data?.msg || error.message)
+      toast.error(error.response?.data?.msg || error.message);
     }
-  }
-
-  // Dummy user data
+  };
+  
   const userData = {
-    username: "username",
+    username: data.user?.name || "Guest",
     stats: {
-      sessions: 106,
-      track1: 41,
-      track2: 31,
-      track3: 28,
+      sessions: data.trackSummary['2f2f'] + data.trackSummary['SportsZilla'] + data.trackSummary['track 3'],
+      track1: data.trackSummary['SportsZilla'],
+      track2: data.trackSummary['2f2f'],
+      track3: data.trackSummary['track 3'],
     },
   }
 
   // Ref for the pie chart canvas
   const canvasRef = useRef(null)
 
-  // Draw the pie chart
   useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext("2d")
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
-      const radius = Math.min(centerX, centerY) - 10
-      const innerRadius = radius * 0.5 // For the donut hole
+      fetchUserInfo();
+    }, []); 
 
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Data for the pie chart
-      const data = [
-        { value: userData.stats.track1, color: "#787878" }, // Dark gray (41%)
-        { value: userData.stats.track2, color: "#ADADAD" }, // Light gray (31%)
-        { value: userData.stats.track3, color: "#7B0303" }, // Red (28%)
-      ]
-
-      // Calculate total
-      const total = data.reduce((sum, item) => sum + item.value, 0)
-
-      // Draw the pie chart
-      let startAngle = 0
-
-      data.forEach((item) => {
-        // Calculate the angle for this segment
-        const segmentAngle = (item.value / total) * 2 * Math.PI
-
-        // Draw the segment
-        ctx.beginPath()
-        ctx.moveTo(centerX, centerY)
-        ctx.arc(centerX, centerY, radius, startAngle, startAngle + segmentAngle)
-        ctx.closePath()
-
-        // Fill with the segment color
-        ctx.fillStyle = item.color
-        ctx.fill()
-
-        // Update the starting angle for the next segment
-        startAngle += segmentAngle
-      })
-
-      // Draw the inner circle (donut hole)
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI)
-      ctx.fillStyle = "#1B1B1B"
-      ctx.fill()
-
-      // Add text in the center
-      ctx.fillStyle = "white"
-      ctx.font = "bold 24px Montserrat"
-      ctx.textAlign = "center"
-      ctx.textBaseline = "middle"
-      ctx.fillText(userData.stats.sessions.toString(), centerX, centerY - 10)
-      ctx.font = "bold 18px Montserrat"
-      ctx.fillText("Sessions", centerX, centerY + 15)
-    }
-
-    fetchUserInfo()
-  }, [userData.stats])
+    useEffect(() => {
+      if (canvasRef.current && userData.stats.sessions !== undefined) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 10;
+        const innerRadius = radius * 0.5; // For the donut hole
+    
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+        // Data for the pie chart
+        const data = [
+          { value: userData.stats.track1, color: "#787878" }, // Dark gray (41%)
+          { value: userData.stats.track2, color: "#ADADAD" }, // Light gray (31%)
+          { value: userData.stats.track3, color: "#7B0303" }, // Red (28%)
+        ];
+    
+        // Calculate total
+        const total = data.reduce((sum, item) => sum + item.value, 0);
+    
+        // Draw the pie chart
+        let startAngle = 0;
+    
+        data.forEach((item) => {
+          // Calculate the angle for this segment
+          const segmentAngle = (item.value / total) * 2 * Math.PI;
+    
+          // Draw the segment
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, startAngle + segmentAngle);
+          ctx.closePath();
+    
+          // Fill with the segment color
+          ctx.fillStyle = item.color;
+          ctx.fill();
+    
+          // Update the starting angle for the next segment
+          startAngle += segmentAngle;
+        });
+    
+        // Draw the inner circle (donut hole)
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = "#1B1B1B";
+        ctx.fill();
+    
+        // Add text in the center
+        ctx.fillStyle = "white";
+        ctx.font = "bold 24px Montserrat";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(userData.stats.sessions?.toString() || "0", centerX, centerY - 10);
+        ctx.font = "bold 18px Montserrat";
+        ctx.fillText("Sessions", centerX, centerY + 15);
+      }
+    }, [userData.stats]);
 
   return (
     <div
@@ -222,7 +238,7 @@ const Employee = () => {
           </div>
         </Link>
 
-        <Link to="/payments" style={{ textDecoration: "none" }}>
+        <Link to="/change-password" style={{ textDecoration: "none" }}>
           <div
             style={{
               position: "absolute",
@@ -236,7 +252,7 @@ const Employee = () => {
               cursor: "pointer",
             }}
           >
-            Payments
+            Change Password
           </div>
         </Link>
 
@@ -405,7 +421,7 @@ const Employee = () => {
             textAlign: "center",
           }}
         >
-          Kool Karterz Dashboard
+          Employee Dashboard
         </div>
       </div>
 
@@ -481,69 +497,7 @@ const Employee = () => {
           />
 
           {/* Stats Boxes */}
-          <div
-            style={{
-              position: "absolute",
-              left: "15%",
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: 80,
-              height: 50,
-              background: "#D9D9D9",
-              opacity: 0.4,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            <div style={{ color: "white", fontSize: 24, fontFamily: "Montserrat", fontWeight: "700" }}>
-              {userData.stats.track1}%
-            </div>
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              right: "15%",
-              top: "30%",
-              width: 80,
-              height: 50,
-              background: "#D9D9D9",
-              opacity: 0.4,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            <div style={{ color: "white", fontSize: 24, fontFamily: "Montserrat", fontWeight: "700" }}>
-              {userData.stats.track2}%
-            </div>
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              right: "30%",
-              bottom: "10%",
-              width: 80,
-              height: 50,
-              background: "#D9D9D9",
-              opacity: 0.4,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            <div style={{ color: "white", fontSize: 24, fontFamily: "Montserrat", fontWeight: "700" }}>
-              {userData.stats.track3}%
-            </div>
-          </div>
+          
         </div>
 
         {/* Legend */}
@@ -565,7 +519,7 @@ const Employee = () => {
                 fontWeight: "700",
               }}
             >
-              Track 1
+              2f2f
             </div>
           </div>
 
@@ -586,7 +540,7 @@ const Employee = () => {
                 fontWeight: "700",
               }}
             >
-              Track 2
+              SportsZilla
             </div>
           </div>
 
