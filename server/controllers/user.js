@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
-const Partner = require("../models/Partner"); 
+const Partner = require("../models/partner"); 
 const Booking = require("../models/booking");
+
 const axios = require("axios");
 
 const login = async (req, res) => {
