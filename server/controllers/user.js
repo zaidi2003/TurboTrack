@@ -325,9 +325,9 @@ const changePassword = async (req, res) =>
 }
 
 const makePayment = async (req, res) => {
-  const { transactionId, amount, userId, cardNumber } = req.body;
+  const { transactionId, amount, userId, cardNumber, cvc } = req.body;
 
-  if (!transactionId || !amount || !userId || !cardNumber) 
+  if (!transactionId || !amount || !userId || !cardNumber || !cvc) 
   {
     return res.status(400).json({
       msg: "Bad request. Please provide transactionId, amount, and userId!",
@@ -341,6 +341,7 @@ const makePayment = async (req, res) => {
       amount,
       userId,
       cardNumber,
+      cvc,
     });
 
     return res.status(200).json({
