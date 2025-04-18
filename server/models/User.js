@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide the track"],
         enum: ["Employee", "Customer","SuperUser"],
-        default: "Employee"
+        default: "Customer"
     },
 });
 

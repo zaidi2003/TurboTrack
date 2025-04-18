@@ -21,7 +21,7 @@ const Dashboard = () => {
     };
 
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/dashboard`, axiosConfig);
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/dashboard/dashboard`, axiosConfig);
       const { msg, secret, email, username, wins, podiums, sessions, role } = response.data;
       if (role == "Employee" ){
         navigate("/dashboard/employee")
@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/leaderboard`);
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/dashboard/leaderboard`);
       
       setLeaderboardData(response.data.users || []);
     } catch (error) {
