@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema({
         enum: ["Employee", "Customer","SuperUser"],
         default: "Customer"
     },
+    profilePicture: {
+        type: String,
+        default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+    },
 });
 
 UserSchema.pre("save", async function(){

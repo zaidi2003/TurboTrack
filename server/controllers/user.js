@@ -215,6 +215,50 @@ const changePassword = async (req, res) =>
   }
 }
 
+const updateProfilePicture = async (req, res) => 
+{
+  try 
+  {
+    const { profilePicture } = req.body;
+
+    const profilePicOptions = [
+      "https://api.dicebear.com/7.x/bottts/svg?seed=kartingFunk",
+      "https://api.dicebear.com/7.x/pixel-art/svg?seed=kartPilot",
+      "https://api.dicebear.com/7.x/adventurer/svg?seed=MeowRacer",
+      "https://api.dicebear.com/7.x/fun-emoji/svg?seed=GhostKart",
+      "https://api.dicebear.com/7.x/micah/svg?seed=AlienDriver"
+    ]
+
+    if (!profilePicOptions.includes(profilePicture))
+    {
+      return res.status(400).json({ msg: "Please choose one of the given profile pictures!"});
+    }
+
+    if (profilePicture === undefined)
+    {
+      return res.status(400).json({ msg: "Profile picture is required"})
+    }
+
+    const user = await User.findById(req.user.id);
+
+    if (!user)
+    {
+      return res.status(404).json({ msg: "User not found"})
+    }
+
+    user.profilePicture = profilePicture;
+    await user.save();
+
+    res.status(200).json({ msg: "Profile picture updated successfully!", profilePicture});
+
+  }
+
+  catch (error)
+  {
+    console.error("Error updating profile picture: ", error); 
+    res.status(500).json({ msg: "Internal server error" });
+  }
+}
 
 module.exports = {
   login,
@@ -223,4 +267,5 @@ module.exports = {
   getAllUsersStats,
   getAllUsers,
   becomeAPartner,
+  updateProfilePicture,
 };

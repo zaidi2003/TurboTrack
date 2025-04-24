@@ -17,7 +17,7 @@ const authenticationMiddleware = async (req, res, next) => {
 
   try {
     // console.log("JWT_SECRET during verification:", process.env.JWT_SECRET); // Debugging
-    // console.log("Authorization Header:", authHeader); // Debugging
+    console.log("Authorization Header:", authHeader); // Debugging
     // console.log("Extracted Token:", token); // Debugging
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
