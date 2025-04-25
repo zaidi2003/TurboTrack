@@ -6,9 +6,32 @@ import { WelcomeCard, JourneyCard, LeaderboardSection } from "../components/dash
 import { useUser } from "../context/UserContext";
 import "../styles/common-components.css";
 
+
+
 const Analytics = () => {
   const { userData, userStats, isLoading } = useUser();
- 
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  const [data, setData] = useState({});
+
+  const fetchUserInfo = async () => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/times`, axiosConfig);      
+      console.log(response.data);
+      //setData({ msg, secret, email, username, wins, podiums, sessions, role });
+    } catch (error) {
+      toast.error(error.response?.data?.msg || error.message);
+    }
+  };
+  useEffect(() => {
+    fetchUserInfo();
+  }, []); // run only once
+
   if (isLoading) {
     return (
       <div
@@ -60,6 +83,11 @@ const Analytics = () => {
       
       <UserProfile style={{ position: "absolute", top: 30, right: 40 }} />
 
+      {/* You can now display the trackStats
+      <div style={{ position: "absolute", top: 120, left: 40, color: "white" }}>
+        <h2>Track Stats</h2>
+        <pre>{JSON.stringify(trackStats, null, 2)}</pre>
+      </div> */}
     </div>
   );
 };

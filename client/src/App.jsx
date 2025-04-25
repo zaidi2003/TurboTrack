@@ -16,6 +16,7 @@ import {
   SheetBooking,
   PaymentPage, 
   Analytics,
+  CurrentSession
 } from "./pages";
 
 import { ToastContainer } from "react-toastify";
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path : "analytics",
         element: <Analytics />
+      },
+      {
+        path: "current-session",
+        element: <CurrentSession />
       }
     ],
   },
