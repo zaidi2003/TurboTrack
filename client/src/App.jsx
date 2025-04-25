@@ -9,7 +9,7 @@ import {
   BecomeAPartner,
   Test,
   NotFound,
- // ChangePassword,
+  Game,
   Chat,
   Account,
   Booking,
@@ -33,10 +33,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
-      // {
-      //   path: "change-password",
-      //   element: <ChangePassword />,
-      // },
+      {
+        path: "game",
+        element: <Game />,
+      },
       {
         path: "account",
         element: <Account />,
