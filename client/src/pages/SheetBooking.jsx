@@ -3,14 +3,147 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { SideNavBar, UserProfile } from "../components";
 import { DatePicker, TimeSlots, LoadingSpinner, TrackSelector } from "../components/booking";
-import axios from 'axios';
-import { useUser } from "../context/UserContext";
+
+const MOCK_TRACKS = [
+  {
+    id: "track-1",
+    name: "Track 1: Novice",
+    length: "3.337 km",
+    price: 1500,
+    ageLimit: 7,
+    description: "Shorter track for younger children or inexperienced drivers"
+  },
+  {
+    id: "track-2",
+    name: "Track 2: Intermediate",
+    length: "20.832 km",
+    price: 3000,
+    ageLimit: 16,
+    description: "Just for fun"
+  },
+  {
+    id: "track-3",
+    name: "Track 3: Difficult",
+    length: "5.891 km",
+    price: 5000,
+    ageLimit: 18,
+    description: "Our most challenging circuit - for the most serious karters only!"
+  }
+];
+
+const mockAPI = {
+  getTracks: () => {
+    return new Promise((resolve) => {
+      resolve(MOCK_TRACKS);
+    });
+  },
+  
+  getTrack: (trackId) => {
+    return new Promise((resolve, reject) => {
+      const track = MOCK_TRACKS.find(t => t.id === trackId);
+      if (track) {
+        resolve(track);
+      } else {
+        reject(new Error("Track not found"));
+      }
+    });
+  },
+  
+  getAvailableDates: (trackId) => {
+    return new Promise((resolve) => {
+      const dates = [];
+      const today = new Date();
+      
+      for (let i = 1; i < 15; i++) {
+        if (i % 2 === 0) {
+          const date = new Date(today);
+          date.setDate(today.getDate() + i);
+          dates.push(date.toISOString().split('T')[0]);
+        }
+      }
+      
+      resolve({ dates });
+    });
+  },
+  
+  getAvailableSlots: (trackId, date) => {
+    return new Promise((resolve) => {
+      const slots = [];
+      const startHour = 9;
+      const endHour = 24;
+      
+      for (let hour = startHour; hour < endHour; hour++) {
+        for (let minutes = 0; minutes < 60; minutes += 30) {
+          const startTime = new Date(date);
+          startTime.setHours(hour, minutes, 0, 0);
+          
+          const endTime = new Date(startTime);
+          endTime.setMinutes(endTime.getMinutes() + 30);
+          
+          const booked = Math.random() > 0.7;
+          
+          slots.push({
+            id: `slot-${hour}-${minutes}`,
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+            booked
+          });
+        }
+      }
+      
+      resolve({ slots });
+    });
+  },
+  
+  reserveSlot: (trackId, slotId, date) => {
+    return new Promise((resolve) => {
+      resolve({ success: true });
+    });
+  }
+};
+
+const TrackCard = ({ name, buttonText, onButtonClick }) => {
+  return (
+    <div style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: "rgba(255, 255, 255, 0.05)",
+      borderRadius: 16,
+      padding: "16px 24px",
+      marginBottom: 32
+    }}>
+      <div style={{
+        color: "#f7f4f1",
+        fontFamily: "Readex Pro, sans-serif",
+        fontSize: 26,
+        fontWeight: 700
+      }}>
+        {name}
+      </div>
+      <button
+        style={{
+          background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
+          border: "none",
+          borderRadius: 15,
+          padding: "12px 20px",
+          color: "#f7f4f1",
+          fontSize: 14,
+          fontFamily: "Readex Pro, sans-serif",
+          cursor: "pointer",
+        }}
+        onClick={onButtonClick}
+      >
+        {buttonText}
+      </button>
+    </div>
+  );
+};
 
 const SheetBooking = () => {
   const { trackId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { token, userData } = useUser();
   
   const [tracks, setTracks] = useState([]);
   const [selectedTrackId, setSelectedTrackId] = useState(null);
@@ -24,26 +157,19 @@ const SheetBooking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("Loading tracks...");
 
-  // Fetch all available tracks
   useEffect(() => {
     const fetchTracks = async () => {
       try {
         setLoadingMessage("Loading tracks...");
         setIsLoading(true);
         
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        
-        const fetchedTracks = response.data;
+        const fetchedTracks = await mockAPI.getTracks();
         setTracks(fetchedTracks);
         
-        // If trackId is in the URL, use it, otherwise select the first track
         if (trackId) {
           setSelectedTrackId(trackId);
         } else if (fetchedTracks.length > 0) {
-          setSelectedTrackId(fetchedTracks[0].trackID);
+          setSelectedTrackId(fetchedTracks[0].id);
         }
         
         setIsLoading(false);
@@ -55,9 +181,8 @@ const SheetBooking = () => {
     };
 
     fetchTracks();
-  }, [trackId, token]);
+  }, [trackId]);
 
-  // Fetch selected track details
   useEffect(() => {
     const fetchTrackData = async () => {
       if (!selectedTrackId) {
@@ -69,14 +194,9 @@ const SheetBooking = () => {
         setLoadingMessage("Loading track information...");
         setIsLoading(true);
         
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${selectedTrackId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const fetchedTrack = await mockAPI.getTrack(selectedTrackId);
+        setTrack(fetchedTrack);
         
-        setTrack(response.data);
-        
-        // Reset selections
         setSelectedDate(null);
         setSelectedSlotId(null);
         setSlots([]);
@@ -92,9 +212,8 @@ const SheetBooking = () => {
     };
 
     fetchTrackData();
-  }, [selectedTrackId, token]);
+  }, [selectedTrackId]);
 
-  // Fetch available dates for the selected track
   useEffect(() => {
     const fetchAvailableDates = async () => {
       if (!track) return;
@@ -103,15 +222,11 @@ const SheetBooking = () => {
         setLoadingMessage("Loading available dates...");
         setIsLoading(true);
         
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${track.trackID}/available-dates`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await mockAPI.getAvailableDates(track.id);
+        setAvailableDates(response.dates || []);
         
-        setAvailableDates(response.data.dates || []);
-        
-        if (response.data.dates && response.data.dates.length > 0) {
-          setSelectedDate(response.data.dates[0]);
+        if (response.dates && response.dates.length > 0) {
+          setSelectedDate(response.dates[0]);
         }
       } catch (error) {
         console.error("Error fetching available dates:", error);
@@ -122,9 +237,8 @@ const SheetBooking = () => {
     };
 
     fetchAvailableDates();
-  }, [track, token]);
-  
-  // Fetch available time slots for the selected date
+  }, [track]);
+
   useEffect(() => {
     const fetchSlots = async () => {
       if (!track || !selectedDate) return;
@@ -133,12 +247,9 @@ const SheetBooking = () => {
         setLoadingMessage("Loading time slots...");
         setIsLoading(true);
         
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${track.trackID}/slots/${selectedDate}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await mockAPI.getAvailableSlots(track.id, selectedDate);
+        setSlots(response.slots || []);
         
-        setSlots(response.data.slots || []);
         setSelectedSlotId(null);
       } catch (error) {
         console.error("Error fetching slots:", error);
@@ -150,8 +261,8 @@ const SheetBooking = () => {
     };
 
     fetchSlots();
-  }, [track, selectedDate, token]);
-  
+  }, [track, selectedDate]);
+
   const handleProceedToPayment = async () => {
     if (!selectedSlotId) {
       toast.warning("Please select a time slot");
@@ -162,30 +273,20 @@ const SheetBooking = () => {
       setLoadingMessage("Reserving your slot...");
       setIsLoading(true);
       
-      // Reserve the slot temporarily
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/reserve-slot`,
-        {
-          trackId: track.trackID,
-          slotId: selectedSlotId,
-          date: selectedDate
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await mockAPI.reserveSlot(track.id, selectedSlotId, selectedDate);
       
       setIsLoading(false);
       
-      // Find the selected slot
-      const selectedSlot = slots.find(slot => slot.id === selectedSlotId);
-      
-      // Navigate to payment page
-      navigate(`/bookings/sheet/${encodeURIComponent(track.trackName)}/checkout`, {
-        state: { 
-          track, 
-          date: selectedDate,
-          slot: selectedSlot
-        } 
-      });
+      setTimeout(() => {
+        navigate(`/bookings/sheet/${encodeURIComponent(track.name)}/checkout`, {
+          state: { 
+            track, 
+            slotId: selectedSlotId,
+            date: selectedDate,
+            slot: slots.find(slot => slot.id === selectedSlotId)
+          } 
+        });
+      }, 10);
       
     } catch (error) {
       console.error("Error reserving slot:", error);
@@ -193,47 +294,7 @@ const SheetBooking = () => {
       setIsLoading(false);
     }
   };
-  
-  const TrackCard = ({ name, buttonText, onButtonClick }) => {
-    return (
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        backgroundColor: "rgba(255, 255, 255, 0.05)",
-        borderRadius: 16,
-        padding: "16px 24px",
-        marginBottom: 32
-      }}>
-        <div style={{
-          color: "#f7f4f1",
-          fontFamily: "Readex Pro, sans-serif",
-          fontSize: 26,
-          fontWeight: 700
-        }}>
-          {name}
-        </div>
-        <button
-          style={{
-            background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
-            border: "none",
-            borderRadius: 15,
-            padding: "12px 20px",
-            color: "#f7f4f1",
-            fontSize: 14,
-            fontFamily: "Readex Pro, sans-serif",
-            cursor: onButtonClick ? "pointer" : "not-allowed",
-            opacity: onButtonClick ? 1 : 0.7
-          }}
-          onClick={onButtonClick}
-          disabled={!onButtonClick}
-        >
-          {buttonText}
-        </button>
-      </div>
-    );
-  };
-  
+
   const styles = {
     wrapper: {
       width: "100%",
@@ -270,7 +331,7 @@ const SheetBooking = () => {
       fontFamily: "Readex Pro, sans-serif",
     }
   };
-  
+
   if (isLoading) {
     return (
       <div style={styles.wrapper}>
@@ -290,7 +351,7 @@ const SheetBooking = () => {
     if (track) {
       return (
         <TrackCard
-          name={track.trackName}
+          name={track.name}
           buttonText={selectedSlotId ? "Proceed to Pay" : "Select a slot"}
           onButtonClick={selectedSlotId ? handleProceedToPayment : null}
         />
