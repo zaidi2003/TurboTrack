@@ -4,8 +4,10 @@ import axios from 'axios';
 import { UserProfile, SideNavBar } from "../components";
 import { WelcomeCard, JourneyCard, LeaderboardSection } from "../components/dashboard";
 import { useUser } from "../context/UserContext";
-import { GoogleMap, LoadScript, Marker, Polyline, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker, Polygon, useLoadScript } from "@react-google-maps/api";
 import "../styles/common-components.css";
+
+
 
 const containerStyle = {
   width: "100%",
@@ -17,28 +19,41 @@ const center = {
   lng: 74.4149,  
 };
 
-const routePath = [
-  { lat: 31.5409, lng: 74.4149 },
-  { lat: 31.5413, lng: 74.4155 },
-  { lat: 31.5417, lng: 74.4160 },
-  { lat: 31.5421, lng: 74.4165 },
-  { lat: 31.5425, lng: 74.4170 },
-  { lat: 31.5430, lng: 74.4175 },
-  { lat: 31.5434, lng: 74.4180 },
-  { lat: 31.5438, lng: 74.4185 },
-  { lat: 31.5442, lng: 74.4190 },
-  { lat: 31.5446, lng: 74.4195 },
-  { lat: 31.5450, lng: 74.4200 },
-  { lat: 31.5454, lng: 74.4205 },
-  { lat: 31.5458, lng: 74.4210 },
-  { lat: 31.5462, lng: 74.4215 },
-  { lat: 31.5466, lng: 74.4220 },
-  { lat: 31.5470, lng: 74.4225 },
-  { lat: 31.5474, lng: 74.4230 },
-];
+
+
 
 const CurrentSession = () => {
   const { userData, userStats, isLoading } = useUser();
+
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  const [data, setData] = useState({});
+  const fetchCoordinates = async () => {
+    const axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/gps/`, axiosConfig);
+      const { coordinates } = response.data;
+      setData(coordinates);
+      console.log("Coordinates data:", coordinates);
+    } catch (error) {
+      toast.error(error.response?.data?.msg || error.message);
+    }
+  };
+
+  const rectangleCoords = [
+    { lat: 31.5500, lng: 74.3500 },  // top-left
+    { lat: 31.5500, lng: 74.4200 },  // top-right
+    { lat: 31.5300, lng: 74.4200 },  // bottom-right
+    { lat: 31.5300, lng: 74.3500 },  // bottom-left
+  ];
+  
+  useEffect(() => {
+    fetchCoordinates();
+  }, []); // run only once
 
   if (isLoading) {
     return (
@@ -101,23 +116,27 @@ const CurrentSession = () => {
       />
 
       <LoadScript googleMapsApiKey="AIzaSyCGPPHPMaswMl3qX-x9QRlK4nzUUT2vItY">
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={15}  // Increased zoom level for better visibility
-        >
-          <Marker position={center} />
+      <GoogleMap
+  mapContainerStyle={containerStyle}
+  center={center}
+  zoom={18}
+  onLoad={() => console.log('Map loaded!')}  // Verify if map is loaded
+>
+  <Marker position={center} />
+  
+  <Polygon
+    paths={rectangleCoords}
+    options={{
+      fillColor: "#FF0000",  // Bright red to ensure visibility
+      fillOpacity: 0.4,  // Semi-transparent
+      strokeColor: "#FF0000", // Red outline
+      strokeOpacity: 1,
+      strokeWeight: 2,
+    }}
+    onLoad={(polygon) => console.log("Polygon loaded:", polygon)}  // Verify polygon rendering
+  />
+</GoogleMap>
 
-          {/* Polyline Path */}
-          <Polyline
-            path={routePath}
-            options={{
-              strokeColor: "#FF0000",  // Red color for the route
-              strokeOpacity: 1.0,
-              strokeWeight: 4,
-            }}
-          />
-        </GoogleMap>
       </LoadScript>
     </div>
   );
