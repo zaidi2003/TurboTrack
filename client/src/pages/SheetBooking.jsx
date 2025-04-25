@@ -6,46 +6,6 @@ import { DatePicker, TimeSlots, LoadingSpinner, TrackSelector } from "../compone
 import axios from 'axios';
 import { useUser } from "../context/UserContext";
 
-const TrackCard = ({ name, buttonText, onButtonClick, isDisabled }) => {
-  return (
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      backgroundColor: "rgba(255, 255, 255, 0.05)",
-      borderRadius: 16,
-      padding: "16px 24px",
-      marginBottom: 32
-    }}>
-      <div style={{
-        color: "#f7f4f1",
-        fontFamily: "Readex Pro, sans-serif",
-        fontSize: 26,
-        fontWeight: 700
-      }}>
-        {name}
-      </div>
-      <button
-        style={{
-          background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
-          border: "none",
-          borderRadius: 15,
-          padding: "12px 20px",
-          color: "#f7f4f1",
-          fontSize: 14,
-          fontFamily: "Readex Pro, sans-serif",
-          cursor: isDisabled ? "not-allowed" : "pointer",
-          opacity: isDisabled ? 0.6 : 1
-        }}
-        onClick={onButtonClick}
-        disabled={isDisabled}
-      >
-        {buttonText}
-      </button>
-    </div>
-  );
-};
-
 const SheetBooking = () => {
   const { trackId } = useParams();
   const location = useLocation();
@@ -64,7 +24,7 @@ const SheetBooking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("Loading tracks...");
 
-  // Fetch all tracks
+  // Fetch all available tracks
   useEffect(() => {
     const fetchTracks = async () => {
       try {
@@ -76,16 +36,14 @@ const SheetBooking = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         
-        const fetchedTracks = response.data || [];
+        const fetchedTracks = response.data;
         setTracks(fetchedTracks);
         
-        // Set selected track from params or from location state or default to first track
+        // If trackId is in the URL, use it, otherwise select the first track
         if (trackId) {
           setSelectedTrackId(trackId);
-        } else if (location.state?.track?.id) {
-          setSelectedTrackId(location.state.track.id);
         } else if (fetchedTracks.length > 0) {
-          setSelectedTrackId(fetchedTracks[0].id);
+          setSelectedTrackId(fetchedTracks[0].trackID);
         }
         
         setIsLoading(false);
@@ -96,14 +54,10 @@ const SheetBooking = () => {
       }
     };
 
-    if (token) {
-      fetchTracks();
-    } else {
-      navigate('/login');
-    }
-  }, [trackId, location.state, token, navigate]);
+    fetchTracks();
+  }, [trackId, token]);
 
-  // Fetch single track data
+  // Fetch selected track details
   useEffect(() => {
     const fetchTrackData = async () => {
       if (!selectedTrackId) {
@@ -115,13 +69,6 @@ const SheetBooking = () => {
         setLoadingMessage("Loading track information...");
         setIsLoading(true);
         
-        // Use track from state if available (for better UX)
-        if (location.state?.track?.id === selectedTrackId) {
-          setTrack(location.state.track);
-          setIsLoading(false);
-          return;
-        }
-        
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${selectedTrackId}`,
           { headers: { Authorization: `Bearer ${token}` } }
@@ -129,7 +76,7 @@ const SheetBooking = () => {
         
         setTrack(response.data);
         
-        // Reset selections when track changes
+        // Reset selections
         setSelectedDate(null);
         setSelectedSlotId(null);
         setSlots([]);
@@ -145,9 +92,9 @@ const SheetBooking = () => {
     };
 
     fetchTrackData();
-  }, [selectedTrackId, location.state, token]);
+  }, [selectedTrackId, token]);
 
-  // Fetch available dates for selected track
+  // Fetch available dates for the selected track
   useEffect(() => {
     const fetchAvailableDates = async () => {
       if (!track) return;
@@ -157,7 +104,7 @@ const SheetBooking = () => {
         setIsLoading(true);
         
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/availability/track/${track.id}/dates`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${track.trackID}/available-dates`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         
@@ -169,7 +116,6 @@ const SheetBooking = () => {
       } catch (error) {
         console.error("Error fetching available dates:", error);
         toast.error("Failed to load available dates");
-        setAvailableDates([]);
       } finally {
         setIsLoading(false);
       }
@@ -177,8 +123,8 @@ const SheetBooking = () => {
 
     fetchAvailableDates();
   }, [track, token]);
-
-  // Fetch available slots for selected date
+  
+  // Fetch available time slots for the selected date
   useEffect(() => {
     const fetchSlots = async () => {
       if (!track || !selectedDate) return;
@@ -188,7 +134,7 @@ const SheetBooking = () => {
         setIsLoading(true);
         
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/availability/track/${track.id}/date/${selectedDate}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${track.trackID}/slots/${selectedDate}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         
@@ -205,8 +151,7 @@ const SheetBooking = () => {
 
     fetchSlots();
   }, [track, selectedDate, token]);
-
-  // Handle proceeding to payment
+  
   const handleProceedToPayment = async () => {
     if (!selectedSlotId) {
       toast.warning("Please select a time slot");
@@ -217,37 +162,78 @@ const SheetBooking = () => {
       setLoadingMessage("Reserving your slot...");
       setIsLoading(true);
       
-      // Reserve the slot temporarily (typically with an expiration)
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/bookings/reserve`,
+      // Reserve the slot temporarily
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/reserve-slot`,
         {
-          trackId: track.id,
+          trackId: track.trackID,
           slotId: selectedSlotId,
-          date: selectedDate,
-          userId: userData?.id
+          date: selectedDate
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
       setIsLoading(false);
       
-      // Navigate to payment page with all necessary data
-      navigate(`/bookings/sheet/${encodeURIComponent(track.name)}/checkout`, {
+      // Find the selected slot
+      const selectedSlot = slots.find(slot => slot.id === selectedSlotId);
+      
+      // Navigate to payment page
+      navigate(`/bookings/sheet/${encodeURIComponent(track.trackName)}/checkout`, {
         state: { 
           track, 
-          slotId: selectedSlotId,
           date: selectedDate,
-          slot: slots.find(slot => slot.id === selectedSlotId),
-          reservationId: response.data.reservationId
+          slot: selectedSlot
         } 
       });
+      
     } catch (error) {
       console.error("Error reserving slot:", error);
-      toast.error(error.response?.data?.message || "Failed to reserve slot. Please try again.");
+      toast.error("Failed to reserve slot. Please try again.");
       setIsLoading(false);
     }
   };
-
+  
+  const TrackCard = ({ name, buttonText, onButtonClick }) => {
+    return (
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "rgba(255, 255, 255, 0.05)",
+        borderRadius: 16,
+        padding: "16px 24px",
+        marginBottom: 32
+      }}>
+        <div style={{
+          color: "#f7f4f1",
+          fontFamily: "Readex Pro, sans-serif",
+          fontSize: 26,
+          fontWeight: 700
+        }}>
+          {name}
+        </div>
+        <button
+          style={{
+            background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
+            border: "none",
+            borderRadius: 15,
+            padding: "12px 20px",
+            color: "#f7f4f1",
+            fontSize: 14,
+            fontFamily: "Readex Pro, sans-serif",
+            cursor: onButtonClick ? "pointer" : "not-allowed",
+            opacity: onButtonClick ? 1 : 0.7
+          }}
+          onClick={onButtonClick}
+          disabled={!onButtonClick}
+        >
+          {buttonText}
+        </button>
+      </div>
+    );
+  };
+  
   const styles = {
     wrapper: {
       width: "100%",
@@ -282,16 +268,9 @@ const SheetBooking = () => {
       gap: "20px",
       color: "#f7f4f1",
       fontFamily: "Readex Pro, sans-serif",
-    },
-    noContent: {
-      color: "#c0c0c0",
-      fontFamily: "Readex Pro, sans-serif",
-      fontSize: 16,
-      textAlign: "center",
-      marginTop: 40,
     }
   };
-
+  
   if (isLoading) {
     return (
       <div style={styles.wrapper}>
@@ -311,10 +290,9 @@ const SheetBooking = () => {
     if (track) {
       return (
         <TrackCard
-          name={track.name}
+          name={track.trackName}
           buttonText={selectedSlotId ? "Proceed to Pay" : "Select a slot"}
           onButtonClick={selectedSlotId ? handleProceedToPayment : null}
-          isDisabled={!selectedSlotId}
         />
       );
     }
@@ -345,40 +323,26 @@ const SheetBooking = () => {
       </div>
 
       <div style={styles.content}>
-        {tracks.length > 0 ? (
-          <TrackSelector 
-            tracks={tracks}
-            selectedTrackId={selectedTrackId}
-            onTrackSelect={setSelectedTrackId}
-          />
-        ) : (
-          <div style={styles.noContent}>
-            No tracks available. Please check back later.
-          </div>
-        )}
+        <TrackSelector 
+          tracks={tracks}
+          selectedTrackId={selectedTrackId}
+          onTrackSelect={setSelectedTrackId}
+        />
         
-        {track && availableDates.length > 0 ? (
+        {track && (
           <DatePicker 
             selectedDate={selectedDate}
             onDateChange={setSelectedDate}
             availableDates={availableDates}
           />
-        ) : track && (
-          <div style={styles.noContent}>
-            No available dates for this track currently.
-          </div>
         )}
         
-        {track && selectedDate && slots.length > 0 ? (
+        {track && selectedDate && (
           <TimeSlots 
             slots={slots}
             selectedSlotId={selectedSlotId}
             onSlotSelect={setSelectedSlotId}
           />
-        ) : track && selectedDate && (
-          <div style={styles.noContent}>
-            No available time slots for this date.
-          </div>
         )}
       </div>
     </div>
