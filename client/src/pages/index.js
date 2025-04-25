@@ -17,5 +17,4 @@ export { default as Chat } from "./Chat";      // ← new
 export { default as Analytics } from "./Analytics"; // ← new
 export { default as CurrentSession } from "./CurrentSession";
 
-//export { default as bookingService } from "./";
 export { default as Test } from "./test";

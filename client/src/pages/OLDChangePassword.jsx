@@ -268,4 +268,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default OLDChangePassword;

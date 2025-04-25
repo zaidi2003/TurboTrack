@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const UpdateAccountDetails = ({ userData: initialUserData }) => {
+const UpdateAccountDetails = ({ userData: initialUserData, onAccountUpdate }) => {
   const [userData, setUserData] = useState(initialUserData);
   const [loading, setLoading] = useState(false);
 
@@ -19,35 +19,17 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
 
     try {
       // Validate data
-      if (!userData.firstName || !userData.lastName || !userData.email) {
+      if (!userData.name || !userData.email) {
         toast.error("Please fill all required fields");
         setLoading(false);
         return;
       }
 
-      // Get authentication token
-      const rawToken = localStorage.getItem("auth");
-      const token = rawToken ? rawToken.replace(/^"|"$/g, "") : "";
-
-      // Call API endpoint to update profile
-      const response = await axios.put(
-        "http://localhost:3000/api/v1/users/update-profile",
-        {
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          username: userData.username,
-          email: userData.email,
-          phone: userData.phone
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      // Handle success
-      toast.success(response.data.msg || "Profile updated successfully!");
+      toast.info("This feature is not yet available. Profile information display only.");
+      
+      // Since there's no direct API to update user details except for password and profile picture,
+      // we'll just display a message instead of making an API call
+      
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error(error.response?.data?.msg || "Failed to update profile");
@@ -62,24 +44,24 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
         background: "rgba(30, 30, 30, 0.7)",
         borderRadius: 15,
         border: "1px solid #3d3d3d",
-        padding: "30px",
-        flex: 1,
-        minWidth: "300px",
-        marginBottom: "30px",
+        padding: "20px",
+        width: "100%",
+        height: "100%",
+        marginBottom: "0",
       }}
     >
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          marginBottom: "25px",
+          marginBottom: "15px",
         }}
       >
         <div
           style={{
-            width: 24,
-            height: 24,
-            marginRight: 10,
+            width: 20,
+            height: 20,
+            marginRight: 8,
             opacity: 0.8,
           }}
         >
@@ -89,7 +71,7 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
           style={{
             color: "#f7f4f1",
             fontFamily: "Readex Pro, sans-serif",
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: 600,
           }}
         >
@@ -101,134 +83,39 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: 20,
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: 15,
           }}
         >
-          {/* First Name */}
+          {/* Name */}
           <div>
             <label
               style={{
                 display: "block",
                 color: "#f7f4f1",
                 fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
+                fontSize: 12,
+                marginBottom: 6,
               }}
             >
-              First Name <span style={{ color: "#ff7575" }}>*</span>
+              Name <span style={{ color: "#ff7575" }}>*</span>
             </label>
             <input
               type="text"
-              name="firstName"
-              value={userData.firstName}
+              name="name"
+              value={userData.name}
               onChange={handleUserDataChange}
               style={{
                 width: "100%",
-                height: 45,
+                height: 38,
                 background: "rgba(240, 240, 240, 0.1)",
                 border: "none",
                 borderRadius: 8,
-                padding: "0 15px",
+                padding: "0 12px",
                 color: "#f7f4f1",
-                fontSize: 16,
+                fontSize: 14,
               }}
               required
-            />
-          </div>
-
-          {/* Last Name */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                color: "#f7f4f1",
-                fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
-              }}
-            >
-              Last Name <span style={{ color: "#ff7575" }}>*</span>
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              value={userData.lastName}
-              onChange={handleUserDataChange}
-              style={{
-                width: "100%",
-                height: 45,
-                background: "rgba(240, 240, 240, 0.1)",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 15px",
-                color: "#f7f4f1",
-                fontSize: 16,
-              }}
-              required
-            />
-          </div>
-
-          {/* Username */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                color: "#f7f4f1",
-                fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
-              }}
-            >
-              Username <span style={{ color: "#ff7575" }}>*</span>
-            </label>
-            <input
-              type="text"
-              name="username"
-              value={userData.username}
-              onChange={handleUserDataChange}
-              style={{
-                width: "100%",
-                height: 45,
-                background: "rgba(240, 240, 240, 0.1)",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 15px",
-                color: "#f7f4f1",
-                fontSize: 16,
-              }}
-              required
-            />
-          </div>
-
-          {/* Phone Number */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                color: "#f7f4f1",
-                fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
-              }}
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={userData.phone}
-              onChange={handleUserDataChange}
-              style={{
-                width: "100%",
-                height: 45,
-                background: "rgba(240, 240, 240, 0.1)",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 15px",
-                color: "#f7f4f1",
-                fontSize: 16,
-              }}
             />
           </div>
 
@@ -239,8 +126,8 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
                 display: "block",
                 color: "#f7f4f1",
                 fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
+                fontSize: 12,
+                marginBottom: 6,
               }}
             >
               Email <span style={{ color: "#ff7575" }}>*</span>
@@ -252,20 +139,124 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
               onChange={handleUserDataChange}
               style={{
                 width: "100%",
-                height: 45,
+                height: 38,
                 background: "rgba(240, 240, 240, 0.1)",
                 border: "none",
                 borderRadius: 8,
-                padding: "0 15px",
+                padding: "0 12px",
                 color: "#f7f4f1",
-                fontSize: 16,
+                fontSize: 14,
               }}
               required
             />
           </div>
+
+          {/* Display Wins (Read-only) */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                color: "#f7f4f1",
+                fontFamily: "Readex Pro, sans-serif",
+                fontSize: 12,
+                marginBottom: 6,
+              }}
+            >
+              Wins
+            </label>
+            <input
+              type="text"
+              value={userData.wins || 0}
+              style={{
+                width: "100%",
+                height: 38,
+                background: "rgba(240, 240, 240, 0.05)",
+                border: "none",
+                borderRadius: 8,
+                padding: "0 12px",
+                color: "#f7f4f1",
+                fontSize: 14,
+                cursor: "not-allowed",
+              }}
+              disabled
+            />
+          </div>
+
+          {/* Display Podiums (Read-only) */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                color: "#f7f4f1",
+                fontFamily: "Readex Pro, sans-serif",
+                fontSize: 12,
+                marginBottom: 6,
+              }}
+            >
+              Podiums
+            </label>
+            <input
+              type="text"
+              value={userData.podiums || 0}
+              style={{
+                width: "100%",
+                height: 38,
+                background: "rgba(240, 240, 240, 0.05)",
+                border: "none",
+                borderRadius: 8,
+                padding: "0 12px",
+                color: "#f7f4f1",
+                fontSize: 14,
+                cursor: "not-allowed",
+              }}
+              disabled
+            />
+          </div>
+
+          {/* Display Sessions (Read-only) */}
+          <div>
+            <label
+              style={{
+                display: "block",
+                color: "#f7f4f1",
+                fontFamily: "Readex Pro, sans-serif",
+                fontSize: 12,
+                marginBottom: 6,
+              }}
+            >
+              Sessions
+            </label>
+            <input
+              type="text"
+              value={userData.sessions || 0}
+              style={{
+                width: "100%",
+                height: 38,
+                background: "rgba(240, 240, 240, 0.05)",
+                border: "none",
+                borderRadius: 8,
+                padding: "0 12px",
+                color: "#f7f4f1",
+                fontSize: 14,
+                cursor: "not-allowed",
+              }}
+              disabled
+            />
+          </div>
         </div>
 
-        <div style={{ marginTop: 30, display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}>
+          <div 
+            style={{
+              color: "#f7f4f1",
+              fontSize: 12,
+              opacity: 0.7,
+              marginRight: "auto",
+              maxWidth: "70%"
+            }}
+          >
+            Note: Only password and profile picture can be updated at this time.
+          </div>
           <button
             type="submit"
             disabled={loading}
@@ -273,9 +264,9 @@ const UpdateAccountDetails = ({ userData: initialUserData }) => {
               background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
               border: "none",
               borderRadius: 8,
-              padding: "10px 30px",
+              padding: "8px 20px",
               color: "#f7f4f1",
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: 600,
               cursor: loading ? "not-allowed" : "pointer",
               opacity: loading ? 0.7 : 1,

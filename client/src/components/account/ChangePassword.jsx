@@ -43,10 +43,13 @@ const ChangePassword = () => {
       const rawToken = localStorage.getItem("auth");
       const token = rawToken ? rawToken.replace(/^"|"$/g, "") : "";
 
-      // Call API endpoint
+      // Call API endpoint - matching exactly what the backend expects
       const response = await axios.post(
-        `http://localhost:3000/api/v1/users/change-password`,
-        { currPassword, newPassword },
+        "http://localhost:3000/api/v1/users/change-password",
+        { 
+          currPassword, 
+          newPassword 
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,15 +58,15 @@ const ChangePassword = () => {
       );
 
       // Handle success
-      toast.success(response.data.msg);
+      toast.success(response.data.msg || "Password updated successfully!");
       
       // Reset password fields
       setCurrPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      console.error("Error: ", error);
-      toast.error(error.response?.data?.msg || "Something went wrong!");
+      console.error("Error changing password:", error);
+      toast.error(error.response?.data?.msg || "Failed to update password");
     } finally {
       setLoading(false);
     }
@@ -75,23 +78,23 @@ const ChangePassword = () => {
         background: "rgba(30, 30, 30, 0.7)",
         borderRadius: 15,
         border: "1px solid #3d3d3d",
-        padding: "30px",
+        padding: "20px",
         width: "100%",
-        marginBottom: "30px",
+        marginTop: 0, // Remove margin to move it up
       }}
     >
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          marginBottom: "25px",
+          marginBottom: "15px",
         }}
       >
         <div
           style={{
-            width: 24,
-            height: 24,
-            marginRight: 10,
+            width: 20,
+            height: 20,
+            marginRight: 8,
             opacity: 0.8,
           }}
         >
@@ -101,7 +104,7 @@ const ChangePassword = () => {
           style={{
             color: "#f7f4f1",
             fontFamily: "Readex Pro, sans-serif",
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: 600,
           }}
         >
@@ -114,7 +117,7 @@ const ChangePassword = () => {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: 20,
+            gap: 15,
           }}
         >
           {/* Current Password */}
@@ -124,8 +127,8 @@ const ChangePassword = () => {
                 display: "block",
                 color: "#f7f4f1",
                 fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
+                fontSize: 12,
+                marginBottom: 6,
               }}
             >
               Current Password
@@ -137,13 +140,13 @@ const ChangePassword = () => {
               onChange={(e) => handlePasswordChange(e, 'currPassword')}
               style={{
                 width: "100%",
-                height: 45,
+                height: 38,
                 background: "rgba(240, 240, 240, 0.1)",
                 border: "none",
                 borderRadius: 8,
-                padding: "0 15px",
+                padding: "0 12px",
                 color: "#f7f4f1",
-                fontSize: 16,
+                fontSize: 14,
               }}
               required
             />
@@ -156,8 +159,8 @@ const ChangePassword = () => {
                 display: "block",
                 color: "#f7f4f1",
                 fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
+                fontSize: 12,
+                marginBottom: 6,
               }}
             >
               New Password
@@ -169,13 +172,13 @@ const ChangePassword = () => {
               onChange={(e) => handlePasswordChange(e, 'newPassword')}
               style={{
                 width: "100%",
-                height: 45,
+                height: 38,
                 background: "rgba(240, 240, 240, 0.1)",
                 border: "none",
                 borderRadius: 8,
-                padding: "0 15px",
+                padding: "0 12px",
                 color: "#f7f4f1",
-                fontSize: 16,
+                fontSize: 14,
               }}
               required
             />
@@ -188,8 +191,8 @@ const ChangePassword = () => {
                 display: "block",
                 color: "#f7f4f1",
                 fontFamily: "Readex Pro, sans-serif",
-                fontSize: 14,
-                marginBottom: 8,
+                fontSize: 12,
+                marginBottom: 6,
               }}
             >
               Confirm Password
@@ -201,20 +204,20 @@ const ChangePassword = () => {
               onChange={(e) => handlePasswordChange(e, 'confirmPassword')}
               style={{
                 width: "100%",
-                height: 45,
+                height: 38,
                 background: "rgba(240, 240, 240, 0.1)",
                 border: "none",
                 borderRadius: 8,
-                padding: "0 15px",
+                padding: "0 12px",
                 color: "#f7f4f1",
-                fontSize: 16,
+                fontSize: 14,
               }}
               required
             />
           </div>
         </div>
 
-        <div style={{ marginTop: 30, display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}>
           <button
             type="submit"
             disabled={loading}
@@ -222,9 +225,9 @@ const ChangePassword = () => {
               background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
               border: "none",
               borderRadius: 8,
-              padding: "10px 30px",
+              padding: "8px 20px",
               color: "#f7f4f1",
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: 600,
               cursor: loading ? "not-allowed" : "pointer",
               opacity: loading ? 0.7 : 1,
