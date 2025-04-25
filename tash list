@@ -1,0 +1,155 @@
+[33mcommit 7bcb1852e79ae466f2b5f634e671a7957e51ff71[m
+Author: Mohammad Mustafa <163987556+mohmmddd00@users.noreply.github.com>
+Date:   Thu Apr 24 15:14:46 2025 +0500
+
+    implemented change password page
+
+[33mcommit ad48592ecc7201625e634eb49ddce866375604e9[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Sat Apr 19 16:02:29 2025 +0500
+
+    made frontend modular
+
+[33mcommit e13d32444253dc27008c83c62a210f80126d1d13[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Sat Apr 19 02:31:53 2025 +0500
+
+    have fixed the order of the files in backend
+
+[33mcommit 73f72c634e71f2573eaf33cd19f2fb56f5265170[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Thu Apr 10 08:59:16 2025 +0500
+
+    added leaderboard, employee dashboard, stats,  change password and set up payment server seperately
+
+[33mcommit 3e8b2e6234621af71244beaae5c9c0906e7865e7[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Thu Apr 10 02:52:08 2025 +0500
+
+    fixed regi login screens
+
+[33mcommit 028a6e4da9ed4cb07c26bec6d29e5db70d78dacc[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Thu Apr 10 01:23:18 2025 +0500
+
+    check
+
+[33mcommit a33931626513c5e3128499cec8ea76c31815d3e6[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Wed Apr 9 21:58:35 2025 +0500
+
+    have added booking functionality + raaahima htmlcsss
+
+[33mcommit df3b0f00678565da64de8008b0869099d0e2385c[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 21:21:42 2025 +0500
+
+    dash
+
+[33mcommit 6771966a52813542560507946376730f1a580211[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 21:13:17 2025 +0500
+
+    dash
+
+[33mcommit b894f0705a8326ead22b15c33989996240ba188e[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Wed Apr 9 19:48:46 2025 +0500
+
+    added a 404 page with a catch all
+
+[33mcommit 101a47a2d4637c7430fbf48eeb8b9171ae1aa071[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 19:27:07 2025 +0500
+
+    booking
+
+[33mcommit b16ecf71bf420cfa92ff2a9fd2e0a98fa7a37974[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Wed Apr 9 18:55:51 2025 +0500
+
+    added customer dashboard functionality and changed schema + changed apis
+
+[33mcommit bf4ae4c796496ce2f296ca1cf282ee146951bb5c[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 16:28:50 2025 +0500
+
+    customer dash
+
+[33mcommit 3243256612f35c973ca69f1924939593e9d609e8[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 13:10:28 2025 +0500
+
+    finall regi bus
+
+[33mcommit 33033672cd0f83eaefa081a7ad36d33b24ee44ec[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 13:05:48 2025 +0500
+
+    regi for busi
+
+[33mcommit 3833e270d707bb83047b0ad0abee6586863b33fd[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 12:48:43 2025 +0500
+
+    final regi login
+
+[33mcommit 1e2262bb4a2a2203ca3f2af2f719024ba0b7d327[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 12:28:52 2025 +0500
+
+    fixed front
+
+[33mcommit d493ef54ff3698cb53bdf6917c61c99ed7df4c63[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Wed Apr 9 11:27:54 2025 +0500
+
+    fixed the underline
+
+[33mcommit 44ddc46878e3545413e5ce4d8571f4153dcd4e13[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Wed Apr 9 11:25:00 2025 +0500
+
+    added assets to public because were not working on deployment
+
+[33mcommit d48bb6ef2d7626efd65d09139e545c4e7f3f1498[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Wed Apr 9 10:58:03 2025 +0500
+
+    have made it more modularized, please start working on login, under the page that is called locked which is accessible at dashboard/locked
+
+[33mcommit 3f5b252b09b6b4dd0c34986f2b8cdb6abfb69dbd[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 04:38:49 2025 +0500
+
+    fixed landing
+
+[33mcommit daaa62a0872eb0907e727c2f46a93fe30bc0f402[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Wed Apr 9 03:22:34 2025 +0500
+
+    business regi
+
+[33mcommit 100e14a7e3576db97ce8e44018c62066decdbab2[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Tue Apr 8 18:58:00 2025 +0500
+
+    fixing front
+
+[33mcommit f0bba1a3d43fa3bfe1ff91a598851e1088df1263[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Tue Apr 8 17:40:01 2025 +0500
+
+    front end more
+
+[33mcommit 600e0e8dd634d9478a517b3e4b910f2058283d46[m
+Author: raahimausman <64039189+raahimausman@users.noreply.github.com>
+Date:   Tue Apr 8 17:29:46 2025 +0500
+
+    front end changes
+
+[33mcommit 464d96d15e0ffd2aa06dba46322445be55fb5d17[m
+Author: Ali Abbas <alizaidi22003@gmail.com>
+Date:   Sat Mar 29 16:54:45 2025 +0500
+
+    changed the entire strucute and added the code for login.

@@ -1,0 +1,38 @@
+.tabs {
+  display: flex;
+  margin-bottom: 40px;
+  width: 100%;
+  justify-content: space-between; /* Evenly distribute tabs */
+}
+
+.tab {
+  font-size: 20px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 15px;
+  text-align: center;
+  flex: 1; /* Each tab takes equal space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 250px; /* Limit maximum width */
+}
+
+.tab-inactive {
+  color: #787878;
+}
+
+.tab-active {
+  color: #f7f4f1;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-width: 100px; /* Limit indicator width for better aesthetics */
+  height: 3px;
+  background: #a81129;
+}

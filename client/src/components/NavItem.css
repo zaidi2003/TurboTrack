@@ -1,0 +1,50 @@
+/* NavItem.css */
+.nav-item {
+  position: relative;
+  width: 241px;
+  height: 44px;
+  margin-bottom: 12px;
+  margin-left: 18px; 
+}
+
+.nav-item-text {
+  position: absolute;
+  left: 41px;
+  top: 12px;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.nav-item-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 241px;
+  height: 44px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+/* Active state */
+.nav-item.active .nav-item-text {
+  color: #ff3957;
+}
+
+.nav-item.active .nav-item-border {
+  border-color: #cb3939;
+}
+
+/* Hover state - only apply to inactive items */
+.nav-item:not(.active):hover .nav-item-text {
+  background: linear-gradient(90deg, rgba(168, 17, 41, 1) 0%, rgba(161, 55, 73, 1) 0%, rgba(90, 31, 40, 1) 99%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-item:not(.active):hover .nav-item-border {
+  border-color: rgba(90, 31, 40, 0.5);
+}

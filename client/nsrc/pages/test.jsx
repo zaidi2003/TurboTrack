@@ -1,4 +1,4 @@
-import SideNavBar from "../components/SideNavBar";
+import SideNavbar from "./SideNavBar"; // Adjust the path if needed
 
 const Test = () => {
   // Dummy user data for testing
@@ -9,7 +9,7 @@ const Test = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
-      <SideNavBar data={data} />
+      <SideNavbar data={data} />
 
       {/* Main content */}
       <div className="ml-[18%] p-6 w-full">

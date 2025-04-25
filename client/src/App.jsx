@@ -1,8 +1,25 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Dashboard, HomeLayout, Landing, Login, Logout, Register, BecomeAPartner, Test, NotFound, ChangePassword, Account } from "./pages";
-import { ToastContainer, toast } from 'react-toastify';
+import {
+  Dashboard,
+  HomeLayout,
+  Landing,
+  Login,
+  Logout,
+  Register,
+  BecomeAPartner,
+  Test,
+  NotFound,
+ // ChangePassword,
+  Account,
+  Booking,
+  SheetBooking,
+  PaymentPage, 
+} from "./pages";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DashboardRoutes from "./routes/dashboardRoutes";
-import Booking from "./pages/Booking";
+import { UserProvider } from "./context/UserContext";
 
 const router = createBrowserRouter([
   {
@@ -13,13 +30,13 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
+      // {
+      //   path: "change-password",
+      //   element: <ChangePassword />,
+      // },
       {
-        path : "change-password",
-        element : <ChangePassword />,
-      },
-      {
-        path : "account",
-        element : <Account />,
+        path: "account",
+        element: <Account />,
       },
       {
         path: "login",
@@ -38,32 +55,39 @@ const router = createBrowserRouter([
         element: <BecomeAPartner />,
       },
       {
-        path: "dashboard/*", 
-        element: <DashboardRoutes />, 
+        path: "dashboard/*",
+        element: <DashboardRoutes />,
       },
       {
-        path: "test", 
-        element: <Test />, 
+        path: "test",
+        element: <Test />,
       },
       {
-        path: "bookings/*", 
-        element: <Booking/>, 
+        path: "bookings", 
+        element: <Booking />,
+      },
+      {
+        path: "bookings/sheet/:trackName",
+        element: <SheetBooking />,
+      },
+      {
+        path: "bookings/sheet/:trackName/checkout", 
+        element: <PaymentPage />,
       },
       {
         path: "*",
         element: <NotFound />,
       },
-      
     ],
   },
 ]);
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <RouterProvider router={router} />
-      <ToastContainer position='top-center' />
-    </>
+      <ToastContainer position="top-center" />
+    </UserProvider>
   );
 }
 

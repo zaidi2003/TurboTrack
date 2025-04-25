@@ -32,12 +32,16 @@ const ChangePassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/v1/change-password`, // Using base URL from environment variables
+      const rawToken = localStorage.getItem("auth");
+      const token = rawToken ? rawToken.replace(/^"|"$/g, "") : "";
+
+      const response = await axios.post(
+        // `${process.env.REACT_APP_BASE_URL}/api/v1/change-password`, // Using base URL from environment variables
+        `http://localhost:3000/api/v1/users/change-password`,
         { currPassword, newPassword },
         {
           headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Add your auth token here
+        Authorization: `Bearer ${token}`, // Add your auth token here
           },
         }
       );
@@ -47,6 +51,7 @@ const ChangePassword = () => {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
+      console.error("Error: ", error);
       toast.error(error.response?.data?.msg || "Something went wrong!");
     } finally {
       setLoading(false);

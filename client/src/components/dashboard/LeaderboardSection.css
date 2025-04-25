@@ -1,0 +1,88 @@
+/* LeaderboardSection.css */
+.leaderboard-section {
+  width: 100%;
+}
+
+/* Time filter tabs */
+.time-filter-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.time-filter-tab {
+  background: none;
+  border: none;
+  color: #808080;
+  font-family: "Readex Pro", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 0;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.time-filter-tab:hover {
+  color: #C9C0C0;
+}
+
+.time-filter-tab.active {
+  color: white;
+}
+
+/* Active indicator line */
+.time-filter-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #7B0303;
+  border-radius: 1px;
+}
+
+/* Leaderboard container */
+.leaderboard-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leaderboard-empty {
+  color: #C9C0C0;
+  font-family: "Readex Pro", sans-serif;
+  text-align: center;
+  padding: 20px 0;
+  opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .time-filter-tabs {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .time-filter-tab {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .time-filter-tabs {
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .time-filter-tab {
+    font-size: 12px;
+    padding: 3px 0;
+  }
+  
+  .leaderboard-container {
+    gap: 8px;
+  }
+}

@@ -1,0 +1,55 @@
+/* common-components.css */
+
+/* Card styles (for Welcome Card and Journey Card) */
+.dashboard-card {
+  background: linear-gradient(
+    90deg,
+    black 26%,
+    #1b1b1b 53%,
+    #1f1f1f 74%,
+    #242424 83%,
+    #272727 93%
+  );
+  border-radius: 20px;
+  border: 0.5px solid rgba(115, 115, 115, 0.5);
+  padding: 30px;
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card title */
+.dashboard-card-title {
+  color: #c9c0c0;
+  font-size: 26px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 20px;
+  }
+  
+  .dashboard-card-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-card {
+    padding: 15px;
+  }
+  
+  .dashboard-card-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+}
+     
+

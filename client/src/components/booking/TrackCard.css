@@ -1,0 +1,46 @@
+.track-item {
+  background: rgba(60, 60, 60, 0.5);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.track-name {
+  color: #c0c0c0;
+  font-size: 15px;
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 600;
+}
+
+.book-button {
+  background: linear-gradient(
+    90deg,
+    #300101 6%,
+    #3a0202 20%,
+    #410202 27%,
+    #480202 35%,
+    #510202 48%,
+    #690303 62%,
+    #740303 73%,
+    #7b0303 84%,
+    #960404 95%
+  );
+  border: none;
+  border-radius: 12px;
+  padding: 8px 28px;
+  color: #f7f4f1;
+  font-size: 12px;
+  font-family: "Readex Pro", sans-serif;
+  transition: all 0.3s ease;
+}
+
+.disabled-button {
+  background: #4a4a4a !important;
+  color: #a0a0a0 !important;
+  border: 1px solid #6a6a6a !important;
+  box-shadow: none !important;
+}
