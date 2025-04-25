@@ -8,10 +8,9 @@ const Logout = () => {
   const { logout } = useUser();
   
   useEffect(() => {
-    // Use the logout function from context instead of direct localStorage manipulation
+
     logout();
     
-    // Short timeout to ensure state updates before navigation
     setTimeout(() => {
       navigate("/");
     }, 10);

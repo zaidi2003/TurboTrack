@@ -5,7 +5,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  background: black; /* solid black background first */
+  background: black; 
   background: linear-gradient(90deg, black 26%, #1B1B1B 53%, #1F1F1F 74%, #242424 83%, #272727 93%);
   border: 2px rgba(242, 242, 242, 0.2) solid;
   opacity: 1;
