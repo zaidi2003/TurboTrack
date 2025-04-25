@@ -1,50 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SideNavBar, UserProfile } from "../components";
-import { TabBar } from "../components/booking";
+import { TabBar, TrackCard, LoadingSpinner, DiscoverTab , CurrentBookingsTab, BookingHistoryTab} from "../components/booking";
 import { toast } from "react-toastify";
 import axios from 'axios';
-
+import { useUser } from "../context/UserContext";
 
 
 const Booking = () => {
-  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+  const { token, userData } = useUser();
   const [activeTab, setActiveTab] = useState("discover");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const tracks = [
-    {
-      id: 1,
-      name: "Kool Karterz",
-      slots: [
-        { id: 1, time: "12:00 PM", booked: true },
-        { id: 2, time: "12:30 PM", booked: false },
-        { id: 3, time: "1:00 PM", booked: false },
-      ],
-    },
-    {
-      id: 2,
-      name: "Kartz 4 Karterz",
-      slots: [
-        { id: 4, time: "12:00 PM", booked: false },
-        { id: 5, time: "12:30 PM", booked: true },
-        { id: 6, time: "1:00 PM", booked: false },
-      ],
-    },
-    {
-      id: 3,
-      name: "Karting Karterz",
-      slots: [
-        { id: 7, time: "2:00 PM", booked: true },
-        { id: 8, time: "2:30 PM", booked: false },
-        { id: 9, time: "3:00 PM", booked: false },
-      ],
-    },
-  ];
-
   const [currentBookings, setCurrentBookings] = useState([]);
   const [bookingHistory, setBookingHistory] = useState([]);
+  const [tracks, setTracks] = useState([]);
   
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState(null);
@@ -52,78 +24,119 @@ const Booking = () => {
   const [showPaymentSuccessModal, setShowPaymentSuccessModal] = useState(false);
   const [newBookingDetails, setNewBookingDetails] = useState(null);
   
-  useEffect(() => {
-    if (activeTab === "current" && currentBookings.length === 0) {
-      setCurrentBookings([]);
+  // Fetch tracks from API
+  const fetchTracks = async () => {
+    setIsLoading(true);
+    try {
+      // Replace with actual API call when backend is ready
+      // const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/tracks`, {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // });
+      // setTracks(response.data.tracks || []);
+
+      // Mock data until backend is ready
+      setTracks([
+        {
+          id: 1,
+          name: "Kool Karterz",
+          description: "An exciting track for beginners and experts alike",
+          length: "1.5 km",
+          price: 1500,
+          ageLimit: 12,
+          slots: [
+            { id: 1, time: "12:00 PM", booked: true },
+            { id: 2, time: "12:30 PM", booked: false },
+            { id: 3, time: "1:00 PM", booked: false },
+          ],
+        },
+        {
+          id: 2,
+          name: "Kartz 4 Karterz",
+          description: "Professional track with challenging corners",
+          length: "2.2 km",
+          price: 3000,
+          ageLimit: 16,
+          slots: [
+            { id: 4, time: "12:00 PM", booked: false },
+            { id: 5, time: "12:30 PM", booked: true },
+            { id: 6, time: "1:00 PM", booked: false },
+          ],
+        },
+        {
+          id: 3,
+          name: "Karting Karterz",
+          description: "Family-friendly track for all skill levels",
+          length: "1.8 km",
+          price: 2500,
+          ageLimit: 10,
+          slots: [
+            { id: 7, time: "2:00 PM", booked: true },
+            { id: 8, time: "2:30 PM", booked: false },
+            { id: 9, time: "3:00 PM", booked: false },
+          ],
+        },
+      ]);
+    } catch (error) {
+      toast.error("Failed to fetch available tracks");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [currentBookings, activeTab]);
+  };
 
-  useEffect(() => {
-    if (location.state?.paymentSuccess && location.state?.bookingDetails) {
-      const newBooking = location.state.bookingDetails;
-      setNewBookingDetails(newBooking);
+  // Fetch user bookings from API
+  const fetchUserBookings = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/get-user-bookings`, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       
-      setCurrentBookings(prev => [...prev, newBooking]);
+      const fetchedBookings = response.data.bookings || [];
       
-      setShowPaymentSuccessModal(true);
-      
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location.state, navigate]);
-
-  // useEffect(() => {
-
-  //   if (currentBookings.length === 0) {
-  //     setCurrentBookings([
-  //       {
-  //         id: "book-101",
-  //         trackName: "Kartz 4 Karterz",
-  //         date: new Date().toISOString(),
-  //         time: "2:30 PM - 3:00 PM",
-  //         price: 3000,
-  //       },
-  //     ]);
-  //   }
-  // }, [currentBookings.length]);
-
-  useEffect(() => {
-    const fetchBookings = async () => {
-      if (currentBookings.length === 0) {
-        // Fetch user bookings from the API
-        try {
-          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/get-user-bookings`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const fetchedBookings = response.data.bookings || [];
-          
-          if (fetchedBookings.length === 0) {
-            // Fallback to default if no bookings
-            setCurrentBookings([
-              {
-                id: "book-101",
-                trackName: "Kartz 4 Karterz",
-                date: new Date().toISOString(),
-                time: "2:30 PM - 3:00 PM",
-                price: 3000,
-              },
-            ]);
+      if (fetchedBookings.length === 0) {
+        // Fallback to default if no bookings
+        setCurrentBookings([
+          {
+            id: "book-101",
+            trackName: "Kartz 4 Karterz",
+            date: new Date().toISOString(),
+            time: "2:30 PM - 3:00 PM",
+            price: 3000,
+          },
+        ]);
+      } else {
+        // Process bookings - separate current from historical
+        const now = new Date();
+        const current = [];
+        const history = [];
+        
+        fetchedBookings.forEach(booking => {
+          const bookingDate = new Date(booking.date);
+          if (bookingDate >= now) {
+            current.push(booking);
           } else {
-            setCurrentBookings(fetchedBookings);
+            history.push(booking);
           }
-        } catch (error) {
-          console.error("Error fetching user bookings:", error);
-        }
+        });
+        
+        setCurrentBookings(current);
+        setBookingHistory(history);
       }
-    };
-  
-    fetchBookings();
-  }, [token, currentBookings.length]);
-  
-
-  useEffect(() => {
-    if (bookingHistory.length === 0) {
+    } catch (error) {
+      console.error("Error fetching user bookings:", error);
+      
+      // Fallback data if API fails
+      setCurrentBookings([
+        {
+          id: "book-101",
+          trackName: "Kartz 4 Karterz",
+          date: new Date().toISOString(),
+          time: "2:30 PM - 3:00 PM",
+          price: 3000,
+        },
+      ]);
+      
       setBookingHistory([
         {
           id: "book-099",
@@ -141,27 +154,58 @@ const Booking = () => {
         },
       ]);
     }
-  }, [bookingHistory.length]);
+  };
 
+  // Load initial data
+  useEffect(() => {
+    fetchTracks();
+    fetchUserBookings();
+  }, [token]);
 
- 
-  
+  // Handle payment success from redirect
+  useEffect(() => {
+    if (location.state?.paymentSuccess && location.state?.bookingDetails) {
+      const newBooking = location.state.bookingDetails;
+      setNewBookingDetails(newBooking);
+      
+      setCurrentBookings(prev => [...prev, newBooking]);
+      
+      setShowPaymentSuccessModal(true);
+      
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, navigate]);
+
   const handleCancelBooking = (booking) => {
     setBookingToCancel(booking);
     setShowCancelModal(true);
   };
   
-  const confirmCancelBooking = () => {
+  const confirmCancelBooking = async () => {
     if (bookingToCancel) {
-      const idToCancel = bookingToCancel.id;
-      
-      const updatedBookings = currentBookings.filter(booking => booking.id !== idToCancel);
-      setCurrentBookings(updatedBookings);
-      
-      toast.info("Booking cancelled successfully");
-      
-      setShowCancelModal(false);
-      setBookingToCancel(null);
+      setIsLoading(true);
+      try {
+        // API call to cancel booking (uncomment when backend is ready)
+        // await axios.delete(
+        //   `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/${bookingToCancel.id}`,
+        //   { headers: { Authorization: `Bearer ${token}` } }
+        // );
+        
+        // Optimistic UI update
+        const updatedBookings = currentBookings.filter(
+          booking => booking.id !== bookingToCancel.id
+        );
+        setCurrentBookings(updatedBookings);
+        
+        toast.success("Booking cancelled successfully");
+      } catch (error) {
+        toast.error("Failed to cancel booking");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+        setShowCancelModal(false);
+        setBookingToCancel(null);
+      }
     }
   };
 
@@ -173,193 +217,6 @@ const Booking = () => {
       month: "short",
       day: "numeric",
     });
-  };
-
-  const BookingCard = ({ booking, showCancelButton }) => {
-    return (
-      <div
-        style={{
-          background: "rgba(20, 20, 20, 0.7)",
-          borderRadius: 15,
-          border: "1px solid #3d3d3d",
-          padding: "30px",
-          marginBottom: "20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div>
-          <div
-            style={{
-              color: "#ff7575",
-              fontFamily: "Readex Pro, sans-serif",
-              fontSize: 20,
-              fontWeight: 600,
-              marginBottom: 10,
-            }}
-          >
-            {booking.trackName}
-          </div>
-          <div
-            style={{
-              color: "#c0c0c0",
-              fontFamily: "Readex Pro, sans-serif",
-              fontSize: 14,
-            }}
-          >
-            {formatDate(booking.date)} • {booking.time}
-          </div>
-          <div
-            style={{
-              color: "#f7f4f1",
-              fontFamily: "Readex Pro, sans-serif",
-              fontSize: 16,
-              fontWeight: 600,
-              marginTop: 5,
-            }}
-          >
-            PKR {booking.price}
-          </div>
-        </div>
-
-        {showCancelButton && (
-          <button
-            style={{
-              background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
-              border: "none",
-              borderRadius: 8,
-              padding: "10px 30px",
-              color: "#f7f4f1",
-              fontSize: 16,
-              fontWeight: 600,
-              cursor: "pointer",
-              minWidth: 100,
-            }}
-            onClick={() => handleCancelBooking(booking)}
-          >
-            Cancel
-          </button>
-        )}
-      </div>
-    );
-  };
-
-  const EmptyState = ({ message }) => (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "rgba(20, 20, 20, 0.5)",
-        borderRadius: 15,
-        border: "1px solid #3d3d3d",
-        padding: "40px",
-        marginTop: "20px",
-        color: "#c0c0c0",
-        fontFamily: "Readex Pro, sans-serif",
-        fontSize: 16,
-      }}
-    >
-      {message}
-    </div>
-  );
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "discover":
-        return (
-          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
-            {tracks.map((track) => (
-              <TrackCard
-                key={track.id}
-                name={track.name}
-                onButtonClick={() =>
-                  navigate(`/bookings/sheet/${encodeURIComponent(track.name)}`, {
-                    state: { track },
-                  })
-                }
-              />
-            ))}
-          </div>
-        );
-      case "current":
-        return (
-          <div>
-            {currentBookings.length > 0 ? (
-              currentBookings.map((booking) => (
-                <BookingCard
-                  key={booking.id}
-                  booking={booking}
-                  showCancelButton={true}
-                />
-              ))
-            ) : (
-              <EmptyState message="You have no current bookings." />
-            )}
-          </div>
-        );
-      case "history":
-        return (
-          <div>
-            {bookingHistory.length > 0 ? (
-              bookingHistory.map((booking) => (
-                <BookingCard
-                  key={booking.id}
-                  booking={booking}
-                  showCancelButton={false}
-                />
-              ))
-            ) : (
-              <EmptyState message="You have no booking history." />
-            )}
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
-  const TrackCard = ({ name, onButtonClick }) => {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "rgba(255, 255, 255, 0.05)",
-          borderRadius: 16,
-          padding: "16px 24px",
-          marginBottom: 32,
-        }}
-      >
-        <div
-          style={{
-            color: "#f7f4f1",
-            fontFamily: "Readex Pro, sans-serif",
-            fontSize: 26,
-            fontWeight: 700,
-          }}
-        >
-          {name}
-        </div>
-        <button
-          style={{
-            background: "linear-gradient(90deg, #300101 6%, #7b0303 50%, #960404 95%)",
-            border: "none",
-            borderRadius: 15,
-            padding: "12px 20px",
-            color: "#f7f4f1",
-            fontSize: 14,
-            fontFamily: "Readex Pro, sans-serif",
-            cursor: "pointer",
-          }}
-          onClick={onButtonClick}
-        >
-          Book
-        </button>
-      </div>
-    );
   };
 
   const Modal = ({ show, title, message, onConfirm, onCancel, confirmText, cancelText }) => {
@@ -443,6 +300,50 @@ const Booking = () => {
         </div>
       </div>
     );
+  };
+
+  // Render the appropriate tab content
+  const renderTabContent = () => {
+    if (isLoading) {
+      return (
+        <div style={{ 
+          display: "flex", 
+          justifyContent: "center", 
+          marginTop: 50 
+        }}>
+          <LoadingSpinner size={50} />
+        </div>
+      );
+    }
+
+    switch (activeTab) {
+      case "discover":
+        return (
+          <DiscoverTab 
+            tracks={tracks} 
+            onBookTrack={(track) => navigate(`/bookings/sheet/${encodeURIComponent(track.name)}`, {
+              state: { track },
+            })}
+          />
+        );
+      case "current":
+        return (
+          <CurrentBookingsTab 
+            bookings={currentBookings}
+            onCancelBooking={handleCancelBooking}
+            formatDate={formatDate}
+          />
+        );
+      case "history":
+        return (
+          <BookingHistoryTab 
+            bookings={bookingHistory}
+            formatDate={formatDate}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
