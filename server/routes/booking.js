@@ -7,6 +7,6 @@ router.route('/create',makeBooking).post(makeBooking);
 router.route('/make-payment').post(makePayment);
 router.route('/get-user-bookings').get(authMiddleware,getUserBookings);
 router.route('/get-user-bookings-history').get(authMiddleware,getUserBookingsHistory);
-router.route('/cancel').post(cancelBooking);
+router.route('/cancel').post(authMiddleware,cancelBooking);
 router.route('/get-cancelled-bookings').get(getCancelledBookings);
 module.exports = router;

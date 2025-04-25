@@ -21,8 +21,6 @@ const Analytics = () => {
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/times`, axiosConfig);      
-      const { data } = response;
-      console.log("User data:", data);
       setData(data);
     } catch (error) {
       toast.error(error.response?.data?.msg || error.message);

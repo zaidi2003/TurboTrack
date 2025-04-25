@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SideNavBar, UserProfile } from "../components";
-import { TabBar, LoadingSpinner, DiscoverTab, CurrentBookingsTab, BookingHistoryTab } from "../components/booking";
+import { TabBar, TrackCard, LoadingSpinner, DiscoverTab , CurrentBookingsTab, BookingHistoryTab} from "../components/booking";
 import { toast } from "react-toastify";
 import axios from 'axios';
 import { useUser } from "../context/UserContext";
+
 
 const Booking = () => {
   const { token, userData } = useUser();
@@ -27,11 +28,14 @@ const Booking = () => {
   const fetchTracks = async () => {
     setIsLoading(true);
     try {
-      // Fetch tracks from the backend
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setTracks(response.data);
+      // Replace with actual API call when backend is ready
+      // const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/tracks`, {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // });
+      // setTracks(response.data.tracks || []);
+
+      // Mock data until backend is ready
+      
     } catch (error) {
       toast.error("Failed to fetch available tracks");
       console.error(error);
@@ -43,33 +47,62 @@ const Booking = () => {
   // Fetch user bookings from API
   const fetchUserBookings = async () => {
     try {
-      // Get current bookings
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/get-user-bookings`, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
-      if (response.data && response.data.bookings) {
-        setCurrentBookings(response.data.bookings.filter(booking => booking.status !== "cancelled"));
-      }
+      const fetchedBookings = response.data.bookings || [];
+      console.log("Fetched bookings:", fetchedBookings);  
+      if (fetchedBookings.length === 0) {
+        // Fallback to default if no bookings
+        
+      } else {
+        // Process bookings - separate current from historical
+        const now = new Date();
+        const current = [];
+        const history = [];
+        
+        fetchedBookings.forEach(booking => {
+          const bookingDate = new Date(booking.date);
+          
+          if(booking.status === "pending") {
+            current.push(booking);
+          } else {
 
-      // Get booking history
-      const historyResponse = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/get-user-bookings-history`, 
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      if (historyResponse.data && historyResponse.data.bookings) {
-        setBookingHistory(historyResponse.data.bookings);
+            history.push(booking);
+          }
+        });
+        
+        setCurrentBookings(current);
+        setBookingHistory(history);
       }
     } catch (error) {
       console.error("Error fetching user bookings:", error);
-      toast.error("Failed to fetch booking information");
+      
+      
+      
+      setBookingHistory([
+        {
+          id: "book-099",
+          trackName: "Kool Karterz",
+          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          time: "1:00 PM - 1:30 PM",
+          price: 1500,
+        },
+        {
+          id: "book-098",
+          trackName: "Karting Karterz",
+          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+          time: "11:00 AM - 11:30 AM",
+          price: 5000,
+        },
+      ]);
     }
   };
 
   // Load initial data
-  useEffect(() => {
+    useEffect(() => {
     fetchTracks();
     fetchUserBookings();
   }, [token]);
@@ -84,7 +117,6 @@ const Booking = () => {
       
       setShowPaymentSuccessModal(true);
       
-      // Clean up the location state
       navigate(location.pathname, { replace: true });
     }
   }, [location.state, navigate]);
@@ -98,16 +130,21 @@ const Booking = () => {
     if (bookingToCancel) {
       setIsLoading(true);
       try {
-        // API call to cancel booking
-        await axios.put(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/cancel/${bookingToCancel._id}`,
-          { status: "cancelled" },
-          { headers: { Authorization: `Bearer ${token}` } }
+        console.log("Cancelling booking:", bookingToCancel);
+
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/cancel`,
+          {
+            bookingId: bookingToCancel._id, // or bookingToCancel.id
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // if your backend uses auth
+            },
+          }
         );
-        
-        // Update UI
         const updatedBookings = currentBookings.filter(
-          booking => booking._id !== bookingToCancel._id
+          booking => booking.id !== bookingToCancel.id
         );
         setCurrentBookings(updatedBookings);
         
@@ -122,6 +159,8 @@ const Booking = () => {
       }
     }
   };
+
+  
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -235,7 +274,7 @@ const Booking = () => {
         return (
           <DiscoverTab 
             tracks={tracks} 
-            onBookTrack={(track) => navigate(`/bookings/sheet/${encodeURIComponent(track.trackName)}`, {
+            onBookTrack={(track) => navigate(`/bookings/sheet/${encodeURIComponent(track.name)}`, {
               state: { track },
             })}
           />
@@ -362,7 +401,7 @@ const Booking = () => {
         show={showPaymentSuccessModal}
         title="Payment Confirmed!"
         message={newBookingDetails ? 
-          `Your booking for ${newBookingDetails.track} on ${formatDate(newBookingDetails.date)} at ${newBookingDetails.timeSlot} has been confirmed.` : 
+          `Your booking for ${newBookingDetails.trackName} on ${formatDate(newBookingDetails.date)} at ${newBookingDetails.time} has been confirmed.` : 
           "Your booking has been confirmed."}
         onConfirm={() => {
           setShowPaymentSuccessModal(false);
@@ -376,7 +415,7 @@ const Booking = () => {
         show={showCancelModal}
         title="Cancel Booking"
         message={bookingToCancel ? 
-          `Are you sure you want to cancel your booking for ${bookingToCancel.track} on ${formatDate(bookingToCancel.date)} at ${bookingToCancel.timeSlot}?` : 
+          `Are you sure you want to cancel your booking for ${bookingToCancel.trackName} on ${formatDate(bookingToCancel.date)} at ${bookingToCancel.timeSlot}?` : 
           "Are you sure you want to cancel this booking?"}
         onConfirm={confirmCancelBooking}
         onCancel={() => {

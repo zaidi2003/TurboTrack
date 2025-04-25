@@ -2,9 +2,13 @@ const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema({
     track: {
-        type: String,
-        required: [true, "Please provide the track"],
-        enum: ["2F2F","Sportszilla","Velocity Circuit"]
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Track",
+        required: [true, "Please provide the track ID"],
+    },
+    subtrackId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, "Please provide the subtrack ID"],
     },
 
     timeSlot: {

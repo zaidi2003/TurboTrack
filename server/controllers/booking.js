@@ -1,22 +1,31 @@
 const User = require("../models/User");
 const Booking = require("../models/booking");
+const Track = require("../models/tracks");
 
 const axios = require("axios");
 
-
 const makeBooking = async (req, res) => {
   try {
-    const { track, timeSlot, date, email } = req.body;
+    const { track, subtrackId, timeSlot, date, email } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
+
+    const foundTrack = await Track.findById(track);
+    if (!foundTrack) {
       return res.status(404).json({
-        message: "User with this email does not exist",
+        message: "Track not found",
+      });
+    }
+
+    const foundSubtrack = foundTrack.subtracks.id(subtrackId);
+    if (!foundSubtrack) {
+      return res.status(400).json({
+        message: "Invalid subtrack for the selected track",
       });
     }
 
     const newBooking = new Booking({
       track,
+      subtrackId,
       timeSlot,
       date,
       email,
@@ -27,6 +36,7 @@ const makeBooking = async (req, res) => {
     res.status(201).json({
       message: "Booking created successfully!",
       booking: savedBooking,
+      subtrackCost: foundSubtrack.cost, // Optional: include cost in response
     });
   } catch (error) {
     res.status(400).json({
@@ -35,7 +45,6 @@ const makeBooking = async (req, res) => {
     });
   }
 };
-
 
 
 const makePayment = async (req, res) => {
@@ -77,41 +86,47 @@ const makePayment = async (req, res) => {
 
 const getUserBookings = async (req, res) => {
   try {
-    const luckyNumber = Math.floor(Math.random() * 100);
     const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
     
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    const bookings = await Booking.find({ email: user.email, status: "pending" });
+    const bookings = await Booking.find({ email: user.email });
+
     if (!bookings || bookings.length === 0) {
       return res.status(404).json({ msg: "No bookings found for this user" });
     }
-    const bookingsWithLuckyNumber = bookings.map((booking) => ({
-      ...booking.toObject(),
-      luckyNumber,
-    }));
+
+    // Add track and subtrack details to each booking
+    const bookingsWithDetails = await Promise.all(
+      bookings.map(async (booking) => {
+        const trackDoc = await Track.findById(booking.track);
+        const subtrack = trackDoc?.subtracks.id(booking.subtrackId);
+
+        return {
+          ...booking.toObject(),
+          trackName: trackDoc?.trackName || null,
+          subtrack: subtrack ? {
+            name: subtrack.name,
+            cost: subtrack.cost,
+          } : null,
+        };
+      })
+    );
+
     res.status(200).json({
       msg: "Bookings retrieved successfully",
-      bookings: bookingsWithLuckyNumber,
-      user: {
-        name: user.name,
-        email: user.email,
-        wins: user.wins,
-        podiums: user.podiums,
-        sessions: user.sessions,
-        role: user.role,
-      },
+      bookings: bookingsWithDetails,
     });
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       msg: "Error retrieving bookings",
       error: error.message,
     });
   }
 };
+
 
 
 const getUserBookingsHistory = async (req, res) => {
@@ -155,21 +170,22 @@ const getUserBookingsHistory = async (req, res) => {
 
 const cancelBooking = async (req, res) => {
   try {
-    //const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
-    userEmail = "yapping@gmail.com"
+    const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
     const booking = await Booking.findOne({ _id: req.body.bookingId });
 
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    // if (booking.email !== userEmail) {
-    //   return res.status(403).json({ message: "You are not authorized to cancel this booking" });
-    // }
+    if (booking.email !== user.email
 
-    // if (booking.status !== "pending") {
-    //   return res.status(400).json({ message: "Only pending bookings can be cancelled" });
-    // }
+    ) {
+      return res.status(403).json({ message: "You are not authorized to cancel this booking" });
+    }
+
+    if (booking.status !== "pending") {
+      return res.status(400).json({ message: "Only pending bookings can be cancelled" });
+    }
 
     booking.status = "cancelled";
     await booking.save();
