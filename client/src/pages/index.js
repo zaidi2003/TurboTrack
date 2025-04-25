@@ -13,8 +13,8 @@ export { default as NotFound } from "./NotFound";
 //export { default as ChangePassword } from "./ChangePassword";
 export { default as Account } from "./Account";
 export { default as PaymentPage } from "./PaymentPage";
-export { default as Chat } from "./Chat";      // ← new
-export { default as Analytics } from "./Analytics"; // ← new
+export { default as Chat } from "./Chat";  
+export { default as Analytics } from "./Analytics"; 
 export { default as CurrentSession } from "./CurrentSession";
 export { default as ForgotPassword } from "./ForgotPassword";
 export { default as Game } from "./Game";
