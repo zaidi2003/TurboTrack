@@ -4,24 +4,47 @@ const Times = require("../models/times");
 
 const times = async (req, res) => {
   try {
-    const luckyNumber = Math.floor(Math.random() * 100);
     const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
-    
+
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
 
     const userTimes = await Times.find({ email: user.email });
 
-    if (!userTimes) {
+    if (!userTimes || userTimes.length === 0) {
       return res.status(404).json({ msg: "No time entries found for this user" });
     }
+
+    const groupedTimes = userTimes.reduce((acc, timeEntry) => {
+      const { trackName, subtrackName, times } = timeEntry;
+      if (!acc[trackName]) {
+        acc[trackName] = {};
+      }
+      if (!acc[trackName][subtrackName]) {
+        acc[trackName][subtrackName] = [];
+      }
+      acc[trackName][subtrackName].push(...times);
+      return acc;
+    }, {});
+
+    const aggregatedTimes = Object.entries(groupedTimes).reduce((result, [trackName, subtracks]) => {
+      result[trackName] = Object.entries(subtracks).reduce((subResult, [subtrackName, times]) => {
+        const average = times.reduce((sum, time) => sum + time, 0) / times.length;
+        const best = Math.min(...times);
+        const worst = Math.max(...times);
+        subResult[subtrackName] = { average, best, worst };
+        return subResult;
+      }, {});
+      return result;
+    }, {});
+
     res.json({
-      msg: "User times retrieved successfully",
-      userTimes,
+      msg: "User times aggregated by track and subtrack",
+      aggregatedTimes,
     });
   } catch (err) {
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ msg: "Server error", error: err.message });
   }
 };
 
