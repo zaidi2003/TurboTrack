@@ -113,8 +113,48 @@ const getUserBookings = async (req, res) => {
   }
 };
 
+
+const getUserBookingsHistory = async (req, res) => {
+  try {
+    const luckyNumber = Math.floor(Math.random() * 100);
+    const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
+    
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    const bookings = await Booking.find({ email: user.email });
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ msg: "No bookings found for this user" });
+    }
+    const bookingsWithLuckyNumber = bookings.map((booking) => ({
+      ...booking.toObject(),
+      luckyNumber,
+    }));
+    res.status(200).json({
+      msg: "Bookings retrieved successfully",
+      bookings: bookingsWithLuckyNumber,
+      user: {
+        name: user.name,
+        email: user.email,
+        wins: user.wins,
+        podiums: user.podiums,
+        sessions: user.sessions,
+        role: user.role,
+      },
+    });
+  }
+  catch (error) {
+    res.status(500).json({
+      msg: "Error retrieving bookings",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   makeBooking,
   makePayment,
   getUserBookings,
+  getUserBookingsHistory,
 };
