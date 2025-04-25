@@ -35,7 +35,47 @@ const Booking = () => {
       // setTracks(response.data.tracks || []);
 
       // Mock data until backend is ready
-      
+      setTracks([
+        {
+          id: 1,
+          name: "Kool Karterz",
+          description: "An exciting track for beginners and experts alike",
+          length: "1.5 km",
+          price: 1500,
+          ageLimit: 12,
+          slots: [
+            { id: 1, time: "12:00 PM", booked: true },
+            { id: 2, time: "12:30 PM", booked: false },
+            { id: 3, time: "1:00 PM", booked: false },
+          ],
+        },
+        {
+          id: 2,
+          name: "Kartz 4 Karterz",
+          description: "Professional track with challenging corners",
+          length: "2.2 km",
+          price: 3000,
+          ageLimit: 16,
+          slots: [
+            { id: 4, time: "12:00 PM", booked: false },
+            { id: 5, time: "12:30 PM", booked: true },
+            { id: 6, time: "1:00 PM", booked: false },
+          ],
+        },
+        {
+          id: 3,
+          name: "Karting Karterz",
+          description: "Family-friendly track for all skill levels",
+          length: "1.8 km",
+          price: 2500,
+          ageLimit: 10,
+          slots: [
+            { id: 7, time: "2:00 PM", booked: true },
+            { id: 8, time: "2:30 PM", booked: false },
+            { id: 9, time: "3:00 PM", booked: false },
+          ],
+        },
+      ]);
     } catch (error) {
       toast.error("Failed to fetch available tracks");
       console.error(error);
@@ -81,23 +121,6 @@ const Booking = () => {
       console.error("Error fetching user bookings:", error);
       
       
-      
-      setBookingHistory([
-        {
-          id: "book-099",
-          trackName: "Kool Karterz",
-          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          time: "1:00 PM - 1:30 PM",
-          price: 1500,
-        },
-        {
-          id: "book-098",
-          trackName: "Karting Karterz",
-          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-          time: "11:00 AM - 11:30 AM",
-          price: 5000,
-        },
-      ]);
     }
   };
 
