@@ -9,14 +9,15 @@ import {
   BecomeAPartner,
   Test,
   NotFound,
- // ChangePassword,
+  Game,
   Chat,
   Account,
   Booking,
   SheetBooking,
   PaymentPage, 
   Analytics,
-  CurrentSession
+  CurrentSession,
+  ForgotPassword
 } from "./pages";
 
 import { ToastContainer } from "react-toastify";
@@ -33,10 +34,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
       },
-      // {
-      //   path: "change-password",
-      //   element: <ChangePassword />,
-      // },
+      {
+        path: "game",
+        element: <Game />,
+      },
       {
         path: "account",
         element: <Account />,
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
       {
         path : "analytics",
         element: <Analytics />
+      },
+      {
+        path : "resetpassword",
+        element: <ForgotPassword />
       },
       {
         path: "current-session",

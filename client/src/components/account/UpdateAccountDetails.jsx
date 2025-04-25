@@ -98,7 +98,7 @@ const UpdateAccountDetails = ({ userData: initialUserData, onAccountUpdate }) =>
                 marginBottom: 6,
               }}
             >
-              Name <span style={{ color: "#ff7575" }}>*</span>
+              Username <span style={{ color: "#ff7575" }}>*</span>
             </label>
             <input
               type="text"
@@ -150,113 +150,9 @@ const UpdateAccountDetails = ({ userData: initialUserData, onAccountUpdate }) =>
               required
             />
           </div>
-
-          {/* Display Wins (Read-only) */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                color: "#f7f4f1",
-                fontFamily: "Readex Pro, sans-serif",
-                fontSize: 12,
-                marginBottom: 6,
-              }}
-            >
-              Wins
-            </label>
-            <input
-              type="text"
-              value={userData.wins || 0}
-              style={{
-                width: "100%",
-                height: 38,
-                background: "rgba(240, 240, 240, 0.05)",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 12px",
-                color: "#f7f4f1",
-                fontSize: 14,
-                cursor: "not-allowed",
-              }}
-              disabled
-            />
-          </div>
-
-          {/* Display Podiums (Read-only) */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                color: "#f7f4f1",
-                fontFamily: "Readex Pro, sans-serif",
-                fontSize: 12,
-                marginBottom: 6,
-              }}
-            >
-              Podiums
-            </label>
-            <input
-              type="text"
-              value={userData.podiums || 0}
-              style={{
-                width: "100%",
-                height: 38,
-                background: "rgba(240, 240, 240, 0.05)",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 12px",
-                color: "#f7f4f1",
-                fontSize: 14,
-                cursor: "not-allowed",
-              }}
-              disabled
-            />
-          </div>
-
-          {/* Display Sessions (Read-only) */}
-          <div>
-            <label
-              style={{
-                display: "block",
-                color: "#f7f4f1",
-                fontFamily: "Readex Pro, sans-serif",
-                fontSize: 12,
-                marginBottom: 6,
-              }}
-            >
-              Sessions
-            </label>
-            <input
-              type="text"
-              value={userData.sessions || 0}
-              style={{
-                width: "100%",
-                height: 38,
-                background: "rgba(240, 240, 240, 0.05)",
-                border: "none",
-                borderRadius: 8,
-                padding: "0 12px",
-                color: "#f7f4f1",
-                fontSize: 14,
-                cursor: "not-allowed",
-              }}
-              disabled
-            />
-          </div>
         </div>
 
         <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-end" }}>
-          <div 
-            style={{
-              color: "#f7f4f1",
-              fontSize: 12,
-              opacity: 0.7,
-              marginRight: "auto",
-              maxWidth: "70%"
-            }}
-          >
-            Note: Only password and profile picture can be updated at this time.
-          </div>
           <button
             type="submit"
             disabled={loading}

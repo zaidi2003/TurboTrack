@@ -39,7 +39,7 @@ const SideNavBar = () => {
       title: "SETTINGS",
       items: [
         { label: "Account", path: "/account" },
-        { label: "Help Center", path: "/help" },
+        { label: "Just for Fun ;)", path: "/game" },
         { 
           label: "Log Out", 
           path: "/logout",
