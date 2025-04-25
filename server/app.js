@@ -35,7 +35,7 @@ const start = async () => {
       console.log(`Server + WS listening on port ${PORT}`);
     });
   } catch (err) {
-    console.error(err);
+    //console.error(err);
   }
 };
 start();
