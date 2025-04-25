@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const ChangePassword = () => {
+const ForgotPassword = () => {
   const [currPassword, setCurrPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -268,4 +268,4 @@ const ChangePassword = () => {
   );
 };
 
-export default OLDChangePassword;
+export default ForgotPassword;

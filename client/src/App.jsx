@@ -16,7 +16,8 @@ import {
   SheetBooking,
   PaymentPage, 
   Analytics,
-  CurrentSession
+  CurrentSession,
+  ForgotPassword
 } from "./pages";
 
 import { ToastContainer } from "react-toastify";
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
       {
         path : "analytics",
         element: <Analytics />
+      },
+      {
+        path : "resetpassword",
+        element: <ForgotPassword />
       },
       {
         path: "current-session",

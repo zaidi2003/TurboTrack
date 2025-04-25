@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { useUser } from "../context/UserContext";
-import dayjs from "dayjs";   // tiny date-formatter (npm i dayjs)
+import dayjs from "dayjs";  
 
 import { UserProfile, SideNavBar } from "../components";
 
-//one-time socket shared across HMR reloads
 const ENDPOINT       = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 window.__tt_socket__ = window.__tt_socket__ || io(ENDPOINT, { autoConnect: false });
 const socket         = window.__tt_socket__;
@@ -16,14 +15,14 @@ export default function Chat() {
   const email      = userData.email    || "guest@email";
 
   const [messages, setMessages] = useState([]);
-  const [privateMsgs,setPrivate]  = useState({}); // {email:[]}
-  const [online,     setOnline]   = useState([]); // [{email, username, socketId}]
-  const [activeDM,   setActiveDM] = useState(null); // peer email
+  const [privateMsgs,setPrivate]  = useState({}); 
+  const [online,     setOnline]   = useState([]); 
+  const [activeDM,   setActiveDM] = useState(null); 
   const [input,    setInput]    = useState("");
   const messagesEndRef     = useRef(null);
   const chatBoxRef     = useRef(null);
 
-  //connect + register listeners (run once)
+
   useEffect(() => {
     if (!socket.connected) socket.connect();
 
@@ -64,7 +63,7 @@ export default function Chat() {
         socket.emit("registerMe", { email, username });
       }, [email, username]);
 
-  //auto-scroll on every new message
+
   useEffect(() => {
     const box = chatBoxRef.current;
     if (!box) return;
@@ -72,7 +71,7 @@ export default function Chat() {
     const { scrollHeight, clientHeight, scrollTop } = box;
     const isNearBottom   = scrollHeight - (scrollTop + clientHeight) < 60;
 
-    // if user is already near the bottom OR pane just overflowed – scroll down
+
     if (isNearBottom || scrollHeight > clientHeight + 20) {
       box.scrollTop = scrollHeight;
     }
@@ -89,7 +88,7 @@ export default function Chat() {
     if (!activeDM) {
       socket.emit("chatMessage", { user: username, message: text, ts });
     } else {
-      /* optimistic update so *you* can see the DM immediately */
+
       setPrivate((prev) => ({
         ...prev,
         [activeDM]: [
@@ -108,7 +107,7 @@ export default function Chat() {
     setInput("");
   };
 
-  /* ─────────────────────────  Chat.jsx  ────────────────────────── */
+
 
 return (
     <div
@@ -130,7 +129,7 @@ return (
       <main
         style={{
           position: "absolute",
-          left: 315,          // 285-px bar + 30-px breathing room
+          left: 315,          
           right: 30,
           top: 120,
           bottom: 1,
