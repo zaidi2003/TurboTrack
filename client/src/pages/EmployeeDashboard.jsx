@@ -13,7 +13,6 @@ const TrackStat = ({ track, count }) => (
 );
 
 const BookingRow = ({ name, track, date, time, status }) => {
-  /* colour badge helper */
   const badge = {
     Confirmed: { bg:"#064e3b", fg:"#6ee7b7" },
     Pending   : { bg:"#78350f", fg:"#fcd34d" },
