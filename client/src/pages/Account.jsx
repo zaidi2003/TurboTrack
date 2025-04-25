@@ -12,7 +12,7 @@ const Account = () => {
   const [loading, setLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  // Function to trigger refresh of user data
+
   const refreshUserData = () => {
     setRefreshTrigger(prev => prev + 1);
   };
@@ -29,14 +29,13 @@ const Account = () => {
           return;
         }
         
-        // Extract user info from JWT token
         try {
           const tokenParts = token.split('.');
           if (tokenParts.length === 3) {
             const payload = JSON.parse(atob(tokenParts[1]));
             
             if (payload && payload.id) {
-              // Try to fetch more detailed user data from the stats endpoint
+
               try {
                 const statsResponse = await axios.get(
                   "http://localhost:3000/api/v1/users/stats",
@@ -48,7 +47,6 @@ const Account = () => {
                 );
                 
                 if (statsResponse.data.users && Array.isArray(statsResponse.data.users)) {
-                  // Find current user in the stats
                   const currentUser = statsResponse.data.users.find(
                     user => user._id === payload.id || user.name === payload.name
                   );
@@ -64,11 +62,11 @@ const Account = () => {
                       profilePicture: currentUser.profilePicture || null
                     });
                   } else {
-                    // Fall back to basic info from the token
+
                     setUserData({
                       _id: payload.id,
                       name: payload.name || "User",
-                      email: "user@example.com", // Placeholder - JWT might not contain email
+                      email: "user@example.com", 
                       wins: 0,
                       podiums: 0,
                       sessions: 0,
@@ -81,11 +79,10 @@ const Account = () => {
               } catch (statsError) {
                 console.error("Error fetching stats:", statsError);
                 
-                // Even if stats fails, we can still show basic user info from token
                 setUserData({
                   _id: payload.id,
                   name: payload.name || "User",
-                  email: "user@example.com", // Placeholder
+                  email: "user@example.com", 
                   wins: 0,
                   podiums: 0,
                   sessions: 0,
@@ -115,7 +112,6 @@ const Account = () => {
     fetchUserData();
   }, [refreshTrigger]);
 
-  // Callback for when profile picture is updated
   const handleProfilePictureUpdate = (newProfilePicture) => {
     setUserData(prev => prev ? {
       ...prev,
@@ -124,7 +120,7 @@ const Account = () => {
     refreshUserData();
   };
 
-  // Callback for when account details are updated
+
   const handleAccountUpdate = (updatedData) => {
     setUserData(prev => prev ? {
       ...prev,
@@ -219,15 +215,14 @@ const Account = () => {
             gap: 30, 
             marginBottom: 50, 
           }}>
-            {/* First row - Profile Picture and Account Details */}
             <div style={{ display: "flex", gap: 30, flexWrap: "wrap" }}>
-              <div style={{ flex: "0 1 260px" }}> {/* Made smaller */}
+              <div style={{ flex: "0 1 260px" }}> 
                 <UpdateProfilePicture 
                   initialImage={userData.profilePicture}
                   onProfileUpdate={handleProfilePictureUpdate} 
                 />
               </div>
-              <div style={{ flex: "1 1 450px" }}> {/* Made smaller, but still flexible */}
+              <div style={{ flex: "1 1 450px" }}> 
                 <UpdateAccountDetails 
                   userData={userData}
                   onAccountUpdate={handleAccountUpdate} 
@@ -235,7 +230,6 @@ const Account = () => {
               </div>
             </div>
             
-            {/* Second row - Change Password */}
             <div style={{ width: "100%" }}>
               <ChangePassword />
             </div>
