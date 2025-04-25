@@ -16,13 +16,11 @@ app.use(express.json());
 app.use(cors())
 app.use("/api/v1", mainRouter);
 
-// make an http.Server out of express app:
 const server = http.createServer(app);
 
-// attach socket.io
 const io = new Server(server, {
   cors: {
-    origin: /http:\/\/localhost:\d+$/, // your React origin
+    origin: /http:\/\/localhost:\d+$/, //React origin
     methods: ["GET", "POST"]
   }
 });

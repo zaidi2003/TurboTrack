@@ -1,8 +1,7 @@
-// server/sockets/chat.js
 const onlineUsers = new Map();
-const LOG_TTL_MS  = 60 * 60 * 1000;          // 1 hour
-const generalLog  = [];                      // [{ user,message,ts }]
-const dmLogs      = new Map();               // key = pairId  e.g.  "A|B"
+const LOG_TTL_MS  = 60 * 60 * 1000;  //1 hour
+const generalLog  = [];                      
+const dmLogs      = new Map();
 
 function pruneLogs() {
   const cutoff = Date.now() - LOG_TTL_MS;
@@ -12,11 +11,10 @@ function pruneLogs() {
     if (!arr.length) dmLogs.delete(k);
   }
 }
-setInterval(pruneLogs, 5 * 60 * 1000); // every 5 min
+setInterval(pruneLogs, 5 * 60 * 1000); //every 5 min
 
 function socketConnection(io) {
     io.on("connection", socket => {
-        console.log("socket connected:", socket.id);
 
         socket.on("registerMe", ({ email, username }) => {
             if (!email) return;
@@ -32,29 +30,26 @@ function socketConnection(io) {
     
         socket.on("chatMessage", payload => {
             generalLog.push(payload);
-            console.log(`chatMessage from HJDWEDDYU ${socket.id}:`, payload);
             io.to("general").emit("chatMessage", payload);
         });
 
         
         socket.on("privateMessage", ({ toEmail, fromEmail, message,ts }) => {
             const target = onlineUsers.get(toEmail);
-            if (!target) return;                 // user offline – you could queue or send error
+            if (!target) return;                 //user offline
             const full = { fromEmail, toEmail, message, ts };
 
-            /* store in dm log */
             const key = [fromEmail, toEmail].sort().join("|");
             if (!dmLogs.has(key)) dmLogs.set(key, []);
             dmLogs.get(key).push(full);
 
             io.to(target.socketId).emit("privateMessage",full);
-            socket.emit("privateMessage", full);    // echo back to sender
+            socket.emit("privateMessage", full); 
         });
             
         
     
         socket.on("disconnect", () => {
-            console.log("socket disconnected:", socket.id);
             for (const [email, info] of onlineUsers) {
                 if (info.socketId === socket.id) {
                   onlineUsers.delete(email);
@@ -62,7 +57,7 @@ function socketConnection(io) {
                 }
               }
         
-              // broadcast the updated list
+              
               io.emit(
                 "onlineList",
                 Array.from(onlineUsers.entries()).map(([e, v]) => ({ email: e, ...v }))
