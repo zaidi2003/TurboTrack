@@ -68,6 +68,21 @@ const register = async (req, res) => {
   let foundUser = await User.findOne({ email: req.body.email });
   if (foundUser === null) {
     let { username, email, password } = req.body;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) 
+    {
+      return res.status(400).json({ msg: "Please provide a valid email address" });
+    }
+
+    const allowedDomains = ["gmail.com", "yahoo.com", "outlook.com", "icloud.com"];
+    const emailDomain = email.split("@")[1];
+
+    if (!allowedDomains.includes(emailDomain)) 
+    {
+      return res.status(400).json({ msg: "Email domain is not allowed. Use Gmail, Yahoo, or Outlook." });
+    }
+
     if (username.length && email.length && password.length) {
       const person = new User({
         name: username,
