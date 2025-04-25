@@ -24,7 +24,7 @@ const SideNavBar = () => {
       items: [
         { label: "Dashboard", path: "/dashboard" },
         { label: "Booking", path: "/bookings" },
-        { label: "Chats", path: "/chats" }
+        { label: "Chats", path: "/chat" }
       ]
     },
     {

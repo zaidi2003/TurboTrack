@@ -10,6 +10,7 @@ import {
   Test,
   NotFound,
  // ChangePassword,
+  Chat,
   Account,
   Booking,
   SheetBooking,
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
         path: "*",
         element: <NotFound />,
       },
+      { 
+        path: "chat", 
+        element: <Chat /> 
+      }, 
     ],
   },
 ]);

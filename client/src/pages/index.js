@@ -13,6 +13,7 @@ export { default as NotFound } from "./NotFound";
 //export { default as ChangePassword } from "./ChangePassword";
 export { default as Account } from "./Account";
 export { default as PaymentPage } from "./PaymentPage";
+export { default as Chat } from "./Chat";      // ← new
 
 //export { default as bookingService } from "./";
 export { default as Test } from "./test";
