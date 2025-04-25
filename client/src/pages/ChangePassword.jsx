@@ -36,12 +36,11 @@ const ChangePassword = () => {
       const token = rawToken ? rawToken.replace(/^"|"$/g, "") : "";
 
       const response = await axios.post(
-        // `${process.env.REACT_APP_BASE_URL}/api/v1/change-password`, // Using base URL from environment variables
         `http://localhost:3000/api/v1/users/change-password`,
         { currPassword, newPassword },
         {
           headers: {
-        Authorization: `Bearer ${token}`, // Add your auth token here
+        Authorization: `Bearer ${token}`, 
           },
         }
       );

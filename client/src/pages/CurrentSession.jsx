@@ -11,7 +11,7 @@ import "../styles/common-components.css";
 
 const containerStyle = {
   width: "100%",
-  height: "100vh",  // Ensure the map container takes up full viewport height
+  height: "100vh",  
 };
 
 const center = {
@@ -45,10 +45,10 @@ const CurrentSession = () => {
   };
 
   const rectangleCoords = [
-    { lat: 31.5500, lng: 74.3500 },  // top-left
-    { lat: 31.5500, lng: 74.4200 },  // top-right
-    { lat: 31.5300, lng: 74.4200 },  // bottom-right
-    { lat: 31.5300, lng: 74.3500 },  // bottom-left
+    { lat: 31.5500, lng: 74.3500 },  
+    { lat: 31.5500, lng: 74.4200 },  
+    { lat: 31.5300, lng: 74.4200 },  
+    { lat: 31.5300, lng: 74.3500 },  
   ];
   
   useEffect(() => {
@@ -120,20 +120,20 @@ const CurrentSession = () => {
   mapContainerStyle={containerStyle}
   center={center}
   zoom={18}
-  onLoad={() => console.log('Map loaded!')}  // Verify if map is loaded
+  onLoad={() => console.log('Map loaded!')}  
 >
   <Marker position={center} />
   
   <Polygon
     paths={rectangleCoords}
     options={{
-      fillColor: "#FF0000",  // Bright red to ensure visibility
-      fillOpacity: 0.4,  // Semi-transparent
-      strokeColor: "#FF0000", // Red outline
+      fillColor: "#FF0000", 
+      fillOpacity: 0.4, 
+      strokeColor: "#FF0000", 
       strokeOpacity: 1,
       strokeWeight: 2,
     }}
-    onLoad={(polygon) => console.log("Polygon loaded:", polygon)}  // Verify polygon rendering
+    onLoad={(polygon) => console.log("Polygon loaded:", polygon)}  
   />
 </GoogleMap>
 
