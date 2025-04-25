@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
 const SubtrackSchema = new mongoose.Schema({
-  subtrackID: {
-    type: String,
-    required: [true, "Please provide the subtrack ID"],
-  },
   subtrackName: {
     type: String,
     required: [true, "Please provide the subtrack name"],
@@ -17,15 +13,14 @@ const SubtrackSchema = new mongoose.Schema({
     enum: ["easy", "intermediate", "difficult"],
     required: [true, "Please provide the difficulty of the subtrack"],
   },
+  cost: {
+    type: Number,
+    required: [true, "Please provide the cost of the subtrack"],
+  }
 });
 
 
-const TrackSchema = new mongoose.Schema({
-    trackID: {
-      type: String,
-      required: [true, "Please provide the track ID"],
-    },
-  
+const TrackSchema = new mongoose.Schema({  
     trackName: {
       type: String,
       required: [true, "Please provide the track name"],

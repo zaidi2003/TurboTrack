@@ -21,7 +21,7 @@ const getAllTrackNames = async (req, res) => {
     }
 };
 
-const createTrack = async (req, res) => {
+const createTrackDummy = async (req, res) => {
     const defaultTrack = new Track({
         trackID: "track-1",
         trackName: "2F2F",
@@ -37,6 +37,12 @@ const createTrack = async (req, res) => {
                 subtrackName: "Advanced Loop",
                 length: "3.5 km",
                 difficulty: "difficult",
+            },
+            {
+                subtrackID: "subtrack-3",
+                subtrackName: "Expert Loop",
+                length: "5.0 km",
+                difficulty: "expert",
             },
         ],
     });
@@ -55,4 +61,43 @@ const createTrack = async (req, res) => {
     }
 };
 
-module.exports = { getAllTracks, getAllTrackNames, createTrack };
+const createTrack = async (req, res) => {
+    const { trackName, subtracks } = req.body;
+
+    // You can validate the data here if needed
+    if (!trackName || !subtracks || subtracks.length === 0) {
+        return res.status(400).json({
+            message: "Track name and subtracks are required",
+        });
+    }
+
+    // Create the track with dynamic data
+    const newTrack = new Track({
+        trackName: trackName,
+        subtracks: subtracks.map((subtrack, index) => ({
+            subtrackName: subtrack.name,
+            length: subtrack.distance, // Assuming the distance is the length
+            difficulty: subtrack.difficulty, // You can add the difficulty field from the form later
+            cost: subtrack.cost,
+        })),
+    });
+
+    try {
+        const savedTrack = await newTrack.save();
+        res.status(201).json({
+            message: "Track created successfully",
+            track: savedTrack,
+        });
+    } catch (error) {
+        res.status(400).json({
+            message: "Error creating track",
+            error: error.message,
+        });
+    }
+};
+
+
+
+
+
+module.exports = { getAllTracks, getAllTrackNames, createTrack, createTrackDummy };

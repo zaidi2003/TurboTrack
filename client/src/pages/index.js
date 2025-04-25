@@ -20,3 +20,10 @@ export { default as ForgotPassword } from "./ForgotPassword";
 export { default as Game } from "./Game";
 
 export { default as Test } from "./test";
+
+
+
+// employee pages
+
+
+export { default as EmployeeAddTrack } from "./Employee_AddTrack";

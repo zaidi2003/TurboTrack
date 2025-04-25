@@ -17,7 +17,8 @@ import {
   PaymentPage, 
   Analytics,
   CurrentSession,
-  ForgotPassword
+  ForgotPassword,
+  EmployeeAddTrack,
 } from "./pages";
 
 import { ToastContainer } from "react-toastify";
@@ -97,7 +98,11 @@ const router = createBrowserRouter([
       {
         path: "current-session",
         element: <CurrentSession />
-      }
+      },
+      {
+        path: "add-track",
+        element: <EmployeeAddTrack />
+      },
     ],
   },
 ]);

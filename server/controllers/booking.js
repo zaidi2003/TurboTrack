@@ -152,9 +152,63 @@ const getUserBookingsHistory = async (req, res) => {
   }
 };
 
+
+const cancelBooking = async (req, res) => {
+  try {
+    //const user = await User.findById(req.user.id).select("name email wins podiums sessions role");
+    userEmail = "yapping@gmail.com"
+    const booking = await Booking.findOne({ _id: req.body.bookingId });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    // if (booking.email !== userEmail) {
+    //   return res.status(403).json({ message: "You are not authorized to cancel this booking" });
+    // }
+
+    // if (booking.status !== "pending") {
+    //   return res.status(400).json({ message: "Only pending bookings can be cancelled" });
+    // }
+
+    booking.status = "cancelled";
+    await booking.save();
+
+    res.status(200).json({ message: "Booking successfully cancelled", booking });
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+const getCancelledBookings = async (req, res) => {
+  try {
+    const cancelledBookings = await Booking.find({ status: "cancelled" });
+
+    if (!cancelledBookings || cancelledBookings.length === 0) {
+      return res.status(404).json({ message: "No cancelled bookings found" });
+    }
+
+    res.status(200).json({
+      message: "Cancelled bookings retrieved successfully",
+      bookings: cancelledBookings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving cancelled bookings",
+      error: error.message,
+    });
+  }
+};
+
+
+
 module.exports = {
   makeBooking,
   makePayment,
   getUserBookings,
   getUserBookingsHistory,
+  cancelBooking,  
+  getCancelledBookings,
 };

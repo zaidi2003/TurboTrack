@@ -7,8 +7,6 @@ const BookingSchema = new mongoose.Schema({
         enum: ["2F2F","Sportszilla","Velocity Circuit"]
     },
 
-
-
     timeSlot: {
         type: String, 
         required: [true, "Please provide a time slot"],
