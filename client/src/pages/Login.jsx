@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useUser } from "../context/UserContext";
 
 const Login = () => {
   // State to store the auth token, form data, etc.
@@ -10,7 +11,9 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { updateToken } = useUser();
 
   // Update formData when input changes
   const handleChange = (e) => {
@@ -20,18 +23,21 @@ const Login = () => {
   // Handle form submission
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // Show loading state
     const { email, password } = formData;
     if (email && password) {
       try {
         const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/login`, { email, password });
-        localStorage.setItem("auth", JSON.stringify(response.data.token));
+        updateToken(response.data.token);
         toast.success("Login successful");
         navigate("/dashboard");
       } catch (err) {
         toast.error(err.message);
+        setIsSubmitting(false); // Reset on error
       }
     } else {
       toast.error("Please fill all inputs");
+      setIsSubmitting(false); // Reset if validation fails
     }
   };
 
@@ -300,6 +306,7 @@ const Login = () => {
           {/* Sign In Button */}
           <button
             type="submit"
+            disabled={isSubmitting}
             style={{
               width: 373,
               height: 51,
@@ -312,7 +319,8 @@ const Login = () => {
               outline: '0.81px #120000 solid',
               outlineOffset: '-0.81px',
               border: 'none',
-              cursor: 'pointer'
+              cursor: isSubmitting ? 'default' : 'pointer',
+              opacity: isSubmitting ? 0.8 : 1
             }}
           >
             <div
@@ -328,7 +336,7 @@ const Login = () => {
                 fontWeight: '700'
               }}
             >
-              Sign in
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </div>
           </button>
 
