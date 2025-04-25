@@ -27,6 +27,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DashboardRoutes from "./routes/dashboardRoutes";
 import { UserProvider } from "./context/UserContext";
 
+import ForgotPasswordNew from "./pages/forgotPassNew";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -93,8 +95,12 @@ const router = createBrowserRouter([
         element: <Analytics />
       },
       {
-        path : "resetpassword",
+        path : "reset-password/:token",
         element: <ForgotPassword />
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPasswordNew />,
       },
       {
         path: "current-session",

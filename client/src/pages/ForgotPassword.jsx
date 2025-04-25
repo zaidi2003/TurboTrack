@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const { token } = useParams();
   const [currPassword, setCurrPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -32,15 +34,20 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/v1/change-password`, // Using base URL from environment variables
-        { currPassword, newPassword },
+      // const rawToken = localStorage.getItem("auth");
+      // const token = rawToken ? rawToken.replace(/^"|"$/g, "") : "";
+      // console.log("Token:", token);
+      const response = await axios.post(
+        `http://localhost:3000/api/v1/users/reset-password/${token}`, // Using base URL from environment variables
+        { newPassword },
         {
           headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Add your auth token here
+            Authorization: `Bearer ${token}`,
           },
         }
       );
+
+      console.log("Response:", response.data);
 
       toast.success(response.data.msg);
       setCurrPassword("");
