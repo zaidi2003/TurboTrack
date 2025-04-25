@@ -199,7 +199,7 @@ const Booking = () => {
               marginBottom: 10,
             }}
           >
-            {booking.trackName}
+            {booking.track}
           </div>
           <div
             style={{
@@ -208,7 +208,7 @@ const Booking = () => {
               fontSize: 14,
             }}
           >
-            {formatDate(booking.date)} • {booking.time}
+            {formatDate(booking.date)} • {booking.timeSlot}
           </div>
           <div
             style={{
