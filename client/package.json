@@ -12,11 +12,7 @@
   "dependencies": {
     "@react-google-maps/api": "^2.20.6",
     "axios": "^1.6.3",
-<<<<<<< HEAD
     "dayjs": "^1.11.13",
-=======
-    "leaflet": "^1.9.4",
->>>>>>> 3beee86 (workig on analytics)
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
