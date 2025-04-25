@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SideNavBar, UserProfile } from "../components";
-import { TabBar, TrackCard, LoadingSpinner, DiscoverTab , CurrentBookingsTab, BookingHistoryTab} from "../components/booking";
+import { TabBar, TrackCard, LoadingSpinner, DiscoverTab, CurrentBookingsTab, BookingHistoryTab } from "../components/booking";
 import { toast } from "react-toastify";
 import axios from 'axios';
 import { useUser } from "../context/UserContext";
-
 
 const Booking = () => {
   const { token, userData } = useUser();
@@ -28,57 +27,18 @@ const Booking = () => {
   const fetchTracks = async () => {
     setIsLoading(true);
     try {
-      // Replace with actual API call when backend is ready
-      // const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/tracks`, {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // });
-      // setTracks(response.data.tracks || []);
-
-      // Mock data until backend is ready
-      setTracks([
-        {
-          id: 1,
-          name: "Kool Karterz",
-          description: "An exciting track for beginners and experts alike",
-          length: "1.5 km",
-          price: 1500,
-          ageLimit: 12,
-          slots: [
-            { id: 1, time: "12:00 PM", booked: true },
-            { id: 2, time: "12:30 PM", booked: false },
-            { id: 3, time: "1:00 PM", booked: false },
-          ],
-        },
-        {
-          id: 2,
-          name: "Kartz 4 Karterz",
-          description: "Professional track with challenging corners",
-          length: "2.2 km",
-          price: 3000,
-          ageLimit: 16,
-          slots: [
-            { id: 4, time: "12:00 PM", booked: false },
-            { id: 5, time: "12:30 PM", booked: true },
-            { id: 6, time: "1:00 PM", booked: false },
-          ],
-        },
-        {
-          id: 3,
-          name: "Karting Karterz",
-          description: "Family-friendly track for all skill levels",
-          length: "1.8 km",
-          price: 2500,
-          ageLimit: 10,
-          slots: [
-            { id: 7, time: "2:00 PM", booked: true },
-            { id: 8, time: "2:30 PM", booked: false },
-            { id: 9, time: "3:00 PM", booked: false },
-          ],
-        },
-      ]);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks`, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setTracks(response.data || []);
     } catch (error) {
+      console.error("Error fetching tracks:", error);
       toast.error("Failed to fetch available tracks");
-      console.error(error);
+      
+      // Clear tracks so UI can handle empty state
+      setTracks([]);
     } finally {
       setIsLoading(false);
     }
@@ -88,79 +48,47 @@ const Booking = () => {
   const fetchUserBookings = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/get-user-bookings`, 
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/bookings/user`, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
-      const fetchedBookings = response.data.bookings || [];
+      const fetchedBookings = response.data || [];
       
-      if (fetchedBookings.length === 0) {
-        // Fallback to default if no bookings
-        setCurrentBookings([
-          {
-            id: "book-101",
-            trackName: "Kartz 4 Karterz",
-            date: new Date().toISOString(),
-            time: "2:30 PM - 3:00 PM",
-            price: 3000,
-          },
-        ]);
-      } else {
-        // Process bookings - separate current from historical
-        const now = new Date();
-        const current = [];
-        const history = [];
-        
-        fetchedBookings.forEach(booking => {
-          const bookingDate = new Date(booking.date);
-          if (bookingDate >= now) {
-            current.push(booking);
-          } else {
-            history.push(booking);
-          }
-        });
-        
-        setCurrentBookings(current);
-        setBookingHistory(history);
-      }
+      // Process bookings - separate current from historical
+      const now = new Date();
+      const current = [];
+      const history = [];
+      
+      fetchedBookings.forEach(booking => {
+        const bookingDate = new Date(booking.date);
+        if (bookingDate >= now) {
+          current.push(booking);
+        } else {
+          history.push(booking);
+        }
+      });
+      
+      setCurrentBookings(current);
+      setBookingHistory(history);
     } catch (error) {
       console.error("Error fetching user bookings:", error);
+      toast.error("Failed to fetch your bookings");
       
-      // Fallback data if API fails
-      setCurrentBookings([
-        {
-          id: "book-101",
-          trackName: "Kartz 4 Karterz",
-          date: new Date().toISOString(),
-          time: "2:30 PM - 3:00 PM",
-          price: 3000,
-        },
-      ]);
-      
-      setBookingHistory([
-        {
-          id: "book-099",
-          trackName: "Kool Karterz",
-          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          time: "1:00 PM - 1:30 PM",
-          price: 1500,
-        },
-        {
-          id: "book-098",
-          trackName: "Karting Karterz",
-          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-          time: "11:00 AM - 11:30 AM",
-          price: 5000,
-        },
-      ]);
+      // Clear bookings so UI can handle empty state
+      setCurrentBookings([]);
+      setBookingHistory([]);
     }
   };
 
   // Load initial data
   useEffect(() => {
-    fetchTracks();
-    fetchUserBookings();
-  }, [token]);
+    if (token) {
+      fetchTracks();
+      fetchUserBookings();
+    } else {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   // Handle payment success from redirect
   useEffect(() => {
@@ -168,10 +96,12 @@ const Booking = () => {
       const newBooking = location.state.bookingDetails;
       setNewBookingDetails(newBooking);
       
+      // Update current bookings with the new one
       setCurrentBookings(prev => [...prev, newBooking]);
       
       setShowPaymentSuccessModal(true);
       
+      // Clear location state to prevent showing the modal again on refresh
       navigate(location.pathname, { replace: true });
     }
   }, [location.state, navigate]);
@@ -185,13 +115,12 @@ const Booking = () => {
     if (bookingToCancel) {
       setIsLoading(true);
       try {
-        // API call to cancel booking (uncomment when backend is ready)
-        // await axios.delete(
-        //   `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/${bookingToCancel.id}`,
-        //   { headers: { Authorization: `Bearer ${token}` } }
-        // );
+        await axios.delete(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/bookings/${bookingToCancel.id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         
-        // Optimistic UI update
+        // Update UI - remove cancelled booking
         const updatedBookings = currentBookings.filter(
           booking => booking.id !== bookingToCancel.id
         );
@@ -199,8 +128,8 @@ const Booking = () => {
         
         toast.success("Booking cancelled successfully");
       } catch (error) {
-        toast.error("Failed to cancel booking");
-        console.error(error);
+        console.error("Error cancelling booking:", error);
+        toast.error(error.response?.data?.message || "Failed to cancel booking");
       } finally {
         setIsLoading(false);
         setShowCancelModal(false);
@@ -217,6 +146,29 @@ const Booking = () => {
       month: "short",
       day: "numeric",
     });
+  };
+
+  // Handle track search
+  const handleSearch = async (query) => {
+    if (!query || query.trim() === '') {
+      fetchTracks();
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/search?q=${encodeURIComponent(query)}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      setTracks(response.data || []);
+    } catch (error) {
+      console.error("Error searching tracks:", error);
+      toast.error("Failed to search tracks");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const Modal = ({ show, title, message, onConfirm, onCancel, confirmText, cancelText }) => {
@@ -389,6 +341,7 @@ const Booking = () => {
             width: "100%",
             height: "100%",
           }}
+          onChange={(e) => handleSearch(e.target.value)}
         />
         <div
           style={{
