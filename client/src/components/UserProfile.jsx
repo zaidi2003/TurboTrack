@@ -1,4 +1,4 @@
-// src/components/UserProfile.jsx
+
 import React from "react";
 import { useUser } from "../context/UserContext";
 import "./UserProfile.css";

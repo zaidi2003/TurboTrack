@@ -1,7 +1,6 @@
 .user-profile {
   display: flex;
   align-items: center;
-  /* Removed default margin-top so it can be controlled via props */
 }
   
 .user-avatar {
@@ -20,5 +19,5 @@
   font-size: 16px;
   font-weight: 600;
   color: white;
-  line-height: 32px; /* Vertically center text */
+  line-height: 32px; 
 }

@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 
 const DatePicker = ({ selectedDate, onDateChange, availableDates }) => {
-  // Group dates by weeks
+
   const getDates = () => {
     const allDates = [];
     const today = new Date();
     
-    // Generate 21 days (3 weeks)
+
     for (let i = 0; i < 21; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       
-      // Check if date is in availableDates or if availableDates is empty/undefined
+
       const isAvailable = !availableDates || availableDates.some(
         availDate => new Date(availDate).toDateString() === date.toDateString()
       );
       
-      // Calculate which week this date belongs to (0, 1, or 2)
+
       const weekIndex = Math.floor(i / 7);
       
       allDates.push({
@@ -33,7 +33,7 @@ const DatePicker = ({ selectedDate, onDateChange, availableDates }) => {
 
   const dates = getDates();
 
-  // Group dates by week
+
   const datesByWeek = dates.reduce((acc, date) => {
     if (!acc[date.weekIndex]) {
       acc[date.weekIndex] = [];
@@ -42,10 +42,10 @@ const DatePicker = ({ selectedDate, onDateChange, availableDates }) => {
     return acc;
   }, {});
 
-  // Current week index (initially 0 for current week)
+
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
   
-  // Format date range for the week header
+
   const formatWeekRange = (weekDates) => {
     if (!weekDates || weekDates.length === 0) return "";
     
