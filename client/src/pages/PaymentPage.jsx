@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { SideNavBar, UserProfile } from "../components";
+import axios from "axios";
 
 const PaymentPage = () => {
   const { trackName } = useParams();
@@ -11,7 +12,7 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { track, date, slot } = location.state || {};
-
+  
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -32,28 +33,33 @@ const PaymentPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsProcessing(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsProcessing(true);
 
-    const bookingDetails = {
-      id: `book-${Math.floor(Math.random() * 1000)}`,
-      trackName: track?.name || decodedTrackName,
-      date: date,
-      time: slot ? `${formatTime(slot.startTime)} - ${formatTime(slot.endTime)}` : "12:00 PM - 12:30 PM",
-      price: track?.price || 3000,
-    };
-
-    setTimeout(() => {
-      setIsProcessing(false);
-      navigate("/bookings", {
-        state: {
-          paymentSuccess: true,
-          bookingDetails: bookingDetails
-        },
-      });
-    }, 1500);
+  const bookingPayload = {
+    track: "2f2f",
+    timeSlot: "12:00",       // must match HH:mm (24-hour format)
+    date: "2025-01-01",      // ISO format string; will be cast to Date
+    email: "yapping@gmail.com"
   };
+  
+  try {
+    const response = await axios.post("http://localhost:3000/api/v1/booking/create", bookingPayload);
+
+    navigate("/bookings", {
+      state: {
+        paymentSuccess: true,
+        bookingDetails: response.data.booking,
+      },
+    });
+  } catch (error) {
+    alert("Booking failed: " + (error.response?.data?.message || error.message));
+  } finally {
+    setIsProcessing(false);
+  }
+};
+
 
   return (
     <div

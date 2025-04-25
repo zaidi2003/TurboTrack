@@ -84,7 +84,7 @@ const getUserBookings = async (req, res) => {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    const bookings = await Booking.find({ email: user.email });
+    const bookings = await Booking.find({ email: user.email, status: "pending" });
     if (!bookings || bookings.length === 0) {
       return res.status(404).json({ msg: "No bookings found for this user" });
     }

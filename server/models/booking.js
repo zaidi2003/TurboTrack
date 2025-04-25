@@ -4,8 +4,10 @@ const BookingSchema = new mongoose.Schema({
     track: {
         type: String,
         required: [true, "Please provide the track"],
-        enum: ["2f2f", "SportsZilla", "track 3", "track 4"],
+        enum: ["2F2F","Sportszilla","Velocity Circuit"]
     },
+
+
 
     timeSlot: {
         type: String, 
@@ -35,6 +37,7 @@ const BookingSchema = new mongoose.Schema({
         type: String,
         enum: ["pending", "completed", "cancelled"],
         default: "pending",
+        required: true,
     }
 });
 
