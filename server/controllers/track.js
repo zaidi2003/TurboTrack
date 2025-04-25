@@ -1,7 +1,6 @@
 const express = require('express');
 const Track = require('../models/tracks'); // Assuming you have a Track model
 
-// Controller function to get all tracks
 const getAllTracks = async (req, res) => {
     try {
         const tracks = await Track.find(); // Fetch all tracks from the database
@@ -11,7 +10,6 @@ const getAllTracks = async (req, res) => {
     }
 };
 
-// Controller function to get all track names
 const getAllTrackNames = async (req, res) => {
     try {
         const trackNames = await Track.find({}, 'name'); // Fetch only the 'name' field of all tracks
