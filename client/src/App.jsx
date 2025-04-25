@@ -19,6 +19,7 @@ import {
   CurrentSession,
   ForgotPassword,
   EmployeeAddTrack,
+  EmployeeDashboard
 } from "./pages";
 
 import { ToastContainer } from "react-toastify";
@@ -103,6 +104,11 @@ const router = createBrowserRouter([
         path: "add-track",
         element: <EmployeeAddTrack />
       },
+      {
+        path: "employee-dashboard",
+        element: <EmployeeDashboard />,
+      }
+      
     ],
   },
 ]);

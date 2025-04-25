@@ -18,6 +18,8 @@ export { default as Analytics } from "./Analytics"; // ← new
 export { default as CurrentSession } from "./CurrentSession";
 export { default as ForgotPassword } from "./ForgotPassword";
 export { default as Game } from "./Game";
+export { default as EmployeeDashboard } from "./EmployeeDashboard";
+
 
 export { default as Test } from "./test";
 
