@@ -15,6 +15,12 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [trackData, setTrackData] = useState(null);
   const [error, setError] = useState(null);
+  
+  // Form state
+  const [cardNumber, setCardNumber] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
+  const [cvc, setCvc] = useState("");
+  const [country, setCountry] = useState("");
 
   // Extract track, date, slot from location state (passed from previous page)
   const { track, date, slot } = location.state || {};
@@ -55,52 +61,62 @@ const PaymentPage = () => {
   };
 
   const formatTime = (timeString) => {
-    if (!timeString) return "";
-    const date = new Date(timeString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
+    return timeString || "";
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Create booking payload
-    const bookingPayload = {
-      trackId: trackData?.id,
-      trackName: trackData?.name || decodedTrackName,
-      date: date,
-      slotId: slot?.id,
-      startTime: slot?.startTime,
-      endTime: slot?.endTime,
-      price: trackData?.price || 3000,
-      userId: userData?.id
-    };
-
     try {
-      // Call backend API to process payment and create booking
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/bookings/create`,
-        bookingPayload,
-        { headers: { Authorization: `Bearer ${token}` } }
+      // First authenticate the payment
+      const paymentData = {
+        transactionId: `txn-${Date.now()}`,
+        amount: 3500, // Fixed amount based on your payment.js validation
+        userId: userData?.id,
+        cardNumber: cardNumber.replace(/\s/g, ""), // Remove spaces
+        cvc,
+        expirationDate
+      };
+
+      const paymentResponse = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/payment/authenticate`,
+        paymentData
       );
 
-      setIsProcessing(false);
-      
-      // Navigate to bookings page with success info
-      navigate("/bookings", {
-        state: {
-          paymentSuccess: true,
-          bookingDetails: response.data
-        },
-      });
+      if (paymentResponse.data.status === "success") {
+        // Create booking payload
+        const bookingPayload = {
+          track: trackData?.trackName || decodedTrackName,
+          date,
+          timeSlot: slot?.time || "12:00", // Using the time format from your schema
+          email: userData?.email,
+          status: "pending"
+        };
+
+        // Create the booking
+        const bookingResponse = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/create`,
+          bookingPayload,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        setIsProcessing(false);
+        
+        // Navigate to bookings page with success info
+        navigate("/bookings", {
+          state: {
+            paymentSuccess: true,
+            bookingDetails: bookingResponse.data
+          },
+        });
+      } else {
+        throw new Error("Payment failed");
+      }
     } catch (err) {
       console.error("Payment error:", err);
       setIsProcessing(false);
-      toast.error(err.response?.data?.message || "Payment processing failed");
+      toast.error(err.response?.data?.msg || "Payment processing failed");
     }
   };
 
@@ -205,6 +221,8 @@ const PaymentPage = () => {
                       color: "#f7f4f1",
                       fontSize: 16,
                     }}
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
                     required
                   />
                 </div>
@@ -241,6 +259,8 @@ const PaymentPage = () => {
                         color: "#f7f4f1",
                         fontSize: 16,
                       }}
+                      value={expirationDate}
+                      onChange={(e) => setExpirationDate(e.target.value)}
                       required
                     />
                   </div>
@@ -270,6 +290,8 @@ const PaymentPage = () => {
                         color: "#f7f4f1",
                         fontSize: 16,
                       }}
+                      value={cvc}
+                      onChange={(e) => setCvc(e.target.value)}
                       required
                     />
                   </div>
@@ -299,6 +321,8 @@ const PaymentPage = () => {
                       fontSize: 16,
                       appearance: "none",
                     }}
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
                     required
                   >
                     <option value="">Select Country</option>
@@ -336,7 +360,7 @@ const PaymentPage = () => {
                     marginBottom: 10,
                   }}
                 >
-                  {trackData?.name || decodedTrackName || "Track Name"}
+                  {trackData?.trackName || decodedTrackName}
                 </div>
                 <div
                   style={{
@@ -345,9 +369,7 @@ const PaymentPage = () => {
                     fontSize: 14,
                   }}
                 >
-                  {formatDate(date)} •{" "}
-                  {slot &&
-                    `${formatTime(slot.startTime)} - ${formatTime(slot.endTime)}`}
+                  {formatDate(date)} • {formatTime(slot?.time)}
                 </div>
                 <div
                   style={{
@@ -358,7 +380,7 @@ const PaymentPage = () => {
                     marginTop: 5,
                   }}
                 >
-                  PKR {trackData?.price || "3000"}
+                  PKR 3500
                 </div>
               </div>
 
