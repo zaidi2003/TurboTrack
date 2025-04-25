@@ -3,8 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { SideNavBar, UserProfile } from "../components";
 import { TabBar } from "../components/booking";
 import { toast } from "react-toastify";
+import axios from 'axios';
+
+
 
 const Booking = () => {
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
   const [activeTab, setActiveTab] = useState("discover");
   const navigate = useNavigate();
   const location = useLocation();
@@ -67,19 +71,56 @@ const Booking = () => {
     }
   }, [location.state, navigate]);
 
+  // useEffect(() => {
+
+  //   if (currentBookings.length === 0) {
+  //     setCurrentBookings([
+  //       {
+  //         id: "book-101",
+  //         trackName: "Kartz 4 Karterz",
+  //         date: new Date().toISOString(),
+  //         time: "2:30 PM - 3:00 PM",
+  //         price: 3000,
+  //       },
+  //     ]);
+  //   }
+  // }, [currentBookings.length]);
+
   useEffect(() => {
-    if (currentBookings.length === 0) {
-      setCurrentBookings([
-        {
-          id: "book-101",
-          trackName: "Kartz 4 Karterz",
-          date: new Date().toISOString(),
-          time: "2:30 PM - 3:00 PM",
-          price: 3000,
-        },
-      ]);
-    }
-  }, [currentBookings.length]);
+    const fetchBookings = async () => {
+      if (currentBookings.length === 0) {
+        // Fetch user bookings from the API
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/get-user-bookings`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const fetchedBookings = response.data.bookings || [];
+          
+          if (fetchedBookings.length === 0) {
+            // Fallback to default if no bookings
+            setCurrentBookings([
+              {
+                id: "book-101",
+                trackName: "Kartz 4 Karterz",
+                date: new Date().toISOString(),
+                time: "2:30 PM - 3:00 PM",
+                price: 3000,
+              },
+            ]);
+          } else {
+            setCurrentBookings(fetchedBookings);
+          }
+        } catch (error) {
+          console.error("Error fetching user bookings:", error);
+        }
+      }
+    };
+  
+    fetchBookings();
+  }, [token, currentBookings.length]);
+  
 
   useEffect(() => {
     if (bookingHistory.length === 0) {
@@ -102,6 +143,9 @@ const Booking = () => {
     }
   }, [bookingHistory.length]);
 
+
+ 
+  
   const handleCancelBooking = (booking) => {
     setBookingToCancel(booking);
     setShowCancelModal(true);
