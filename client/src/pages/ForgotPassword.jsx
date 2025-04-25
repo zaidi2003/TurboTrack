@@ -33,11 +33,11 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/v1/change-password`, // Using base URL from environment variables
+        `${process.env.REACT_APP_BASE_URL}/api/v1/change-password`, 
         { currPassword, newPassword },
         {
           headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Add your auth token here
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`, 
           },
         }
       );
@@ -59,7 +59,7 @@ const ForgotPassword = () => {
         width: "100%",
         minHeight: "100vh",
         background:
-          "linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1f1f 74%, #242424 83%, #272727 93%)", // Background Gradient
+          "linear-gradient(90deg, black 26%, #1b1b1b 53%, #1f1f1f 74%, #242424 83%, #272727 93%)", 
         display: "flex",
         flexDirection: "column",
       }}
