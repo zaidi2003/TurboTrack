@@ -31,9 +31,8 @@ const Analytics = () => {
 
   useEffect(() => {
     fetchUserInfo();
-  }, []); // run only once
+  }, []);
 
-  // Loading spinner component from Dashboard.jsx
   const LoadingSpinner = () => (
     <div
       style={{
