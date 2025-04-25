@@ -254,16 +254,27 @@ const updateProfilePicture = async (req, res) =>
       return res.status(400).json({ msg: "Profile picture is required"})
     }
 
-    const user = await User.findById(req.user.id);
+    // const user = await User.findById(req.user.id);
 
-    if (!user)
+    // if (!user)
+    // {
+    //   return res.status(404).json({ msg: "User not found"})
+    // }
+
+    // user.profilePicture = profilePicture;
+    // await user.save();
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { profilePicture: profilePicture },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser)
     {
       return res.status(404).json({ msg: "User not found"})
     }
-
-    user.profilePicture = profilePicture;
-    await user.save();
-
+    
     res.status(200).json({ msg: "Profile picture updated successfully!", profilePicture});
 
   }
