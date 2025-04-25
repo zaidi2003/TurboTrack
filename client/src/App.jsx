@@ -15,6 +15,7 @@ import {
   Booking,
   SheetBooking,
   PaymentPage, 
+  Analytics,
 } from "./pages";
 
 import { ToastContainer } from "react-toastify";
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
         path: "chat", 
         element: <Chat /> 
       }, 
+      {
+        path : "analytics",
+        element: <Analytics />
+      }
     ],
   },
 ]);
