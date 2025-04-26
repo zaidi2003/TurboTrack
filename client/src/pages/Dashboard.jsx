@@ -4,11 +4,14 @@ import axios from 'axios';
 import { UserProfile, SideNavBar } from "../components";
 import { WelcomeCard, JourneyCard, LeaderboardSection } from "../components/dashboard";
 import { useUser } from "../context/UserContext";
+import { Navigate } from "react-router-dom";
+
 import "../styles/common-components.css";
 
 const Dashboard = () => {
   const { userData, userStats, isLoading } = useUser();
   const [leaderboardData, setLeaderboardData] = useState([]);
+
 
   const fetchLeaderboard = async () => {
     try {
@@ -24,6 +27,11 @@ const Dashboard = () => {
   useEffect(() => {
     fetchLeaderboard();
   }, []);
+
+  if (isLoading) 
+    return <div>Loading...</div>;
+  else if (!(userData.role === "Customer"))
+    return <Navigate to="/dashboard" replace />;
 
   if (isLoading) {
     return (
