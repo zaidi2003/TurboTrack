@@ -32,14 +32,13 @@ const SideNavBar = () => {
       items: [
         { label: "Analytics", path: "/analytics" },
         { label: "Current Session", path: "/current-session" },
-        { label: "Achievements", path: "/achievements" }
+        { label: "Just for Fun ;)", path: "/game" }
       ]
     },
     {
       title: "SETTINGS",
       items: [
         { label: "Account", path: "/account" },
-        { label: "Just for Fun ;)", path: "/game" },
         { 
           label: "Log Out", 
           path: "/logout",
