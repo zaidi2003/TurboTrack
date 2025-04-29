@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { makeBooking, makePayment, getUserBookings, getUserBookingsHistory, cancelBooking, getCancelledBookings, authenticatePayment } = require("../controllers/booking");
+const { makeBooking, makePayment, getUserBookings, getUserBookingsHistory, cancelBooking, getCancelledBookings, authenticatePayment, getRefundBookings } = require("../controllers/booking");
 const authMiddleware = require('../middleware/auth')
 
 router.route('/create',makeBooking).post(makeBooking);
@@ -10,4 +10,5 @@ router.route('/get-user-bookings-history').get(authMiddleware,getUserBookingsHis
 router.route('/cancel').post(authMiddleware,cancelBooking);
 router.route('/get-cancelled-bookings').get(getCancelledBookings);
 router.route('/authenticate-payment', authenticatePayment).post(authenticatePayment);
+router.route('/refunds',getRefundBookings)
 module.exports = router;

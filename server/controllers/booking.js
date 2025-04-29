@@ -130,6 +130,26 @@ const getUserBookings = async (req, res) => {
   }
 };
 
+const getRefundBookings = async (req, res) => {
+  try {
+    const refundBookings = await Booking.find({ status: "refund_pending" });
+
+    if (!refundBookings || refundBookings.length === 0) {
+      return res.status(404).json({ message: "No refund bookings found" });
+    }
+
+    res.status(200).json({
+      message: "Refund bookings retrieved successfully",
+      bookings: refundBookings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving refund bookings",
+      error: error.message,
+    });
+  }
+};
+
 
 
 const getUserBookingsHistory = async (req, res) => {
@@ -187,6 +207,29 @@ const cancelBooking = async (req, res) => {
     }
 
     if (booking.status !== "pending") {
+      return res.status(400).json({ message: "Only pending bookings can be cancelled" });
+    }
+
+    booking.status = "cancelled";
+    await booking.save();
+
+    res.status(200).json({ message: "Booking successfully cancelled", booking });
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const refundBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findOne({ _id: req.body.bookingId });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+
+    if (booking.status !== "refund_pending") {
       return res.status(400).json({ message: "Only pending bookings can be cancelled" });
     }
 
@@ -347,4 +390,7 @@ module.exports = {
 
   authenticatePayment,
   validateExpirationDate,
+
+  getRefundBookings,
+  refundBooking,
 };
