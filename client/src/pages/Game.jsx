@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { UserProfile, SideNavBar } from "../components";
+import { UserProfile, SideNavBar,EmployeeSideNavBar } from "../components";
+import { useUser } from "../context/UserContext";
 
 export default function Game() {
+  const { userData, userStats, isLoading } = useUser();
   const canvasRef = useRef(null);
   const PLAYER_COLOR = 'red';
   const [player, setPlayer] = useState({
@@ -555,7 +557,8 @@ export default function Game() {
       justifyContent: 'center',
     }}>
         
-     <SideNavBar />
+        {userData.role === "Customer" ? <SideNavBar /> : <EmployeeSideNavBar />}
+
      <UserProfile style={{ position: "absolute", top: 30, right: 40 }} />
 
       <h1 style={{ marginBottom: 20, color: getPlayerColors(PLAYER_COLOR).heading }}>🏁 TurboTrack</h1>

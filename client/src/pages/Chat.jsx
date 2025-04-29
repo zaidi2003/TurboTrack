@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { useUser } from "../context/UserContext";
 import dayjs from "dayjs";  
 
-import { UserProfile, SideNavBar } from "../components";
+import { UserProfile, SideNavBar, EmployeeSideNavBar } from "../components";
 
 const ENDPOINT       = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 window.__tt_socket__ = window.__tt_socket__ || io(ENDPOINT, { autoConnect: false });
@@ -122,7 +122,9 @@ return (
       }}
     >
       {/* permanent nav + avatar */}
-      <SideNavBar />
+      
+      {userData.role === "Customer" ? <SideNavBar /> : <EmployeeSideNavBar />}
+
       <UserProfile style={{ position: "absolute", top: 30, right: 40 }} />
   
       {/*  MAIN CHAT AREA  */}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SideNavBar, UserProfile } from "../components";
+import { EmployeeSideNavBar, UserProfile } from "../components";
 
 
 const TrackStat = ({ track, count }) => (
@@ -47,10 +47,10 @@ const DashboardView = () => (
     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:32 }}>
       <h1 style={{ fontSize:28, fontWeight:700, color:"#e5e5e5", margin:0 }}>Employee Dashboard</h1>
       {/* tiny avatar shown only here (main avatar already in UserProfile) */}
-      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+      {/* <div style={{ display:"flex", alignItems:"center", gap:8 }}>
         <div style={{ width:32, height:32, borderRadius:"50%", background:"#555", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff" }}>👤</div>
         <span style={{ color:"#fff" }}>Admin</span>
-      </div>
+      </div> */}
     </div>
 
     {/* track summary */}
@@ -132,7 +132,7 @@ const EmployeeDashboard = () => {
       overflow:"hidden"
     }}>
       {/* reuse existing universal nav + avatar */}
-      <SideNavBar />
+      <EmployeeSideNavBar />
       <UserProfile style={{ position:"absolute", top:30, right:40 }} />
 
       {/* our employee-specific sidebar overlaying the generic one */}

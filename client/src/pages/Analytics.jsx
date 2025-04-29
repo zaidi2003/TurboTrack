@@ -21,7 +21,7 @@ const Analytics = () => {
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/times`, axiosConfig);      
-      setData(data);
+      setData(response.data);
     } catch (error) {
       toast.error(error.response?.data?.msg || error.message);
     } finally {
@@ -136,7 +136,7 @@ const Analytics = () => {
             >
               AGGREGATED TIMES
             </div>
-            <pre
+            {/* <pre
               style={{
                 background: "rgba(0, 0, 0, 0.3)",
                 padding: 15,
@@ -149,6 +149,28 @@ const Analytics = () => {
             >
               {JSON.stringify(data.aggregatedTimes, null, 2)}
             </pre>
+             */}
+
+            {Object.entries(data.aggregatedTimes).map(([trackName, subtracks]) => (
+              <div key={trackName} style={{ marginBottom: 25 }}>
+                <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 10 }}>
+                  Track: {trackName}
+                </div>
+                {Object.entries(subtracks).map(([subtrackName, stats]) => (
+                  <div key={subtrackName} style={{ marginLeft: 20, marginBottom: 10 }}>
+                    <div style={{ fontSize: 16, fontWeight: 500 }}>
+                      - Subtrack: {subtrackName}
+                    </div>
+                    <div style={{ marginLeft: 20, fontSize: 14 }}>
+                      <p>Average Time: <strong>{stats.average.toFixed(2)}</strong></p>
+                      <p>Best Time: <strong>{stats.best}</strong></p>
+                      <p>Worst Time: <strong>{stats.worst}</strong></p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+
           </div>
         ) : (
           <div

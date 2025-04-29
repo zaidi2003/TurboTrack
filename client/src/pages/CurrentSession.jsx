@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { UserProfile, SideNavBar } from "../components";
+import { UserProfile, SideNavBar, EmployeeSideNavBar } from "../components";
 import { WelcomeCard, JourneyCard, LeaderboardSection } from "../components/dashboard";
 import { useUser } from "../context/UserContext";
 import { GoogleMap, LoadScript, Marker, Polygon, useLoadScript } from "@react-google-maps/api";
@@ -39,8 +39,7 @@ const CurrentSession = () => {
       const { coordinates } = response.data;
       setData(coordinates);
       console.log("Coordinates data:", coordinates);
-    } catch (error) {
-      toast.error(error.response?.data?.msg || error.message);
+    } catch (error) {``
     }
   };
 
@@ -102,7 +101,7 @@ const CurrentSession = () => {
         overflow: "hidden",
       }}
     >
-      <SideNavBar />
+      {userData.role === "Customer" ? <SideNavBar /> : <EmployeeSideNavBar />}
       <UserProfile
         style={{
           position: "absolute", 

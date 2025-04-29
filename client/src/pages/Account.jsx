@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { SideNavBar, UserProfile } from "../components";
+import { SideNavBar, UserProfile, EmployeeSideNavBar } from "../components";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
+
 import { toast } from "react-toastify";
 
 import UpdateProfilePicture from "../components/account/UpdateProfilePicture";
@@ -8,6 +10,7 @@ import UpdateAccountDetails from "../components/account/UpdateAccountDetails";
 import ChangePassword from "../components/account/ChangePassword";
 
 const Account = () => {
+  let { userData: fetchedUserData, userStats, isLoading } = useUser();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -144,7 +147,7 @@ const Account = () => {
         overflow: "visible", 
       }}
     >
-      <SideNavBar />
+      {fetchedUserData.role === "Customer" ? <SideNavBar /> : <EmployeeSideNavBar />}
       <UserProfile style={{ position: "absolute", top: 30, right: 40 }} />
 
       <div

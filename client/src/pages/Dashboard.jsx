@@ -31,7 +31,7 @@ const Dashboard = () => {
   if (isLoading) 
     return <div>Loading...</div>;
   else if (!(userData.role === "Customer"))
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/employee-dashboard" replace />;
 
   if (isLoading) {
     return (

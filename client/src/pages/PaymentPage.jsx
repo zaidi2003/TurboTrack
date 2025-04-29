@@ -24,11 +24,7 @@ const PaymentPage = () => {
 
   // Extract track, date, slot from location state (passed from previous page)
   const { track, date, slot } = location.state || {};
-
-  console.log(userData);
-  // If track wasn't passed in location state, fetch it from API
   
-
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
