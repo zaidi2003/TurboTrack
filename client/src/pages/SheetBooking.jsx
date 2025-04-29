@@ -3,15 +3,18 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { SideNavBar, UserProfile } from "../components";
 import { DatePicker, TimeSlots, LoadingSpinner, TrackSelector } from "../components/booking";
+import axios from "axios";
 
-const MOCK_TRACKS = [
+let MOCK_TRACKS = [
+  
   {
     id: "track-1",
     name: "Track 1: Novice",
     length: "3.337 km",
     price: 1500,
     ageLimit: 7,
-    description: "Shorter track for younger children or inexperienced drivers"
+    description: "Shorter track for younger children or inexperienced drivers",
+    track_id: "track-1"
   },
   {
     id: "track-2",
@@ -19,7 +22,8 @@ const MOCK_TRACKS = [
     length: "20.832 km",
     price: 3000,
     ageLimit: 16,
-    description: "Just for fun"
+    description: "Just for fun",
+    track_id: "track-1"
   },
   {
     id: "track-3",
@@ -27,9 +31,12 @@ const MOCK_TRACKS = [
     length: "5.891 km",
     price: 5000,
     ageLimit: 18,
-    description: "Our most challenging circuit - for the most serious karters only!"
+    description: "Our most challenging circuit - for the most serious karters only!",
+    track_id: "track-1"
   }
 ];
+
+
 
 const mockAPI = {
   getTracks: () => {
@@ -111,7 +118,8 @@ const TrackCard = ({ name, buttonText, onButtonClick }) => {
       backgroundColor: "rgba(255, 255, 255, 0.05)",
       borderRadius: 16,
       padding: "16px 24px",
-      marginBottom: 32
+      marginBottom: 32,
+      marginTop: 40,
     }}>
       <div style={{
         color: "#f7f4f1",
@@ -141,7 +149,8 @@ const TrackCard = ({ name, buttonText, onButtonClick }) => {
 };
 
 const SheetBooking = () => {
-  const { trackId } = useParams();
+  const trackId = null;
+  const { trackName } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -162,7 +171,31 @@ const SheetBooking = () => {
       try {
         setLoadingMessage("Loading tracks...");
         setIsLoading(true);
-        
+
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/${trackName}`);
+
+        MOCK_TRACKS[0]['name'] = response.data.subtracks[0].subtrackName;
+        MOCK_TRACKS[1]['name'] = response.data.subtracks[1].subtrackName;
+        MOCK_TRACKS[2]['name'] = response.data.subtracks[2].subtrackName;
+
+        MOCK_TRACKS[0]['cost'] = response.data.subtracks[0].cost;
+        MOCK_TRACKS[1]['cost'] = response.data.subtracks[1].cost;
+        MOCK_TRACKS[2]['cost'] = response.data.subtracks[2].cost;
+
+        MOCK_TRACKS[0]['length'] = response.data.subtracks[0].length;
+        MOCK_TRACKS[1]['length'] = response.data.subtracks[1].length;
+        MOCK_TRACKS[2]['length'] = response.data.subtracks[2].length;
+
+        MOCK_TRACKS[0]['id'] = response.data.subtracks[0]._id;
+        MOCK_TRACKS[1]['id'] = response.data.subtracks[1]._id;
+        MOCK_TRACKS[2]['id'] = response.data.subtracks[2]._id;
+
+        MOCK_TRACKS[0]['track_id'] = response.data._id;
+        MOCK_TRACKS[1]['track_id'] = response.data._id;
+        MOCK_TRACKS[2]['track_id'] = response.data._id;
+
+
+        const temptrackID = response.data._id;
         const fetchedTracks = await mockAPI.getTracks();
         setTracks(fetchedTracks);
         

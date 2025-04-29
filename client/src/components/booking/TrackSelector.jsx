@@ -156,7 +156,7 @@ const TrackSelector = ({ tracks, selectedTrackId, onTrackSelect }) => {
           <div style={styles.trackInfo}>
             <div style={styles.infoItem}>
               <span>Length:</span>
-              <span>{currentTrack.length}</span>
+              <span>{currentTrack.length} km</span>
             </div>
             
             <div style={styles.infoItem}>

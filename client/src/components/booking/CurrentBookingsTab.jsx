@@ -46,7 +46,7 @@ const CurrentBookingsTab = ({ bookings, onCancelBooking, formatDate, isLoading }
               marginTop: 5,
             }}
           >
-            PKR {booking.subtrack.cost}
+            PKR {booking.cost}
           </div>
         </div>
 

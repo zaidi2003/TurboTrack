@@ -19,6 +19,20 @@ const getAllTrackNames = async (req, res) => {
     }
 };
 
+const getTrackbyName = async (req, res) => {
+    const { trackName } = req.params; 
+
+    try {
+        const track = await Track.findOne({ trackName: trackName }); // Find the track by name
+        if (!track) {
+            return res.status(404).json({ message: 'Track not found' });
+        }
+        res.status(200).json(track);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching track', error });
+    }
+}
+
 const createTrackDummy = async (req, res) => {
     const defaultTrack = new Track({
         trackID: "track-1",
@@ -98,4 +112,4 @@ const createTrack = async (req, res) => {
 
 
 
-module.exports = { getAllTracks, getAllTrackNames, createTrack, createTrackDummy };
+module.exports = { getAllTracks, getAllTrackNames, createTrack, createTrackDummy, getTrackbyName };

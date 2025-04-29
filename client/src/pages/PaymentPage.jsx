@@ -25,30 +25,9 @@ const PaymentPage = () => {
   // Extract track, date, slot from location state (passed from previous page)
   const { track, date, slot } = location.state || {};
 
+  console.log(userData);
   // If track wasn't passed in location state, fetch it from API
-  useEffect(() => {
-    const fetchTrackData = async () => {
-      // Skip API call if we already have track data from location state
-      if (track) {
-        setTrackData(track);
-        return;
-      }
-      
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks/name/${encodeURIComponent(decodedTrackName)}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        setTrackData(response.data);
-      } catch (err) {
-        console.error("Error fetching track data:", err);
-        setError("Failed to load track information");
-        toast.error("Failed to load track information");
-      }
-    };
-
-    fetchTrackData();
-  }, [track, decodedTrackName, token]);
+  
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -67,58 +46,45 @@ const PaymentPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
+  
+    const startTime = slot?.startTime || new Date().toISOString();
+    const dateObj = new Date(startTime);
+
+    const timeSlot = dateObj.toISOString().slice(11, 16); // "04:30"
+    const date = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}-${dateObj.getDate()}`; // "2025-5-1"
 
     try {
-      // First authenticate the payment
-      const paymentData = {
-        transactionId: `txn-${Date.now()}`,
-        amount: 3500, // Fixed amount based on your payment.js validation
-        userId: userData?.id,
-        cardNumber: cardNumber.replace(/\s/g, ""), // Remove spaces
-        cvc,
-        expirationDate
+      console.log(cvc);
+
+      const bookingPayload = {
+        track: track.track_id,
+        subtrackId: track.id,
+        timeSlot: timeSlot,
+        date: date, // format adjusted for consistency
+        email: userData.email,
+        cost: track.price,
       };
-
-      const paymentResponse = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/payment/authenticate`,
-        paymentData
+  
+      const bookingResponse = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/create`,
+        bookingPayload
       );
-
-      if (paymentResponse.data.status === "success") {
-        // Create booking payload
-        const bookingPayload = {
-          track: trackData?.trackName || decodedTrackName,
-          date,
-          timeSlot: slot?.time || "12:00", // Using the time format from your schema
-          email: userData?.email,
-          status: "pending"
-        };
-
-        // Create the booking
-        const bookingResponse = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/create`,
-          bookingPayload,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        setIsProcessing(false);
-        
-        // Navigate to bookings page with success info
-        navigate("/bookings", {
-          state: {
-            paymentSuccess: true,
-            bookingDetails: bookingResponse.data
-          },
-        });
-      } else {
-        throw new Error("Payment failed");
-      }
-    } catch (err) {
-      console.error("Payment error:", err);
+  
       setIsProcessing(false);
-      toast.error(err.response?.data?.msg || "Payment processing failed");
+  
+      navigate("/bookings", {
+        state: {
+          paymentSuccess: true,
+          bookingDetails: bookingResponse.data
+        },
+      });
+    } catch (err) {
+      console.error("Booking error:", err);
+      setIsProcessing(false);
+      toast.error(err.response?.data?.message || "Booking failed");
     }
   };
+  
 
   return (
     <div
@@ -164,6 +130,7 @@ const PaymentPage = () => {
                 border: "1px solid #3d3d3d",
                 padding: "30px",
                 marginBottom: "30px",
+                marginTop: "40px",
               }}
             >
               <div
@@ -380,7 +347,7 @@ const PaymentPage = () => {
                     marginTop: 5,
                   }}
                 >
-                  PKR 3500
+                  PKR {track.price}
                 </div>
               </div>
 

@@ -28,54 +28,18 @@ const Booking = () => {
   const fetchTracks = async () => {
     setIsLoading(true);
     try {
-      // Replace with actual API call when backend is ready
-      // const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/tracks`, {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // });
-      // setTracks(response.data.tracks || []);
-
-      // Mock data until backend is ready
-      setTracks([
-        {
-          id: 1,
-          name: "Kool Karterz",
-          description: "An exciting track for beginners and experts alike",
-          length: "1.5 km",
-          price: 1500,
-          ageLimit: 12,
-          slots: [
-            { id: 1, time: "12:00 PM", booked: true },
-            { id: 2, time: "12:30 PM", booked: false },
-            { id: 3, time: "1:00 PM", booked: false },
-          ],
-        },
-        {
-          id: 2,
-          name: "Kartz 4 Karterz",
-          description: "Professional track with challenging corners",
-          length: "2.2 km",
-          price: 3000,
-          ageLimit: 16,
-          slots: [
-            { id: 4, time: "12:00 PM", booked: false },
-            { id: 5, time: "12:30 PM", booked: true },
-            { id: 6, time: "1:00 PM", booked: false },
-          ],
-        },
-        {
-          id: 3,
-          name: "Karting Karterz",
-          description: "Family-friendly track for all skill levels",
-          length: "1.8 km",
-          price: 2500,
-          ageLimit: 10,
-          slots: [
-            { id: 7, time: "2:00 PM", booked: true },
-            { id: 8, time: "2:30 PM", booked: false },
-            { id: 9, time: "3:00 PM", booked: false },
-          ],
-        },
-      ]);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/v1/tracks`
+      );
+  
+      console.log("Fetched tracks:", response.data);
+  
+      const formattedTracks = response.data.map((track) => ({
+        id: track._id,
+        name: track.trackName,
+      }));
+  
+      setTracks(formattedTracks);
     } catch (error) {
       toast.error("Failed to fetch available tracks");
       console.error(error);
@@ -83,8 +47,8 @@ const Booking = () => {
       setIsLoading(false);
     }
   };
+  
 
-  // Fetch user bookings from API
   const fetchUserBookings = async () => {
     try {
       const response = await axios.get(
@@ -95,10 +59,9 @@ const Booking = () => {
       const fetchedBookings = response.data.bookings || [];
       console.log("Fetched bookings:", fetchedBookings);  
       if (fetchedBookings.length === 0) {
-        // Fallback to default if no bookings
+        // kept blank this was needed during testing!
         
       } else {
-        // Process bookings - separate current from historical
         const now = new Date();
         const current = [];
         const history = [];
@@ -166,10 +129,14 @@ const Booking = () => {
             },
           }
         );
-        const updatedBookings = currentBookings.filter(
-          booking => booking.id !== bookingToCancel.id
-        );
-        setCurrentBookings(updatedBookings);
+
+        // redirect back here
+        navigate(0);
+        // const updatedBookings = currentBookings.filter(
+        //   booking => booking.id !== bookingToCancel.id
+        // );
+        // setCurrentBookings(updatedBookings);
+        // this does not work but needs to be made more dynamic
         
         toast.success("Booking cancelled successfully");
       } catch (error) {
