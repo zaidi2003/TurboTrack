@@ -39,8 +39,63 @@ const PaymentPage = () => {
     return timeString || "";
   };
 
+  const isValidCardNumber = (number) => 
+  {
+    // remove spaces and dashes
+    number = number.replace(/\s+/g, "").replace(/-/g, "");
+    return /^[0-9]{16}$/.test(number);
+  }
+
+  const isValidExpirationDate = (date) =>
+  {
+    const expirationRegex = /^(0[1-9]|1[0-2])\/\d{4}$/; 
+
+    if (!expirationRegex.test(expirationDate)) {
+      toast.error("Expiration date must be in MM/YYYY format!");
+      return false;
+    }
+  
+    const [month, year] = expirationDate.split("/").map(Number);
+  
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear(); 
+    const currentMonth = currentDate.getMonth() + 1; 
+  
+    if (currentYear > year || (currentYear === year && currentMonth >= month)) {
+      toast.error("Your card has expired!");
+      return false;
+    }
+  
+    return true;
+  }
+
+  const isValidCVC = (cvc) =>
+  {
+    return /^\d{3,4}$/.test(cvc);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isValidCardNumber(cardNumber)) {
+      toast.error("Invalid card number!");
+      return;
+    }
+
+    if (!isValidExpirationDate(expirationDate)) {
+      return;
+    }
+
+    if (!isValidCVC(cvc)) {
+      toast.error("Invalid CVC!");
+      return;
+    }
+
+    if (!country) {
+      toast.error("Please select a country!");
+      return;
+    }
+
     setIsProcessing(true);
   
     const startTime = slot?.startTime || new Date().toISOString();
@@ -60,6 +115,8 @@ const PaymentPage = () => {
         email: userData.email,
         cost: track.price,
       };
+
+
   
       const bookingResponse = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/booking/create`,
@@ -211,7 +268,7 @@ const PaymentPage = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="MM/YY"
+                      placeholder="MM/YYYY"
                       style={{
                         width: "100%",
                         height: 45,
